@@ -19,10 +19,18 @@ export default function App() {
   const [view, setView] = useState<"calendar" | "book">("calendar");
   const [showTerms, setShowTerms] = useState(false);
   const [showPrivacy, setShowPrivacy] = useState(false);
+  const [isPasswordReset, setIsPasswordReset] = useState(false);
+  const [newPassword, setNewPassword] = useState("");
+  const [resetMsg, setResetMsg] = useState("");
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
+        if (event === "PASSWORD_RECOVERY") {
+          setIsPasswordReset(true);
+          setLoading(false);
+          return;
+        }
         if (session) {
           setIsAuthenticated(true);
           setUserEmail(session.user.email || "");
@@ -37,6 +45,18 @@ export default function App() {
     return () => subscription.unsubscribe();
   }, []);
 
+  const handlePasswordUpdate = async () => {
+    const { error } = await supabase.auth.updateUser({ password: newPassword });
+    if (error) {
+      setResetMsg("Error: " + error.message);
+    } else {
+      setResetMsg("Password updated! Signing you in...");
+      setTimeout(() => {
+        setIsPasswordReset(false);
+      }, 1500);
+    }
+  };
+
   const handleAuthSuccess = (userId: string, email: string) => {
     setIsAuthenticated(true);
     setUserEmail(email);
@@ -47,6 +67,31 @@ export default function App() {
     setIsAuthenticated(false);
     setUserEmail("");
   };
+
+  if (isPasswordReset) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-amber-50">
+        <div className="bg-white p-8 rounded-2xl shadow-lg w-full max-w-md">
+          <h2 className="text-2xl font-serif text-gray-800 mb-2 text-center">Set New Password</h2>
+          <p className="text-gray-500 text-sm text-center mb-6">Enter your new password below</p>
+          <input
+            type="password"
+            placeholder="New password"
+            value={newPassword}
+            onChange={e => setNewPassword(e.target.value)}
+            className="w-full border border-gray-300 rounded-lg px-4 py-2 mb-4 focus:outline-none focus:ring-2 focus:ring-amber-400"
+          />
+          <button
+            onClick={handlePasswordUpdate}
+            className="w-full bg-amber-600 text-white py-2 rounded-lg hover:bg-amber-700 transition-colors"
+          >
+            Update Password
+          </button>
+          {resetMsg && <p className="mt-4 text-center text-sm text-gray-600">{resetMsg}</p>}
+        </div>
+      </div>
+    );
+  }
 
   if (loading) {
     return (
