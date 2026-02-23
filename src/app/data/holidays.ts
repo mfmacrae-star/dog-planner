@@ -1,0 +1,77 @@
+export interface Holiday {
+  month: number; day: number; name: string; type: "federal" | "religious" | "specialty" | "dog";
+}
+
+export const holidays: Holiday[] = [
+  { month: 1, day: 1, name: "New Year's Day", type: "federal" },
+  { month: 1, day: 2, name: "Nat'l Pet Travel Safety Day", type: "dog" },
+  { month: 1, day: 14, name: "Dress Up Your Pet Day", type: "dog" },
+  { month: 1, day: 19, name: "MLK Jr. Day", type: "federal" },
+  { month: 1, day: 24, name: "Change a Pet's Life Day", type: "dog" },
+  { month: 2, day: 2, name: "Groundhog Day", type: "specialty" },
+  { month: 2, day: 3, name: "Nat'l Golden Retriever Day", type: "dog" },
+  { month: 2, day: 14, name: "Valentine's Day", type: "specialty" },
+  { month: 2, day: 16, name: "Presidents' Day", type: "federal" },
+  { month: 2, day: 17, name: "Lunar New Year", type: "religious" },
+  { month: 2, day: 18, name: "Ash Wednesday", type: "religious" },
+  { month: 2, day: 19, name: "Ramadan Begins", type: "religious" },
+  { month: 2, day: 20, name: "Love Your Pet Day", type: "dog" },
+  { month: 2, day: 23, name: "Nat'l Dog Biscuit Day", type: "dog" },
+  { month: 3, day: 3, name: "World Wildlife Day", type: "specialty" },
+  { month: 3, day: 8, name: "Daylight Saving Begins", type: "specialty" },
+  { month: 3, day: 13, name: "K9 Veterans Day", type: "dog" },
+  { month: 3, day: 17, name: "St. Patrick's Day", type: "specialty" },
+  { month: 3, day: 21, name: "Eid al-Fitr", type: "religious" },
+  { month: 3, day: 23, name: "National Puppy Day", type: "dog" },
+  { month: 4, day: 1, name: "Passover Begins", type: "religious" },
+  { month: 4, day: 3, name: "Good Friday", type: "religious" },
+  { month: 4, day: 5, name: "Easter Sunday", type: "religious" },
+  { month: 4, day: 10, name: "Nat'l Hug Your Dog Day", type: "dog" },
+  { month: 4, day: 11, name: "National Pet Day", type: "dog" },
+  { month: 4, day: 22, name: "Earth Day", type: "specialty" },
+  { month: 5, day: 3, name: "Nat'l Specially-Abled Pets Day", type: "dog" },
+  { month: 5, day: 5, name: "Cinco de Mayo", type: "specialty" },
+  { month: 5, day: 9, name: "Nat'l Dog Mom Day", type: "dog" },
+  { month: 5, day: 10, name: "Mother's Day", type: "specialty" },
+  { month: 5, day: 20, name: "Nat'l Rescue Dog Day", type: "dog" },
+  { month: 5, day: 25, name: "Memorial Day", type: "federal" },
+  { month: 6, day: 4, name: "Int'l Corgi Day", type: "dog" },
+  { month: 6, day: 8, name: "Nat'l Best Friends Day", type: "specialty" },
+  { month: 6, day: 14, name: "Flag Day", type: "specialty" },
+  { month: 6, day: 19, name: "Juneteenth", type: "federal" },
+  { month: 6, day: 21, name: "Father's Day", type: "specialty" },
+  { month: 6, day: 26, name: "Take Your Dog to Work Day", type: "dog" },
+  { month: 7, day: 4, name: "Independence Day", type: "federal" },
+  { month: 7, day: 26, name: "Nat'l Dog Photography Day", type: "dog" },
+  { month: 7, day: 31, name: "National Mutt Day", type: "dog" },
+  { month: 8, day: 1, name: "DOGust (Shelter Dog Birthday)", type: "dog" },
+  { month: 8, day: 5, name: "Work Like a Dog Day", type: "dog" },
+  { month: 8, day: 10, name: "Spoil Your Dog Day", type: "dog" },
+  { month: 8, day: 26, name: "National Dog Day", type: "dog" },
+  { month: 8, day: 28, name: "Rainbow Bridge Day", type: "dog" },
+  { month: 9, day: 7, name: "Labor Day", type: "federal" },
+  { month: 9, day: 11, name: "Patriot Day", type: "specialty" },
+  { month: 9, day: 12, name: "Rosh Hashanah", type: "religious" },
+  { month: 9, day: 21, name: "Yom Kippur", type: "religious" },
+  { month: 10, day: 1, name: "Nat'l Black Dog Day", type: "dog" },
+  { month: 10, day: 4, name: "World Animal Day", type: "dog" },
+  { month: 10, day: 12, name: "Columbus Day", type: "federal" },
+  { month: 10, day: 17, name: "National Fetch Day", type: "dog" },
+  { month: 10, day: 31, name: "Halloween", type: "specialty" },
+  { month: 11, day: 1, name: "All Saints Day", type: "religious" },
+  { month: 11, day: 1, name: "Nat'l Cook for Your Pets Day", type: "dog" },
+  { month: 11, day: 11, name: "Veterans Day", type: "federal" },
+  { month: 11, day: 26, name: "Thanksgiving", type: "federal" },
+  { month: 12, day: 2, name: "National Mutt Day", type: "dog" },
+  { month: 12, day: 25, name: "Christmas Day", type: "federal" },
+  { month: 12, day: 26, name: "Kwanzaa Begins", type: "religious" },
+  { month: 12, day: 31, name: "New Year's Eve", type: "specialty" },
+];
+
+export function getHolidaysForDay(month: number, day: number): Holiday[] {
+  return holidays.filter(h => h.month === month && h.day === day);
+}
+
+export function getHolidaysForMonth(month: number): Holiday[] {
+  return holidays.filter(h => h.month === month);
+}
