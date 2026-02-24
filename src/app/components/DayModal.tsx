@@ -1,78 +1,187 @@
-import { X, Upload } from "lucide-react";
-import { useState } from "react";
+/*
+ * Digital Dog Day Planner & Calendar
+ * Copyright (c) 2025. All Rights Reserved.
+ */
 
-interface ExternalEvent { id: string; title: string; time: string; }
-interface DayModalProps {
-  isOpen: boolean; onClose: () => void; day: number; month: number; year: number;
-  photoUrl: string; plannerContent: string; onContentChange: (value: string) => void;
-  externalEvents: ExternalEvent[]; userEmail?: string; onSyncToGoogle: (entry: string) => void;
-}
+import { useState, useEffect } from "react";
+import { supabase } from "./lib/supabase";
+import { AuthForm } from "./components/AuthForm";
+import { Calendar, BookOpen, LogOut } from "lucide-react";
+import { MonthlyCalendar } from "./components/MonthlyCalendar";
+import { BreedBook } from "./components/BreedBook";
+import { TermsOfService } from "./components/TermsOfService";
+import { PrivacyPolicy } from "./components/PrivacyPolicy";
 
-export function DayModal({ isOpen, onClose, day, month, year, photoUrl, plannerContent, onContentChange, externalEvents, userEmail, onSyncToGoogle }: DayModalProps) {
-  const [syncingEntry, setSyncingEntry] = useState<string | null>(null);
-  const [eventTime, setEventTime] = useState("");
-  if (!isOpen) return null;
-  const monthNames = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+export default function App() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [userEmail, setUserEmail] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [view, setView] = useState<"calendar" | "book">("calendar");
+  const [showTerms, setShowTerms] = useState(false);
+  const [showPrivacy, setShowPrivacy] = useState(false);
+  const [isPasswordReset, setIsPasswordReset] = useState(false);
+  const [newPassword, setNewPassword] = useState("");
+  const [resetMsg, setResetMsg] = useState("");
 
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-      <div className="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col">
-        <div className="flex items-center justify-between p-6 border-b border-gray-200 bg-gradient-to-r from-amber-50 to-orange-50">
-          <div>
-            <h2 className="text-2xl font-bold text-gray-800">{monthNames[month - 1]} {day}, {year}</h2>
-            <p className="text-sm text-gray-600 mt-1">Plan your day</p>
-          </div>
-          <button onClick={onClose} className="p-2 hover:bg-white/80 rounded-full transition-colors"><X className="w-6 h-6 text-gray-600" /></button>
-        </div>
-        <div className="flex-1 overflow-y-auto p-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <div className="space-y-4">
-              <div className="relative rounded-xl overflow-hidden shadow-lg aspect-square">
-                <img src={photoUrl} alt={`Dog of the day ${day}`} className="w-full h-full object-cover" />
-              </div>
-              {externalEvents.length > 0 && (
-                <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
-                  <h3 className="font-semibold text-blue-900 mb-3">Google Calendar Events</h3>
-                  <div className="space-y-2">
-                    {externalEvents.map(event => (
-                      <div key={event.id} className="bg-white rounded px-3 py-2 border border-blue-200">
-                        <div className="font-semibold text-blue-700 text-sm">{event.time}</div>
-                        <div className="text-blue-900 text-sm">{event.title}</div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-            <div className="space-y-4">
-              <div>
-                <h3 className="font-semibold text-gray-800 mb-2">Your Plans for Today</h3>
-                {plannerContent?.trim() && (
-                  <div className="mb-4 space-y-2">
-                    {plannerContent.split("\n").filter(l => l.trim()).map((entry, idx) => (
-                      <div key={idx} className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-300 rounded-lg px-3 py-2 flex items-center justify-between group">
-                        <span className="text-green-900 font-medium">{entry}</span>
-                        {userEmail && (
-                          <button onClick={() => { setSyncingEntry(entry); setEventTime(""); }} className="ml-2 opacity-0 group-hover:opacity-100 transition-opacity p-1 hover:bg-green-100 rounded">
-                            <Upload className="w-4 h-4 text-green-700" />
-                          </button>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-              <div className="bg-gray-50 rounded-lg p-4 border-2 border-gray-200 focus-within:border-amber-400 transition-colors">
-                <textarea value={plannerContent} onChange={(e) => onContentChange(e.target.value)} placeholder="Add your plans for the day" className="w-full h-96 text-base bg-transparent border-none outline-none resize-none text-gray-700 placeholder:text-gray-400" />
-              </div>
-              <div className="text-xs text-gray-500 italic">Tip: Each line becomes a separate to-do. Hover over entries to sync with Google Calendar.</div>
-            </div>
-          </div>
-        </div>
-        <div className="p-4 border-t border-gray-200 bg-gray-50 flex justify-end">
-          <button onClick={onClose} className="px-6 py-2 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-medium rounded-lg hover:from-amber-600 hover:to-orange-600 transition-all shadow-md">Done</button>
+  useEffect(() => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        if (event === "PASSWORD_RECOVERY") {
+          setIsPasswordReset(true);
+          setLoading(false);
+          return;
+        }
+        if (session) {
+          setIsAuthenticated(true);
+          setUserEmail(session.user.email || "");
+          setLoading(false);
+        } else {
+          setIsAuthenticated(false);
+          setUserEmail("");
+          setLoading(false);
+        }
+      }
+    );
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const handlePasswordUpdate = async () => {
+    const { error } = await supabase.auth.updateUser({ password: newPassword });
+    if (error) {
+      setResetMsg("Error: " + error.message);
+    } else {
+      setResetMsg("Password updated! Signing you in...");
+      setTimeout(() => {
+        setIsPasswordReset(false);
+      }, 1500);
+    }
+  };
+
+  const handleAuthSuccess = (userId: string, email: string) => {
+    setIsAuthenticated(true);
+    setUserEmail(email);
+  };
+
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+    setIsAuthenticated(false);
+    setUserEmail("");
+  };
+
+  if (isPasswordReset) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-amber-50">
+        <div className="bg-white p-8 rounded-2xl shadow-lg w-full max-w-md">
+          <h2 className="text-2xl font-serif text-gray-800 mb-2 text-center">Set New Password</h2>
+          <p className="text-gray-500 text-sm text-center mb-6">Enter your new password below</p>
+          <input
+            type="password"
+            placeholder="New password"
+            value={newPassword}
+            onChange={e => setNewPassword(e.target.value)}
+            className="w-full border border-gray-300 rounded-lg px-4 py-2 mb-4 focus:outline-none focus:ring-2 focus:ring-amber-400"
+          />
+          <button
+            onClick={handlePasswordUpdate}
+            className="w-full bg-amber-600 text-white py-2 rounded-lg hover:bg-amber-700 transition-colors"
+          >
+            Update Password
+          </button>
+          {resetMsg && <p className="mt-4 text-center text-sm text-gray-600">{resetMsg}</p>}
         </div>
       </div>
+    );
+  }
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-amber-50">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-amber-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return <AuthForm onAuthSuccess={handleAuthSuccess} />;
+  }
+
+  return (
+    <div className="size-full flex flex-col">
+      <div className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-sm shadow-md">
+        <div className="max-w-7xl mx-auto px-6 py-4">
+          <div className="flex items-center justify-between">
+            <h1 className="text-2xl font-serif text-gray-800">
+              Dog Day Planner & Calendar
+            </h1>
+            <div className="flex items-center gap-4">
+              <div className="flex gap-2">
+                <button
+                  onClick={() => setView("calendar")}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
+                    view === "calendar"
+                      ? "bg-amber-600 text-white"
+                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                  }`}
+                >
+                  <Calendar className="w-5 h-5" />
+                  Calendar
+                </button>
+                <button
+                  onClick={() => setView("book")}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
+                    view === "book"
+                      ? "bg-amber-600 text-white"
+                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                  }`}
+                >
+                  <BookOpen className="w-5 h-5" />
+                  Breed Book
+                </button>
+              </div>
+              <span className="text-sm text-gray-600">{userEmail}</span>
+              <button
+                onClick={handleSignOut}
+                className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-red-600 transition-colors"
+              >
+                <LogOut className="w-4 h-4" />
+                Sign Out
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="pt-20 flex-1">
+        {view === "calendar" ? (
+          <MonthlyCalendar userEmail={userEmail} />
+        ) : (
+          <BreedBook />
+        )}
+      </div>
+
+      <footer className="bg-gray-50 border-t border-gray-200 py-4">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+            <div className="text-sm text-gray-600">
+              © 2025 Digital Dog Day Planner & Calendar. All Rights Reserved.
+            </div>
+            <div className="flex gap-4 text-sm">
+              <button onClick={() => setShowTerms(true)} className="text-gray-600 hover:text-amber-600 transition-colors underline">
+                Terms of Service
+              </button>
+              <button onClick={() => setShowPrivacy(true)} className="text-gray-600 hover:text-amber-600 transition-colors underline">
+                Privacy Policy
+              </button>
+            </div>
+          </div>
+        </div>
+      </footer>
+
+      {showTerms && <TermsOfService onClose={() => setShowTerms(false)} />}
+      {showPrivacy && <PrivacyPolicy onClose={() => setShowPrivacy(false)} />}
     </div>
   );
 }

@@ -185,3 +185,7 @@ export default function App() {
     </div>
   );
 }
+ * Digital Dog Day Planner & Calendar
+ * Copyright (c) 2025. All Rights Reserved.
+ */
+

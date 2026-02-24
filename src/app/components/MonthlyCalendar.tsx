@@ -1,95 +1,187 @@
+/*
+ * Digital Dog Day Planner & Calendar
+ * Copyright (c) 2025. All Rights Reserved.
+ */
+
 import { useState, useEffect } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import { breeds, monthNames } from "../data/breeds";
-import { getQuoteForDate } from "../data/quotes";
-import { CalendarGrid } from "./CalendarGrid";
-import { CalendarConnect } from "./CalendarConnect";
-import { AskAI } from "./AskAI";
-import { BreedImage } from "./BreedImage";
-import { projectId, publicAnonKey } from "../../../utils/supabase/info";
+import { supabase } from "./lib/supabase";
+import { AuthForm } from "./components/AuthForm";
+import { Calendar, BookOpen, LogOut } from "lucide-react";
+import { MonthlyCalendar } from "./components/MonthlyCalendar";
+import { BreedBook } from "./components/BreedBook";
+import { TermsOfService } from "./components/TermsOfService";
+import { PrivacyPolicy } from "./components/PrivacyPolicy";
 
-interface MonthlyCalendarProps {
-  userEmail: string;
-}
+export default function App() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [userEmail, setUserEmail] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [view, setView] = useState<"calendar" | "book">("calendar");
+  const [showTerms, setShowTerms] = useState(false);
+  const [showPrivacy, setShowPrivacy] = useState(false);
+  const [isPasswordReset, setIsPasswordReset] = useState(false);
+  const [newPassword, setNewPassword] = useState("");
+  const [resetMsg, setResetMsg] = useState("");
 
-export function MonthlyCalendar({ userEmail }: MonthlyCalendarProps) {
-  const currentDate = new Date();
-  const [currentMonth, setCurrentMonth] = useState(currentDate.getMonth() + 1);
-  const [currentYear] = useState(currentDate.getFullYear());
-  const [gratitude, setGratitude] = useState("");
-  const [isCalendarConnected, setIsCalendarConnected] = useState(false);
-
-  const currentBreed = breeds.find((b) => b.month === currentMonth)!;
-  const today = currentDate.getDate();
-  const todayDate = new Date(currentYear, currentMonth - 1, today);
-  const dailyQuote = getQuoteForDate(todayDate);
-
-  useEffect(() => { loadGratitudeEntry(); }, [currentMonth, currentYear]);
-
-  const loadGratitudeEntry = async () => {
-    try {
-      const response = await fetch(
-        `https://${projectId}.supabase.co/functions/v1/make-server-7edd5186/gratitude/${currentYear}/${currentMonth}/${today}`,
-        { headers: { Authorization: `Bearer ${publicAnonKey}` } }
-      );
-      if (response.ok) {
-        const data = await response.json();
-        setGratitude(data.content || "");
+  useEffect(() => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        if (event === "PASSWORD_RECOVERY") {
+          setIsPasswordReset(true);
+          setLoading(false);
+          return;
+        }
+        if (session) {
+          setIsAuthenticated(true);
+          setUserEmail(session.user.email || "");
+          setLoading(false);
+        } else {
+          setIsAuthenticated(false);
+          setUserEmail("");
+          setLoading(false);
+        }
       }
-    } catch (error) { console.error("Error loading gratitude entry:", error); }
+    );
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const handlePasswordUpdate = async () => {
+    const { error } = await supabase.auth.updateUser({ password: newPassword });
+    if (error) {
+      setResetMsg("Error: " + error.message);
+    } else {
+      setResetMsg("Password updated! Signing you in...");
+      setTimeout(() => {
+        setIsPasswordReset(false);
+      }, 1500);
+    }
   };
 
-  const handleGratitudeChange = async (value: string) => {
-    setGratitude(value);
-    try {
-      await fetch(`https://${projectId}.supabase.co/functions/v1/make-server-7edd5186/gratitude/entry`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${publicAnonKey}` },
-        body: JSON.stringify({ year: currentYear, month: currentMonth, day: today, content: value }),
-      });
-    } catch (error) { console.error("Error saving gratitude entry:", error); }
+  const handleAuthSuccess = (userId: string, email: string) => {
+    setIsAuthenticated(true);
+    setUserEmail(email);
   };
 
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-rose-50 p-6">
-      <div className="max-w-7xl mx-auto">
-        <div className="flex items-center justify-between mb-6">
-          <button onClick={() => setCurrentMonth(prev => prev === 1 ? 12 : prev - 1)} className="p-2 rounded-full hover:bg-white/50 transition-colors">
-            <ChevronLeft className="w-6 h-6 text-gray-700" />
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+    setIsAuthenticated(false);
+    setUserEmail("");
+  };
+
+  if (isPasswordReset) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-amber-50">
+        <div className="bg-white p-8 rounded-2xl shadow-lg w-full max-w-md">
+          <h2 className="text-2xl font-serif text-gray-800 mb-2 text-center">Set New Password</h2>
+          <p className="text-gray-500 text-sm text-center mb-6">Enter your new password below</p>
+          <input
+            type="password"
+            placeholder="New password"
+            value={newPassword}
+            onChange={e => setNewPassword(e.target.value)}
+            className="w-full border border-gray-300 rounded-lg px-4 py-2 mb-4 focus:outline-none focus:ring-2 focus:ring-amber-400"
+          />
+          <button
+            onClick={handlePasswordUpdate}
+            className="w-full bg-amber-600 text-white py-2 rounded-lg hover:bg-amber-700 transition-colors"
+          >
+            Update Password
           </button>
-          <h1 className="text-4xl font-serif text-gray-800">{monthNames[currentMonth - 1]} {currentYear}</h1>
-          <button onClick={() => setCurrentMonth(prev => prev === 12 ? 1 : prev + 1)} className="p-2 rounded-full hover:bg-white/50 transition-colors">
-            <ChevronRight className="w-6 h-6 text-gray-700" />
-          </button>
-        </div>
-        <div className="bg-white rounded-2xl shadow-xl p-8 mb-8">
-          <div className="grid md:grid-cols-2 gap-8">
-            <div className="relative h-[400px] rounded-xl overflow-hidden">
-              <BreedImage src={currentBreed.imageUrl} alt={currentBreed.name} breedName={currentBreed.name} />
-            </div>
-            <div className="flex flex-col justify-between">
-              <div>
-                <h2 className="text-3xl font-serif text-gray-800 mb-3">{currentBreed.name}</h2>
-                <p className="text-gray-600 leading-relaxed mb-6">{currentBreed.history}</p>
-              </div>
-              <div className="bg-amber-50 rounded-lg p-4">
-                <label className="block text-lg font-medium text-gray-700 mb-2">Today I am grateful for:</label>
-                <div className="mb-3 p-3 bg-white rounded-lg border border-amber-200">
-                  <p className="text-sm italic text-gray-600">"{dailyQuote}"</p>
-                </div>
-                <textarea value={gratitude} onChange={(e) => handleGratitudeChange(e.target.value)} placeholder="Add your personal gratitude entry here..." className="w-full p-3 border border-amber-200 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-amber-400 bg-white" rows={3} />
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="bg-white rounded-2xl shadow-xl p-8">
-          <div className="mb-6">
-            <CalendarConnect userEmail={userEmail} onConnectionChange={setIsCalendarConnected} />
-          </div>
-          <CalendarGrid month={currentMonth} year={currentYear} weeklyImages={currentBreed.weeklyImages} userEmail={isCalendarConnected ? userEmail : undefined} />
+          {resetMsg && <p className="mt-4 text-center text-sm text-gray-600">{resetMsg}</p>}
         </div>
       </div>
-      <AskAI currentBreed={currentBreed.name} currentMonth={monthNames[currentMonth - 1]} currentDate={todayDate.toLocaleDateString()} />
+    );
+  }
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-amber-50">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-amber-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return <AuthForm onAuthSuccess={handleAuthSuccess} />;
+  }
+
+  return (
+    <div className="size-full flex flex-col">
+      <div className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-sm shadow-md">
+        <div className="max-w-7xl mx-auto px-6 py-4">
+          <div className="flex items-center justify-between">
+            <h1 className="text-2xl font-serif text-gray-800">
+              Dog Day Planner & Calendar
+            </h1>
+            <div className="flex items-center gap-4">
+              <div className="flex gap-2">
+                <button
+                  onClick={() => setView("calendar")}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
+                    view === "calendar"
+                      ? "bg-amber-600 text-white"
+                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                  }`}
+                >
+                  <Calendar className="w-5 h-5" />
+                  Calendar
+                </button>
+                <button
+                  onClick={() => setView("book")}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
+                    view === "book"
+                      ? "bg-amber-600 text-white"
+                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                  }`}
+                >
+                  <BookOpen className="w-5 h-5" />
+                  Breed Book
+                </button>
+              </div>
+              <span className="text-sm text-gray-600">{userEmail}</span>
+              <button
+                onClick={handleSignOut}
+                className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-red-600 transition-colors"
+              >
+                <LogOut className="w-4 h-4" />
+                Sign Out
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="pt-20 flex-1">
+        {view === "calendar" ? (
+          <MonthlyCalendar userEmail={userEmail} />
+        ) : (
+          <BreedBook />
+        )}
+      </div>
+
+      <footer className="bg-gray-50 border-t border-gray-200 py-4">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+            <div className="text-sm text-gray-600">
+              © 2025 Digital Dog Day Planner & Calendar. All Rights Reserved.
+            </div>
+            <div className="flex gap-4 text-sm">
+              <button onClick={() => setShowTerms(true)} className="text-gray-600 hover:text-amber-600 transition-colors underline">
+                Terms of Service
+              </button>
+              <button onClick={() => setShowPrivacy(true)} className="text-gray-600 hover:text-amber-600 transition-colors underline">
+                Privacy Policy
+              </button>
+            </div>
+          </div>
+        </div>
+      </footer>
+
+      {showTerms && <TermsOfService onClose={() => setShowTerms(false)} />}
+      {showPrivacy && <PrivacyPolicy onClose={() => setShowPrivacy(false)} />}
     </div>
   );
 }
