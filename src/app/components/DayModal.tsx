@@ -114,7 +114,7 @@ export function DayModal({ isOpen, onClose, day, month, year, photoUrl, plannerC
     </div>
   );
 }
-Then save with Ctrl+S! Sonnet 4.6Extended
+Then save with Ctrl+S! Sonnet 4.6Extended/ggoi
  * Digital Dog Day Planner & Calendar
  * Copyright (c) 2025. All Rights Reserved.
  */
