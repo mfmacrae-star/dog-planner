@@ -59,4 +59,4 @@ export function MonthlyCalendar({ userEmail }: MonthlyCalendarProps) {
     </div>
   );
 }
-Then Ctrl+S to save, type a commit message like fix MonthlyCalendar, and click Commit & Push!
+
