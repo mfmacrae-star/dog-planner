@@ -1,4 +1,4 @@
-/*import { X, Upload } from "lucide-react";
+import { X, Upload } from "lucide-react";
 import { useState, useEffect } from "react";
 import { getQuoteForDate } from "../data/quotes";
 import { projectId, publicAnonKey } from "../../../utils/supabase/info";
@@ -80,7 +80,7 @@ export function DayModal({ isOpen, onClose, day, month, year, photoUrl, plannerC
                 <h3 className="font-semibold text-gray-800 mb-2">Your Plans for Today</h3>
                 {plannerContent?.trim() && (
                   <div className="mb-4 space-y-2">
-                    {plannerContent.split("\n").filter(l => l.trim()).map((entry, idx) => (
+                    {plannerContent.split("\n").filter((l: string) => l.trim()).map((entry: string, idx: number) => (
                       <div key={idx} className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-300 rounded-lg px-3 py-2 flex items-center justify-between group">
                         <span className="text-green-900 font-medium">{entry}</span>
                         {userEmail && (
@@ -114,8 +114,3 @@ export function DayModal({ isOpen, onClose, day, month, year, photoUrl, plannerC
     </div>
   );
 }
-Then save with Ctrl+S! Sonnet 4.6Extended/ggoi
- * Digital Dog Day Planner & Calendar
- * Copyright (c) 2025. All Rights Reserved.
- */
-
