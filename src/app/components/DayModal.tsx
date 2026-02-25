@@ -76,6 +76,15 @@ export function DayModal({ isOpen, onClose, day, month, year, photoUrl, plannerC
               )}
             </div>
             <div className="space-y-4">
+              {/* Gratitude section - prominent at top */}
+              <div className="bg-amber-50 rounded-lg p-4 border border-amber-200">
+                <label className="block text-sm font-semibold text-gray-700 mb-2">🙏 Today I am grateful for:</label>
+                <div className="mb-2 p-2 bg-white rounded-lg border border-amber-100">
+                  <p className="text-xs italic text-gray-500">"{dailyQuote}"</p>
+                </div>
+                <textarea value={gratitude} onChange={(e) => handleGratitudeChange(e.target.value)} placeholder="Add your gratitude entry here..." className="w-full p-2 border border-amber-200 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-amber-400 bg-white text-sm" rows={3} />
+              </div>
+              {/* Plans section */}
               <div>
                 <h3 className="font-semibold text-gray-800 mb-2">Your Plans for Today</h3>
                 {plannerContent?.trim() && (
@@ -92,17 +101,10 @@ export function DayModal({ isOpen, onClose, day, month, year, photoUrl, plannerC
                     ))}
                   </div>
                 )}
-              </div>
-              <div className="bg-gray-50 rounded-lg p-4 border-2 border-gray-200 focus-within:border-amber-400 transition-colors">
-                <textarea value={plannerContent} onChange={(e) => onContentChange(e.target.value)} placeholder="Add your plans for the day" className="w-full h-96 text-base bg-transparent border-none outline-none resize-none text-gray-700 placeholder:text-gray-400" />
-              </div>
-              <div className="text-xs text-gray-500 italic">Tip: Each line becomes a separate to-do. Hover over entries to sync with Google Calendar.</div>
-              <div className="bg-amber-50 rounded-lg p-4 border border-amber-200">
-                <label className="block text-sm font-semibold text-gray-700 mb-2">Today I am grateful for:</label>
-                <div className="mb-2 p-2 bg-white rounded-lg border border-amber-100">
-                  <p className="text-xs italic text-gray-500">"{dailyQuote}"</p>
+                <div className="bg-gray-50 rounded-lg p-4 border-2 border-gray-200 focus-within:border-amber-400 transition-colors">
+                  <textarea value={plannerContent} onChange={(e) => onContentChange(e.target.value)} placeholder="Add your plans for the day" className="w-full h-40 text-base bg-transparent border-none outline-none resize-none text-gray-700 placeholder:text-gray-400" />
                 </div>
-                <textarea value={gratitude} onChange={(e) => handleGratitudeChange(e.target.value)} placeholder="Add your gratitude entry here..." className="w-full p-2 border border-amber-200 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-amber-400 bg-white text-sm" rows={3} />
+                <div className="text-xs text-gray-500 italic mt-1">Tip: Each line becomes a separate to-do. Hover over entries to sync with Google Calendar.</div>
               </div>
             </div>
           </div>
