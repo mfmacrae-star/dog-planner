@@ -23,7 +23,7 @@ export function CalendarConnect({ userEmail, onConnectionChange }: CalendarConne
 
   const checkConnectionStatus = async () => {
     try {
-      const response = await fetch(`https://${projectId}.supabase.co/functions/v1/make-server-7edd5186/google/status/${encodeURIComponent(userEmail)}`, { headers: { Authorization: `Bearer ${publicAnonKey}` } });
+      const response = await fetch(`https://${projectId}.supabase.co/functions/v1/make-server-7edd5186/google/status/${encodeURIComponent(userEmail)}`, { headers: { Authorization: `Bearer ${publicAnonKey}`, apikey: publicAnonKey } });
       if (response.ok) { const data = await response.json(); setIsConnected(data.connected); setProvider(data.provider || null); onConnectionChange?.(data.connected); }
     } catch (error) { console.error("Error checking calendar status:", error); }
     finally { setIsLoading(false); }
@@ -33,7 +33,7 @@ export function CalendarConnect({ userEmail, onConnectionChange }: CalendarConne
     setIsConnecting(true);
     try {
       const response = await fetch(`https://${projectId}.supabase.co/functions/v1/make-server-7edd5186/google/auth/init`, {
-        method: "POST", headers: { "Content-Type": "application/json", Authorization: `Bearer ${publicAnonKey}` },
+        method: "POST", headers: { "Content-Type": "application/json", Authorization: `Bearer ${publicAnonKey}`, apikey: publicAnonKey },
         body: JSON.stringify({ email: userEmail }),
       });
       if (response.ok) {
@@ -49,7 +49,7 @@ export function CalendarConnect({ userEmail, onConnectionChange }: CalendarConne
   const handleDisconnect = async () => {
     if (!confirm("Are you sure you want to disconnect your calendar?")) return;
     try {
-      const response = await fetch(`https://${projectId}.supabase.co/functions/v1/make-server-7edd5186/google/disconnect/${encodeURIComponent(userEmail)}`, { method: "DELETE", headers: { Authorization: `Bearer ${publicAnonKey}` } });
+      const response = await fetch(`https://${projectId}.supabase.co/functions/v1/make-server-7edd5186/google/disconnect/${encodeURIComponent(userEmail)}`, { method: "DELETE", headers: { Authorization: `Bearer ${publicAnonKey}`, apikey: publicAnonKey } });
       if (response.ok) { setIsConnected(false); setProvider(null); onConnectionChange?.(false); }
     } catch (error) { alert("An error occurred while disconnecting."); }
   };
