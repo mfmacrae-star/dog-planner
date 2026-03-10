@@ -3,6 +3,7 @@ import { RefreshCw } from "lucide-react";
 import { projectId, publicAnonKey } from "../../../utils/supabase/info";
 import { DayModal } from "./DayModal";
 import { getHolidaysForDay } from "../data/holidays";
+import { getDogPhotoForDate } from "../../data/dogBreedPhotos";
 
 interface CalendarGridProps {
   month: number; year: number; weeklyImages: string[]; userEmail?: string;
@@ -69,7 +70,7 @@ export function CalendarGrid({ month, year, weeklyImages, userEmail }: CalendarG
   const dayNumbers: (number | null)[] = [];
   for (let i = 0; i < firstDay; i++) dayNumbers.push(null);
   for (let i = 1; i <= daysInMonth; i++) dayNumbers.push(i);
-  const getImageForDay = (d: number) => weeklyImages[(d - 1) % weeklyImages.length];
+  const getImageForDay = (d: number) => getDogPhotoForDate(month, d);
   const isToday = (day: number | null) => { if (!day) return false; const t = new Date(); return t.getDate() === day && t.getMonth() + 1 === month && t.getFullYear() === year; };
 
   return (
