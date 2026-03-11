@@ -40,11 +40,11 @@ export const dogBreedPhotos: Record<number, MonthBreedPhotos> = {
   4: {
     breed: "Belgian Malinois",
     photos: [
-      "REPLACE_WITH_UNSPLASH_URL",
-      "REPLACE_WITH_UNSPLASH_URL",
-      "REPLACE_WITH_UNSPLASH_URL",
-      "REPLACE_WITH_UNSPLASH_URL",
-      "REPLACE_WITH_UNSPLASH_URL",
+      "https://images.unsplash.com/photo-1603724121245-661e39b69a14?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fGJlbGdpYW4lMjBtYWxpbm9pc3xlbnwwfHwwfHx8MA%3D%3D",
+      "https://images.unsplash.com/photo-1615663482725-e4f675183c03?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTV8fGJlbGdpYW4lMjBtYWxpbm9pc3xlbnwwfHwwfHx8MA%3D%3D",
+      "https://images.pexels.com/photos/9862315/pexels-photo-9862315.jpeg",
+      "https://images.unsplash.com/photo-1581614061245-05764a727edc?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8YmVsZ2lhbiUyMG1hbGlub2lzfGVufDB8fDB8fHww",
+      "https://images.unsplash.com/photo-1647087602470-886d2be417c1?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YmVsZ2lhbiUyMG1hbGlub2lzfGVufDB8fDB8fHww",
     ],
   },
   5: {
