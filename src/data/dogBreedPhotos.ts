@@ -20,11 +20,11 @@ export const dogBreedPhotos: Record<number, MonthBreedPhotos> = {
   2: {
     breed: "Siberian Husky",
     photos: [
-      "REPLACE_WITH_UNSPLASH_URL",
-      "REPLACE_WITH_UNSPLASH_URL",
-      "REPLACE_WITH_UNSPLASH_URL",
-      "REPLACE_WITH_UNSPLASH_URL",
-      "REPLACE_WITH_UNSPLASH_URL",
+      "https://images.unsplash.com/photo-1542222721-4728992b54cc?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8c2liZXJpYW4lMjBodXNreXxlbnwwfHwwfHx8MA%3D%3D",
+      "https://images.unsplash.com/photo-1627220832671-b8fbf262f5cb?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8c2liZXJpYW4lMjBodXNreXxlbnwwfHwwfHx8MA%3D%3D",
+      "https://images.unsplash.com/photo-1629246999471-f0cf6b30ceae?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fHNpYmVyaWFuJTIwaHVza3l8ZW58MHx8MHx8fDA%3D",
+      "https://images.unsplash.com/photo-1558099089-ba08c0364321?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTV8fHNpYmVyaWFuJTIwaHVza3l8ZW58MHx8MHx8fDA%3D",
+      "https://images.unsplash.com/photo-1489924034176-2e678c29d4c6?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c2liZXJpYW4lMjBodXNreXxlbnwwfHwwfHx8MA%3D%3D",
     ],
   },
   3: {
