@@ -10,11 +10,11 @@ export const dogBreedPhotos: Record<number, MonthBreedPhotos> = {
   1: {
     breed: "Poodle",
     photos: [
-      "REPLACE_WITH_UNSPLASH_URL", // week 1
-      "REPLACE_WITH_UNSPLASH_URL", // week 2
-      "REPLACE_WITH_UNSPLASH_URL", // week 3
-      "REPLACE_WITH_UNSPLASH_URL", // week 4
-      "REPLACE_WITH_UNSPLASH_URL", // week 5
+      "https://images.unsplash.com/photo-1713898007012-355894896bc0?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cG9vZGxlc3xlbnwwfHwwfHx8MA%3D%3D",
+      "https://images.unsplash.com/photo-1724989755339-6d76cbbe93db?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8cG9vZGxlc3xlbnwwfHwwfHx8MA%3D%3D",
+      "https://images.unsplash.com/photo-1608515922288-bc072d9ead4c?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fHBvb2RsZXN8ZW58MHx8MHx8fDA%3D",
+      "https://images.unsplash.com/photo-1648948302801-d992ea007b55?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjJ8fHBvb2RsZXN8ZW58MHx8MHx8fDA%3D",
+      "https://plus.unsplash.com/premium_photo-1665956593069-4d1e37194c06?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTI3fHxwb29kbGVzfGVufDB8fDB8fHww",
     ],
   },
   2: {
