@@ -30,11 +30,11 @@ export const dogBreedPhotos: Record<number, MonthBreedPhotos> = {
   3: {
     breed: "Old English Sheepdog",
     photos: [
-      "https://images.unsplash.com/photo-1596972561180-ff5770ea2ca5?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8T2xkJTIwRW5nbGlzaCUyMFNoZWVwZG9nfGVufDB8fDB8fHww",
-      "https://images.unsplash.com/photo-1622536623059-8277a04654f5?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8b2xkJTIwZW5nbGlzaCUyMHNoZWVwZG9nfGVufDB8fDB8fHww",
-      "https://images.unsplash.com/photo-1676744005029-b53dcd3cd0aa?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8b2xkJTIwZW5nbGlzaCUyMHNoZWVwZG9nfGVufDB8fDB8fHww",
-      "https://images.unsplash.com/photo-1645725750938-50ccea52c12b?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8b2xkJTIwZW5nbGlzaCUyMHNoZWVwZG9nfGVufDB8fDB8fHww",
-      "https://images.pexels.com/photos/35260897/pexels-photo-35260897.jpeg",
+      "https://i.imgur.com/ELKhdBE.png",
+      "https://i.imgur.com/0kcNyiD.png",
+      "https://i.imgur.com/VIw4Dru.png",
+      "https://i.imgur.com/dxzn2NH.png",
+      "https://i.imgur.com/PuDntLy.png",
     ],
   },
   4: {
