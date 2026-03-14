@@ -50,11 +50,11 @@ export const dogBreedPhotos: Record<number, MonthBreedPhotos> = {
   5: {
     breed: "Pekingese",
     photos: [
-      "https://images.unsplash.com/photo-1621366807539-f39db15588ad?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8cGVraW5nbmVzZXxlbnwwfHwwfHx8MA%3D%3D",
-      "https://images.unsplash.com/photo-1621366807539-f39db15588ad?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8cGVraW5nbmVzZXxlbnwwfHwwfHx8MA%3D%3D",
-      "https://images.unsplash.com/photo-1621366807539-f39db15588ad?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8cGVraW5nbmVzZXxlbnwwfHwwfHx8MA%3D%3D",
-      "https://images.unsplash.com/photo-1621366807539-f39db15588ad?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8cGVraW5nbmVzZXxlbnwwfHwwfHx8MA%3D%3D",
-      "https://images.unsplash.com/photo-1621366807539-f39db15588ad?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8cGVraW5nbmVzZXxlbnwwfHwwfHx8MA%3D%3D",
+      "https://i.imgur.com/hzyAemT.png",
+      "https://i.imgur.com/XjFbSFq.png",
+      "https://i.imgur.com/FpiAwEj.png",
+      "https://i.imgur.com/t39zfvo.png",
+      "https://i.imgur.com/j1UvsDf.png",
     ],
   },
   6: {
