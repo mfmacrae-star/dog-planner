@@ -64,7 +64,7 @@ export const dogBreedPhotos: Record<number, MonthBreedPhotos> = {
       "https://images.unsplash.com/photo-1615714927995-e638cc7d9bc2?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8d2hpcHBldHxlbnwwfHwwfHx8MA%3D%3D",
       "https://images.unsplash.com/photo-1633835078597-d5daeecbcb7e?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fHdoaXBwZXR8ZW58MHx8MHx8fDA%3D",
       "https://images.unsplash.com/photo-1637666462118-474947bb8e2c?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fHdoaXBwZXR8ZW58MHx8MHx8fDA%3D",
-      "https://images.unsplash.com/photo-1637666462118-474947bb8e2c?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fHdoaXBwZXR8ZW58MHx8MHx8fDA%3D",
+      "https://i.imgur.com/pElmKLa.jpeg",
     ],
   },
   7: {
@@ -74,10 +74,7 @@ export const dogBreedPhotos: Record<number, MonthBreedPhotos> = {
       "https://images.unsplash.com/photo-1630053905273-2dd2f41f0127?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fGxhYnJhZG9yJTIwcmV0cmlldmVyfGVufDB8fDB8fHww",
       "https://images.unsplash.com/photo-1623052940978-051d2c0fb4be?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTV8fGxhYnJhZG9yJTIwcmV0cmlldmVyfGVufDB8fDB8fHww",
       "https://images.unsplash.com/photo-1672838564788-e1e502b0cf54?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bGFicmFkb3IlMjByZXRyaWV2ZXIlMjBwdXBwaWVzfGVufDB8fDB8fHww",
-      "https://images.unsplash.com/photo-1552575595-38bfbd75841a?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8bGFicmFkb3IlMjByZXRyaWV2ZXJ8ZW58MHx8MHx8fDA%3D",
-    ],
-  },
-  8: {
+      "https://images.pexels.com/photos/20020145/pexels-photo-20020145.jpeg", {
     breed: "Border Collie",
     photos: [
       "https://i.imgur.com/FpiAwEj.webp",
@@ -102,9 +99,9 @@ export const dogBreedPhotos: Record<number, MonthBreedPhotos> = {
     photos: [
       "https://images.unsplash.com/photo-1691564808249-33654b07aef5?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c2NvdHRpc2glMjB0ZXJyaWVyfGVufDB8fDB8fHww",
       "https://images.unsplash.com/photo-1501751405784-6c8590d6b897?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8c2NvdHRpc2glMjB0ZXJyaWVyfGVufDB8fDB8fHww",
-      "https://images.pexels.com/photos/27897286/pexels-photo-27897286.jpeg",
       "https://images.pexels.com/photos/7755249/pexels-photo-7755249.jpeg",
-      "https://images.unsplash.com/photo-1691564808249-33654b07aef5?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c2NvdHRpc2glMjB0ZXJyaWVyfGVufDB8fDB8fHww",
+      "https://images.pexels.com/photos/27897286/pexels-photo-27897286.jpeg",
+      "https://images.pexels.com/photos/6555949/pexels-photo-6555949.jpeg",
     ],
   },
   11: {
@@ -114,20 +111,14 @@ export const dogBreedPhotos: Record<number, MonthBreedPhotos> = {
       "https://images.unsplash.com/photo-1732520976413-e19870244565?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8YXVzdHJhaWxpYW4lMjBjYXR0bGUlMjBkb2d8ZW58MHx8MHx8fDA%3D",
       "https://images.pexels.com/photos/1436134/pexels-photo-1436134.jpeg",
       "https://images.unsplash.com/photo-1732520970519-bd096746960f?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8YXVzdHJhaWxpYW4lMjBjYXR0bGUlMjBkb2d8ZW58MHx8MHx8fDA%3D",
-      "https://images.unsplash.com/photo-1732520984449-9941cd1fcddb?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YXVzdHJhaWxpYW4lMjBjYXR0bGUlMjBkb2d8ZW58MHx8MHx8fDA%3D",
-    ],
-  },
-  12: {
+      "https://images.unsplash.com/photo-DDb75IJvL5c?w=700&auto=format&fit=crop&q=60", {
     breed: "Saint Bernard",
     photos: [
       "https://images.pexels.com/photos/12345219/pexels-photo-12345219.jpeg",
       "https://images.pexels.com/photos/10253852/pexels-photo-10253852.jpeg",
       "https://images.pexels.com/photos/5225527/pexels-photo-5225527.jpeg",
       "https://images.pexels.com/photos/6721024/pexels-photo-6721024.jpeg",
-      "https://images.pexels.com/photos/6721024/pexels-photo-6721024.jpeg",
-    ],
-  },
-};
+      "https://images.pexels.com/photos/11654187/pexels-photo-11654187.jpeg",
 
 // Helper: get photo URL for a specific day of the month
 export function getDogPhotoForDate(month: number, day: number): string {
