@@ -83,8 +83,8 @@ export const dogBreedPhotos: Record<number, MonthBreedPhotos> = {
       "https://i.imgur.com/FpiAwEj.webp",
       "https://i.imgur.com/gxcCSPD.webp",
       "https://i.imgur.com/pw0tLQM.png",
-      "https://i.imgur.com/UQMvTxT.png",
-      "https://i.imgur.com/gxcCSPD.webp",
+      "https://images.pexels.com/photos/19296593/pexels-photo-19296593.jpeg",
+      "https://images.pexels.com/photos/8734476/pexels-photo-8734476.jpeg",
     ],
   },
   9: {
