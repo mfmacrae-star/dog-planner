@@ -110,7 +110,7 @@ export const dogBreedPhotos: Record<number, MonthBreedPhotos> = {
       "https://images.unsplash.com/photo-1732520984449-9941cd1fcddb?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YXVzdHJhaWxpYW4lMjBjYXR0bGUlMjBkb2d8ZW58MHx8MHx8fDA%3D",
       "https://images.unsplash.com/photo-1732520976413-e19870244565?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8YXVzdHJhaWxpYW4lMjBjYXR0bGUlMjBkb2d8ZW58MHx8MHx8fDA%3D",
       "https://images.pexels.com/photos/1436134/pexels-photo-1436134.jpeg",
-      "https://images.unsplash.com/photo-1732520970519-bd096746960f?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8YXVzdHJhaWxpYW4lMjBjYXR0bGUlMjBkb2d8ZW58MHx8MHx8fDA%3D",
+      "https://images.pexels.com/photos/29102445/pexels-photo-29102445.jpeg",
       "https://images.unsplash.com/photo-DDb75IJvL5c?w=700&auto=format&fit=crop&q=60", {
     breed: "Saint Bernard",
     photos: [
