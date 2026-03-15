@@ -80,11 +80,11 @@ export const dogBreedPhotos: Record<number, MonthBreedPhotos> = {
   8: {
     breed: "Border Collie",
     photos: [
-      "https://images.unsplash.com/photo-1640531708843-9931cf0fe996?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8Ym9yZGVyJTIwY29sbGllc3xlbnwwfHwwfHx8MA%3D%3D",
-      "https://images.unsplash.com/photo-1618161456243-aa4dd6b14e8c?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fGJvcmRlciUyMGNvbGxpZXN8ZW58MHx8MHx8fDA%3D",
-      "https://images.unsplash.com/photo-1640531708843-9931cf0fe996?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8Ym9yZGVyJTIwY29sbGllc3xlbnwwfHwwfHx8MA%3D%3D",
-      "https://images.unsplash.com/photo-1618161456243-aa4dd6b14e8c?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fGJvcmRlciUyMGNvbGxpZXN8ZW58MHx8MHx8fDA%3D",
-      "https://images.unsplash.com/photo-1640531708843-9931cf0fe996?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8Ym9yZGVyJTIwY29sbGllc3xlbnwwfHwwfHx8MA%3D%3D",
+      "https://i.imgur.com/FpiAwEj.webp",
+      "https://i.imgur.com/gxcCSPD.webp",
+      "https://i.imgur.com/pw0tLQM.png",
+      "https://source.unsplash.com/w8xc781lrHY/1200x800",
+      "https://source.unsplash.com/NuLvFW7ZSng/1200x800",
     ],
   },
   9: {
