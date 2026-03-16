@@ -50,7 +50,7 @@ export const dogBreedPhotos: Record<number, MonthBreedPhotos> = {
   5: {
     breed: "Pekingese",
     photos: [
-      "https://i.imgur.com/hzyAemT.png",
+      "https://images.pexels.com/photos/6075441/pexels-photo-6075441.jpeg",
       "https://i.imgur.com/XjFbSFq.png",
       "https://i.imgur.com/FpiAwEj.png",
       "https://i.imgur.com/t39zfvo.png",
@@ -70,7 +70,7 @@ export const dogBreedPhotos: Record<number, MonthBreedPhotos> = {
   7: {
     breed: "Labrador Retriever",
     photos: [
-      "https://images.unsplash.com/photo-1552575595-38bfbd75841a?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8bGFicmFkb3IlMjByZXRyaWV2ZXJ8ZW58MHx8MHx8fDA%3D",
+            "https://images.pexels.com/photos/94829/pexels-photo-94829.jpeg",=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8bGFicmFkb3IlMjByZXRyaWV2ZXJ8ZW58MHx8MHx8fDA%3D",
       "https://images.unsplash.com/photo-1630053905273-2dd2f41f0127?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fGxhYnJhZG9yJTIwcmV0cmlldmVyfGVufDB8fDB8fHww",
       "https://images.unsplash.com/photo-1623052940978-051d2c0fb4be?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTV8fGxhYnJhZG9yJTIwcmV0cmlldmVyfGVufDB8fDB8fHww",
       "https://images.unsplash.com/photo-1672838564788-e1e502b0cf54?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bGFicmFkb3IlMjByZXRyaWV2ZXIlMjBwdXBwaWVzfGVufDB8fDB8fHww",
@@ -80,7 +80,7 @@ export const dogBreedPhotos: Record<number, MonthBreedPhotos> = {
   8: {
     breed: "Border Collie",
     photos: [
-      "https://i.imgur.com/FpiAwEj.webp",
+            "https://images.pexels.com/photos/35960838/pexels-photo-35960838.jpeg",
       "https://i.imgur.com/gxcCSPD.webp",
       "https://i.imgur.com/pw0tLQM.png",
       "https://images.pexels.com/photos/19296593/pexels-photo-19296593.jpeg",
@@ -90,7 +90,7 @@ export const dogBreedPhotos: Record<number, MonthBreedPhotos> = {
   9: {
     breed: "Bloodhound",
     photos: [
-      "https://images.unsplash.com/photo-1616725693607-158e2b9781e1?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Ymxvb2Rob3VuZHxlbnwwfHwwfHx8MA%3D%3D",
+            "https://images.pexels.com/photos/127993/pexels-photo-127993.jpeg",
       "https://plus.unsplash.com/premium_photo-1664392217772-295bf3254121?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8Ymxvb2Rob3VuZHxlbnwwfHwwfHx8MA%3D%3D",
       "https://plus.unsplash.com/premium_photo-1664303034905-2e850c5430a0?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Ymxvb2Rob3VuZHxlbnwwfHwwfHx8MA%3D%3D",
       "https://plus.unsplash.com/premium_photo-1661962979021-34716df17f01?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8Ymxvb2Rob3VuZHxlbnwwfHwwfHx8MA%3D%3D",
