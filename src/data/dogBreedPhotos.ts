@@ -30,11 +30,11 @@ export const dogBreedPhotos: Record<number, MonthBreedPhotos> = {
   3: {
     breed: "Old English Sheepdog",
     photos: [
-      "https://i.imgur.com/ELKhdBE.png",
-      "https://i.imgur.com/0kcNyiD.png",
-      "https://i.imgur.com/VIw4Dru.png",
-      "https://i.imgur.com/dxzn2NH.png",
-      "https://i.imgur.com/PuDntLy.png",
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Old_English_Sheep_Dog.JPG/640px-Old_English_Sheep_Dog.JPG",
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Antiguo_pastor_ingl%C3%A9s_%28bobtail%29_en_el_parque.jpg/640px-Antiguo_pastor_ingl%C3%A9s_%28bobtail%29_en_el_parque.jpg",
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Antiguo_pastor_ingl%C3%A9s_%28bobtail%29_hembra.jpg/640px-Antiguo_pastor_ingl%C3%A9s_%28bobtail%29_hembra.jpg",
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Antiguo_pastor_ingl%C3%A9s_%28bobtail%29_a_bordo.jpg/640px-Antiguo_pastor_ingl%C3%A9s_%28bobtail%29_a_bordo.jpg",
+      "https://images.pexels.com/photos/156961/pexels-photo-156961.jpeg",
     ],
   },
   4: {
