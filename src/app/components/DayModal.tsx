@@ -61,6 +61,14 @@ export function DayModal({ isOpen, onClose, day, month, year, photoUrl, plannerC
               <div className="relative rounded-xl overflow-hidden shadow-lg aspect-square">
                 <img src={photoUrl} alt={`Dog of the day ${day}`} className="w-full h-full object-cover" />
               </div>
+              {/* Gratitude section - moved below photo */}
+              <div className="bg-amber-50 rounded-lg p-4 border border-amber-200">
+                <label className="block text-sm font-semibold text-gray-700 mb-2">🙏 Today I am grateful for:</label>
+                <div className="mb-2 p-2 bg-white rounded-lg border border-amber-100">
+                  <p className="text-xs italic text-gray-500">"{dailyQuote}"</p>
+                </div>
+                <textarea value={gratitude} onChange={(e) => handleGratitudeChange(e.target.value)} placeholder="Add your gratitude entry here..." className="w-full p-2 border border-amber-200 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-amber-400 bg-white text-sm" rows={3} />
+              </div>
               {externalEvents.length > 0 && (
                 <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
                   <h3 className="font-semibold text-blue-900 mb-3">Google Calendar Events</h3>
@@ -76,35 +84,35 @@ export function DayModal({ isOpen, onClose, day, month, year, photoUrl, plannerC
               )}
             </div>
             <div className="space-y-4">
-              {/* Gratitude section - prominent at top */}
-              <div className="bg-amber-50 rounded-lg p-4 border border-amber-200">
-                <label className="block text-sm font-semibold text-gray-700 mb-2">🙏 Today I am grateful for:</label>
-                <div className="mb-2 p-2 bg-white rounded-lg border border-amber-100">
-                  <p className="text-xs italic text-gray-500">"{dailyQuote}"</p>
-                </div>
-                <textarea value={gratitude} onChange={(e) => handleGratitudeChange(e.target.value)} placeholder="Add your gratitude entry here..." className="w-full p-2 border border-amber-200 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-amber-400 bg-white text-sm" rows={3} />
-              </div>
-              {/* Plans section */}
+              {/* Plans section with hourly time slots */}
               <div>
-                <h3 className="font-semibold text-gray-800 mb-2">Your Plans for Today</h3>
-                {plannerContent?.trim() && (
-                  <div className="mb-4 space-y-2">
-                    {plannerContent.split("\n").filter((l: string) => l.trim()).map((entry: string, idx: number) => (
-                      <div key={idx} className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-300 rounded-lg px-3 py-2 flex items-center justify-between group">
-                        <span className="text-green-900 font-medium">{entry}</span>
-                        {userEmail && (
-                          <button onClick={() => { setSyncingEntry(entry); setEventTime(""); }} className="ml-2 opacity-0 group-hover:opacity-100 transition-opacity p-1 hover:bg-green-100 rounded">
-                            <Upload className="w-4 h-4 text-green-700" />
-                          </button>
-                        )}
-                      </div>
-                    ))}
+                <h3 className="font-semibold text-gray-800 mb-3">Plans for the Day</h3>
+                <div className="bg-white rounded-lg border-2 border-gray-200 overflow-hidden">
+                  {/* Hourly time slots from 6am to 10pm */}
+                  <div className="divide-y divide-gray-100">
+                    {[6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22].map((hour) => {
+                      const displayHour = hour > 12 ? hour - 12 : hour;
+                      const ampm = hour >= 12 ? 'PM' : 'AM';
+                      const formattedHour = hour === 12 ? '12' : displayHour.toString();
+                      
+                      return (
+                        <div key={hour} className="flex hover:bg-gray-50 transition-colors">
+                          <div className="w-20 flex-shrink-0 px-3 py-2 text-xs font-medium text-gray-500 border-r border-gray-100">
+                            {formattedHour}:00 {ampm}
+                          </div>
+                          <div className="flex-1 px-3 py-2">
+                            <input
+                              type="text"
+                              placeholder="Add plan..."
+                              className="w-full text-sm text-gray-700 placeholder:text-gray-400 bg-transparent border-none outline-none focus:ring-0"
+                            />
+                          </div>
+                        </div>
+                      );
+                    })}
                   </div>
-                )}
-                <div className="bg-gray-50 rounded-lg p-4 border-2 border-gray-200 focus-within:border-amber-400 transition-colors">
-                  <textarea value={plannerContent} onChange={(e) => onContentChange(e.target.value)} placeholder="Add your plans for the day" className="w-full h-40 text-base bg-transparent border-none outline-none resize-none text-gray-700 placeholder:text-gray-400" />
                 </div>
-                <div className="text-xs text-gray-500 italic mt-1">Tip: Each line becomes a separate to-do. Hover over entries to sync with Google Calendar.</div>
+                <div className="text-xs text-gray-500 italic mt-2">Tip: Add plans for specific hours. They will sync with Google Calendar.</div>
               </div>
             </div>
           </div>
