@@ -103,7 +103,7 @@ export function DayModal({ isOpen, onClose, day, month, year, photoUrl, plannerC
                           <div className="flex-1 px-3 py-2">
                             <input
                               type="text"
-                              placeholder="Add plan..."
+                              placeholder=""
                               className="w-full text-sm text-gray-700 placeholder:text-gray-400 bg-transparent border-none outline-none focus:ring-0"
                             />
                           </div>
