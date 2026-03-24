@@ -1,4 +1,4 @@
-import { X, Upload } from "lucide-react";
+import { X, Upload, Calendar as CalendarIcon } from "lucide-react";
 import { useState, useEffect } from "react";
 import { getQuoteForDate } from "../data/quotes";
 import { projectId, publicAnonKey } from "../../../utils/supabase/info";
@@ -14,6 +14,7 @@ export function DayModal({ isOpen, onClose, day, month, year, photoUrl, plannerC
   const [syncingEntry, setSyncingEntry] = useState<string | null>(null);
   const [eventTime, setEventTime] = useState("");
   const [gratitude, setGratitude] = useState("");
+  const [hourlyPlans, setHourlyPlans] = useState<{[key: number]: string}>({});
   const monthNames = ["January","February","March","April","May","June","July","August","September","October","November","December"];
   const dateObj = new Date(year, month - 1, day);
   const dailyQuote = getQuoteForDate(dateObj);
@@ -96,23 +97,34 @@ export function DayModal({ isOpen, onClose, day, month, year, photoUrl, plannerC
                       const formattedHour = hour === 12 ? '12' : displayHour.toString();
                       
                       return (
-                        <div key={hour} className="flex hover:bg-gray-50 transition-colors">
+                        <div key={hour} className="flex hover:bg-gray-50 transition-colors group">
                           <div className="w-20 flex-shrink-0 px-3 py-2 text-xs font-medium text-gray-500 border-r border-gray-100">
                             {formattedHour}:00 {ampm}
                           </div>
-                          <div className="flex-1 px-3 py-2">
+                          <div className="flex-1 px-3 py-2 flex items-center gap-2">
                             <input
                               type="text"
+                              value={hourlyPlans[hour] || ''}
+                              onChange={(e) => handleHourlyPlanChange(hour, e.target.value)}
                               placeholder=""
-                              className="w-full text-sm text-gray-700 placeholder:text-gray-400 bg-transparent border-none outline-none focus:ring-0"
+                              className="flex-1 text-sm text-gray-700 placeholder:text-gray-400 bg-transparent border-none outline-none focus:ring-0"
                             />
+                            {hourlyPlans[hour]?.trim() && (
+                              <button
+                                onClick={() => handleAddToCalendar(hour)}
+                                className="opacity-0 group-hover:opacity-100 transition-opacity p-1.5 hover:bg-blue-100 rounded text-blue-600"
+                                title="Add to Google Calendar"
+                              >
+                                <CalendarIcon className="w-4 h-4" />
+                              </button>
+                            )}
                           </div>
                         </div>
                       );
                     })}
                   </div>
                 </div>
-                <div className="text-xs text-gray-500 italic mt-2">Tip: Add plans for specific hours. They will sync with Google Calendar.</div>
+                <div className="text-xs text-gray-500 italic mt-2">Tip: Type a plan and hover to see the "Add to Google Calendar" button.</div>
               </div>
             </div>
           </div>
