@@ -55,7 +55,7 @@ export function MonthlyCalendar({ userEmail }: MonthlyCalendarProps) {
           <CalendarGrid month={currentMonth} year={currentYear} weeklyImages={currentBreed.weeklyImages} userEmail={isCalendarConnected ? userEmail : undefined} />
         </div>
       </div>
-      <AskAI currentBreed={currentBreed.name} currentMonth={monthNames[currentMonth - 1]} currentDate={new Date().toLocaleDateString()} />
+      <AskAI currentBreed={currentBreed.name} currentMonth={monthNames[currentMonth - 1]} currentDate={new Date().toLocaleDateString()} userEmail={userEmail} />
     </div>
   );
 }

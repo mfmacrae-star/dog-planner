@@ -3,18 +3,24 @@ import { X, Send, Sparkles, Loader2 } from "lucide-react";
 import { projectId, publicAnonKey } from "../../../utils/supabase/info";
 
 interface Message { role: "user" | "assistant"; content: string; }
-interface AskAIProps { currentBreed: string; currentMonth: string; currentDate: string; }
+interface AskAIProps { currentBreed: string; currentMonth: string; currentDate: string; userEmail?: string; }
 
-export function AskAI({ currentBreed, currentMonth, currentDate }: AskAIProps) {
+export function AskAI({ currentBreed, currentMonth, currentDate, userEmail }: AskAIProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState<Message[]>([{ role: "assistant", content: `Hello! 🐕 I'm here to help you with questions about ${currentBreed} and general dog care. What would you like to know?` }]);
+  const [messages, setMessages] = useState<Message[]>([{ role: "assistant", content: `Hello! 🐕 I'm here to help you with questions about ${currentBreed}, general dog care, and your calendar appointments. What would you like to know?` }]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => { messagesEndRef.current?.scrollIntoView({ behavior: "smooth" }); }, [messages]);
 
-  const suggestedPrompts = [`Tell me more about ${currentBreed} temperament`, `What exercise does a ${currentBreed} need?`, `Best dog activities for ${currentMonth}`, "Suggest a gratitude prompt about my dog"];
+  const suggestedPrompts = [
+    `Tell me more about ${currentBreed} temperament`, 
+    `What exercise does a ${currentBreed} need?`, 
+    `Best dog activities for ${currentMonth}`, 
+    "What appointments do I have this week?",
+    "When is my next vet appointment?"
+  ];
 
   const handleSend = async () => {
     if (!input.trim() || isLoading) return;
@@ -23,10 +29,41 @@ export function AskAI({ currentBreed, currentMonth, currentDate }: AskAIProps) {
     const newMessages: Message[] = [...messages, { role: "user", content: userMessage }];
     setMessages(newMessages);
     setIsLoading(true);
+    
     try {
+      // Check if this is a calendar-related question
+      const calendarKeywords = ['appointment', 'calendar', 'schedule', 'event', 'meeting', 'vet', 'grooming', 'plan', 'free', 'busy', 'available', 'when'];
+      const isCalendarQuestion = calendarKeywords.some(keyword => userMessage.toLowerCase().includes(keyword));
+      
+      let calendarContext = null;
+      
+      // If it's a calendar question and we have user email, fetch calendar data
+      if (isCalendarQuestion && userEmail) {
+        try {
+          const response = await fetch(`https://${projectId}.supabase.co/functions/v1/make-server-7edd5186/calendar-events/${encodeURIComponent(userEmail)}`, {
+            headers: { Authorization: `Bearer ${publicAnonKey}` }
+          });
+          if (response.ok) {
+            const events = await response.json();
+            calendarContext = events;
+          }
+        } catch (e) {
+          console.error("Error fetching calendar:", e);
+        }
+      }
+      
       const response = await fetch(`https://${projectId}.supabase.co/functions/v1/make-server-7edd5186/ask-ai`, {
-        method: "POST", headers: { "Content-Type": "application/json", Authorization: `Bearer ${publicAnonKey}` },
-        body: JSON.stringify({ messages: newMessages, context: { breed: currentBreed, month: currentMonth, date: currentDate } }),
+        method: "POST", 
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${publicAnonKey}` },
+        body: JSON.stringify({ 
+          messages: newMessages, 
+          context: { 
+            breed: currentBreed, 
+            month: currentMonth, 
+            date: currentDate,
+            calendarEvents: calendarContext 
+          } 
+        }),
       });
       if (!response.ok) throw new Error(`AI request failed: ${response.status}`);
       const data = await response.json();
@@ -47,7 +84,7 @@ export function AskAI({ currentBreed, currentMonth, currentDate }: AskAIProps) {
       {isOpen && (
         <div className="fixed bottom-8 right-8 z-50 w-96 h-[600px] bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden border-2 border-purple-200">
           <div className="bg-gradient-to-r from-purple-600 to-blue-600 text-white p-4 flex items-center justify-between">
-            <div className="flex items-center gap-2"><Sparkles className="w-5 h-5" /><h3 className="font-semibold">Ask AI About Dogs</h3></div>
+            <div className="flex items-center gap-2"><Sparkles className="w-5 h-5" /><h3 className="font-semibold">Ask AI</h3></div>
             <div className="flex items-center gap-2">
               <button onClick={() => setMessages([{ role: "assistant", content: `Hello! 🐕 I'm here to help with ${currentBreed} questions!` }])} className="text-xs bg-white/20 hover:bg-white/30 px-2 py-1 rounded">Clear</button>
               <button onClick={() => setIsOpen(false)} className="hover:bg-white/20 p-1 rounded"><X className="w-5 h-5" /></button>
@@ -55,7 +92,7 @@ export function AskAI({ currentBreed, currentMonth, currentDate }: AskAIProps) {
           </div>
           {messages.length <= 1 && (
             <div className="p-4 bg-purple-50 border-b">
-              <p className="text-sm text-gray-600 mb-2">💡 You can ask me:</p>
+              <p className="text-sm text-gray-600 mb-2">💡 You can ask me about:</p>
               <div className="flex flex-wrap gap-2">
                 {suggestedPrompts.map((prompt, index) => (
                   <button key={index} onClick={() => setInput(prompt)} className="text-xs bg-white hover:bg-purple-100 text-purple-700 px-3 py-1 rounded-full border border-purple-200 transition-colors">{prompt}</button>
