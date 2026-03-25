@@ -44,6 +44,39 @@ export function DayModal({ isOpen, onClose, day, month, year, photoUrl, plannerC
     } catch (e) { console.error(e); }
   };
 
+  const handleHourlyPlanChange = (hour: number, value: string) => {
+    setHourlyPlans(prev => ({ ...prev, [hour]: value }));
+  };
+
+  const createGoogleCalendarUrl = (title: string, hour: number) => {
+    const startDate = new Date(year, month - 1, day, hour, 0);
+    const endDate = new Date(year, month - 1, day, hour + 1, 0);
+    
+    const formatDate = (date: Date) => {
+      return date.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+    };
+    
+    const params = new URLSearchParams({
+      action: 'TEMPLATE',
+      text: title,
+      dates: `${formatDate(startDate)}/${formatDate(endDate)}`,
+      details: 'Added from Dog Day Planner'
+    });
+    
+    return `https://calendar.google.com/calendar/render?${params.toString()}`;
+  };
+
+  const handleAddToCalendar = (hour: number) => {
+    const plan = hourlyPlans[hour];
+    if (!plan || !plan.trim()) {
+      alert('Please enter a plan first!');
+      return;
+    }
+    
+    const calendarUrl = createGoogleCalendarUrl(plan, hour);
+    window.open(calendarUrl, '_blank');
+  };
+
   if (!isOpen) return null;
 
   return (
