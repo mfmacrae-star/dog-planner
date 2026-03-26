@@ -48,22 +48,42 @@ export function DayModal({ isOpen, onClose, day, month, year, photoUrl, plannerC
     setHourlyPlans(prev => ({ ...prev, [hour]: value }));
   };
 
-  const createGoogleCalendarUrl = (title: string, hour: number) => {
+  const generateICSFile = (title: string, hour: number) => {
     const startDate = new Date(year, month - 1, day, hour, 0);
     const endDate = new Date(year, month - 1, day, hour + 1, 0);
     
-    const formatDate = (date: Date) => {
-      return date.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+    // Format dates to iCalendar format (YYYYMMDDTHHMMSSZ)
+    const formatICSDate = (date: Date) => {
+      const pad = (n: number) => n.toString().padStart(2, '0');
+      return `${date.getFullYear()}${pad(date.getMonth() + 1)}${pad(date.getDate())}T${pad(date.getHours())}${pad(date.getMinutes())}${pad(date.getSeconds())}Z`;
     };
     
-    const params = new URLSearchParams({
-      action: 'TEMPLATE',
-      text: title,
-      dates: `${formatDate(startDate)}/${formatDate(endDate)}`,
-      details: 'Added from Dog Day Planner'
-    });
+    const uid = `${Date.now()}@dog-planner.app`;
+    const dtstamp = formatICSDate(new Date());
+    const dtstart = formatICSDate(startDate);
+    const dtend = formatICSDate(endDate);
     
-    return `https://calendar.google.com/calendar/render?${params.toString()}`;
+    // Generate iCalendar (.ics) file content
+    const icsContent = [
+      'BEGIN:VCALENDAR',
+      'VERSION:2.0',
+      'PRODID:-//Dog Day Planner//EN',
+      'CALSCALE:GREGORIAN',
+      'METHOD:PUBLISH',
+      'BEGIN:VEVENT',
+      `UID:${uid}`,
+      `DTSTAMP:${dtstamp}`,
+      `DTSTART:${dtstart}`,
+      `DTEND:${dtend}`,
+      `SUMMARY:${title}`,
+      'DESCRIPTION:Added from Dog Day Planner',
+      'STATUS:CONFIRMED',
+      'SEQUENCE:0',
+      'END:VEVENT',
+      'END:VCALENDAR'
+    ].join('\r\n');
+    
+    return icsContent;
   };
 
   const handleAddToCalendar = (hour: number) => {
@@ -73,8 +93,19 @@ export function DayModal({ isOpen, onClose, day, month, year, photoUrl, plannerC
       return;
     }
     
-    const calendarUrl = createGoogleCalendarUrl(plan, hour);
-    window.open(calendarUrl, '_blank');
+    // Generate .ics file
+    const icsContent = generateICSFile(plan, hour);
+    
+    // Create a blob and download it
+    const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `${plan.replace(/[^a-z0-9]/gi, '_')}.ics`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
   };
 
   if (!isOpen) return null;
@@ -146,7 +177,7 @@ export function DayModal({ isOpen, onClose, day, month, year, photoUrl, plannerC
                               <button
                                 onClick={() => handleAddToCalendar(hour)}
                                 className="opacity-0 group-hover:opacity-100 transition-opacity p-1.5 hover:bg-blue-100 rounded text-blue-600"
-                                title="Add to Google Calendar"
+                                title="Download calendar event - Works with Google, Outlook, Apple, Yahoo, etc."
                               >
                                 <CalendarIcon className="w-4 h-4" />
                               </button>
@@ -157,7 +188,7 @@ export function DayModal({ isOpen, onClose, day, month, year, photoUrl, plannerC
                     })}
                   </div>
                 </div>
-                <div className="text-xs text-gray-500 italic mt-2">Tip: Type a plan and hover to see the "Add to Google Calendar" button.</div>
+                <div className="text-xs text-gray-500 italic mt-2">Tip: Type a plan, hover to download calendar file (.ics). Works with any calendar app!</div></div>
               </div>
             </div>
           </div>
