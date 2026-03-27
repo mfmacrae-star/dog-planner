@@ -132,7 +132,16 @@ export function DayModal({ isOpen, onClose, day, month, year, photoUrl, plannerC
                 <div className="mb-2 p-2 bg-white rounded-lg border border-amber-100">
                   <p className="text-xs italic text-gray-500">"{dailyQuote}"</p>
                 </div>
-                <textarea value={gratitude} onChange={(e) => handleGratitudeChange(e.target.value)} placeholder="Add your gratitude entry here..." className="w-full p-2 border border-amber-200 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-amber-400 bg-white text-sm" rows={3} />
+                <textarea 
+                  value={gratitude} 
+                  onChange={(e) => handleGratitudeChange(e.target.value)} 
+                  placeholder="Add your gratitude entry here..." 
+                  data-gramm="false"
+                  data-gramm_editor="false"
+                  data-enable-grammarly="false"
+                  className="w-full p-2 border border-amber-200 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-amber-400 bg-white text-sm" 
+                  rows={3} 
+                />
               </div>
               {externalEvents.length > 0 && (
                 <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
@@ -171,6 +180,9 @@ export function DayModal({ isOpen, onClose, day, month, year, photoUrl, plannerC
                               value={hourlyPlans[hour] || ''}
                               onChange={(e) => handleHourlyPlanChange(hour, e.target.value)}
                               placeholder=""
+                              data-gramm="false"
+                              data-gramm_editor="false"
+                              data-enable-grammarly="false"
                               className="flex-1 text-sm text-gray-700 placeholder:text-gray-400 bg-transparent border-none outline-none focus:ring-0"
                             />
                             {hourlyPlans[hour]?.trim() && (
