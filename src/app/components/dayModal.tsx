@@ -1,14 +1,14 @@
 
-```
 
----
 
-## 📋 **Here - Copy Starting from "import":**
 
-**ONLY copy starting from the word `import` below** (not this text, not the code fence, just the actual TypeScript):
 
-import { X, Upload, Calendar as CalendarIcon } from "lucide-react";
-import { useState, useEffect } from "react";
+
+
+
+
+
+
 import { getQuoteForDate } from "../data/quotes";
 import { projectId, publicAnonKey } from "../../../utils/supabase/info";
 import { createClient } from "@supabase/supabase-js";
@@ -293,6 +293,5 @@ export function DayModal({ isOpen, onClose, day, month, year, photoUrl, plannerC
   );
 }
 
----
 
-**NO red text should appear after pasting! Everything should be color-coded!** 🎯
+
