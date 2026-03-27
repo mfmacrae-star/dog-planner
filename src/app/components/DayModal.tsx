@@ -1,7 +1,17 @@
+✅ Here's Your Updated DayModal.tsx File:
+Copy this entire code and replace your current file:
+
 import { X, Upload, Calendar as CalendarIcon } from "lucide-react";
 import { useState, useEffect } from "react";
 import { getQuoteForDate } from "../data/quotes";
 import { projectId, publicAnonKey } from "../../../utils/supabase/info";
+import { createClient } from "@supabase/supabase-js";
+
+// Initialize Supabase client
+const supabase = createClient(
+  `https://${projectId}.supabase.co`,
+  publicAnonKey
+);
 
 interface ExternalEvent { id: string; title: string; time: string; }
 interface DayModalProps {
@@ -20,8 +30,13 @@ export function DayModal({ isOpen, onClose, day, month, year, photoUrl, plannerC
   const dailyQuote = getQuoteForDate(dateObj);
 
   useEffect(() => {
-    if (isOpen) loadGratitude();
-  }, [isOpen, day, month, year]);
+    if (isOpen) {
+      loadGratitude();
+      if (userEmail) {
+        loadHourlyPlans();
+      }
+    }
+  }, [isOpen, day, month, year, userEmail]);
 
   const loadGratitude = async () => {
     try {
@@ -31,6 +46,35 @@ export function DayModal({ isOpen, onClose, day, month, year, photoUrl, plannerC
       );
       if (res.ok) { const data = await res.json(); setGratitude(data.content || ""); }
     } catch (e) { console.error(e); }
+  };
+
+  const loadHourlyPlans = async () => {
+    if (!userEmail) return;
+    
+    try {
+      const { data, error } = await supabase
+        .from('hourly_plans')
+        .select('hour, plan')
+        .eq('email', userEmail)
+        .eq('year', year)
+        .eq('month', month)
+        .eq('day', day);
+
+      if (error) {
+        console.error('Error loading hourly plans:', error);
+        return;
+      }
+
+      console.log('Loaded plans from DB:', data);
+
+      const plansObj: {[key: number]: string} = {};
+      data?.forEach((item: any) => {
+        plansObj[item.hour] = item.plan;
+      });
+      setHourlyPlans(plansObj);
+    } catch (error) {
+      console.error('Error loading hourly plans:', error);
+    }
   };
 
   const handleGratitudeChange = async (value: string) => {
@@ -46,6 +90,46 @@ export function DayModal({ isOpen, onClose, day, month, year, photoUrl, plannerC
 
   const handleHourlyPlanChange = (hour: number, value: string) => {
     setHourlyPlans(prev => ({ ...prev, [hour]: value }));
+    saveHourlyPlan(hour, value);
+  };
+
+  const saveHourlyPlan = async (hour: number, value: string) => {
+    if (!userEmail) return;
+
+    try {
+      if (!value.trim()) {
+        // Delete if empty
+        await supabase
+          .from('hourly_plans')
+          .delete()
+          .eq('email', userEmail)
+          .eq('year', year)
+          .eq('month', month)
+          .eq('day', day)
+          .eq('hour', hour);
+      } else {
+        // Upsert (insert or update)
+        const { data, error } = await supabase
+          .from('hourly_plans')
+          .upsert({
+            email: userEmail,
+            year,
+            month,
+            day,
+            hour,
+            plan: value,
+            updated_at: new Date().toISOString()
+          });
+        
+        if (error) {
+          console.error('Error saving plan:', error);
+        } else {
+          console.log('Plan saved successfully');
+        }
+      }
+    } catch (error) {
+      console.error('Error saving hourly plan:', error);
+    }
   };
 
   const generateICSFile = (title: string, hour: number) => {
@@ -200,7 +284,7 @@ export function DayModal({ isOpen, onClose, day, month, year, photoUrl, plannerC
                     })}
                   </div>
                 </div>
-                <div className="text-xs text-gray-500 italic mt-2">Tip: Type a plan, hover to download calendar file (.ics). Works with any calendar app!</div></div>
+                <div className="text-xs text-gray-500 italic mt-2">Tip: Type a plan, hover to download calendar file (.ics). Works with any calendar app!</div>
               </div>
             </div>
           </div>
@@ -211,4 +295,3 @@ export function DayModal({ isOpen, onClose, day, month, year, photoUrl, plannerC
       </div>
     </div>
   );
-}
