@@ -1,30 +1,4 @@
-## ❌ **STOP! You Pasted My Instructions Again!**
 
-I can see the red text at the top:
-- "Now Click on the File to Edit It"
-- "Paste This CLEAN CODE:"
-- etc.
-
-**Those are MY instructions, not the code!** 😅
-
----
-
-## 🔧 **Fix It Now:**
-
-### **Step 1: Delete EVERYTHING**
-- Press **Ctrl+A** (select all)
-- Press **Delete**
-
-### **Step 2: Paste ONLY the Code**
-
-**The code starts with THIS LINE:**
-```typescript
-import { X, Upload, Calendar as CalendarIcon } from "lucide-react";
-```
-
-**And ends with THIS LINE:**
-```typescript
-}
 ```
 
 ---
