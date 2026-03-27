@@ -1,11 +1,37 @@
+## ❌ **STOP! You Pasted My Instructions Again!**
 
-📝 Now Click on the File to Edit It
-Click on "dayModal.tsx" at the bottom of the file list to open the editor.
+I can see the red text at the top:
+- "Now Click on the File to Edit It"
+- "Paste This CLEAN CODE:"
+- etc.
 
-OR - if you're already in the empty file editor, you're ready!
+**Those are MY instructions, not the code!** 😅
 
-🎯 Paste This CLEAN CODE:
-(Make sure your cursor is in the editor, then paste this)
+---
+
+## 🔧 **Fix It Now:**
+
+### **Step 1: Delete EVERYTHING**
+- Press **Ctrl+A** (select all)
+- Press **Delete**
+
+### **Step 2: Paste ONLY the Code**
+
+**The code starts with THIS LINE:**
+```typescript
+import { X, Upload, Calendar as CalendarIcon } from "lucide-react";
+```
+
+**And ends with THIS LINE:**
+```typescript
+}
+```
+
+---
+
+## 📋 **Here - Copy Starting from "import":**
+
+**ONLY copy starting from the word `import` below** (not this text, not the code fence, just the actual TypeScript):
 
 import { X, Upload, Calendar as CalendarIcon } from "lucide-react";
 import { useState, useEffect } from "react";
@@ -292,12 +318,7 @@ export function DayModal({ isOpen, onClose, day, month, year, photoUrl, plannerC
     </div>
   );
 }
-✅ After Pasting:
-Commit with message: Add hourly plan persistence
-Wait 2-3 minutes for Vercel
-Test!
-Let me know when it's pasted! 🚀
 
-Mar 27, 06:23 PM
+---
 
-Agent is waiting...
+**NO red text should appear after pasting! Everything should be color-coded!** 🎯
