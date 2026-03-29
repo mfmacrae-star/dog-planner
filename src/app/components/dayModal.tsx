@@ -1,13 +1,8 @@
 
 
 
-
-
-
-
-
-
-
+import { X, Upload, Calendar as CalendarIcon } from "lucide-react";
+import { useState, useEffect } from "react";
 
 import { getQuoteForDate } from "../data/quotes";
 import { projectId, publicAnonKey } from "../../../utils/supabase/info";
