@@ -2,3 +2,5 @@
 
 export const projectId = "zkdqvxaihllzqtnuejqa"
 export const publicAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InprZHF2eGFpaGxsenF0bnVlanFhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjYwNjkwNjMsImV4cCI6MjA4MTY0NTA2M30.T_SA17QrITykMi4uKSEnLFXdEZ572rM8ghDFEM-T1BA"
+import { createClient } from '@supabase/supabase-js';
+export const supabase = createClient(`https://${projectId}.supabase.co`, publicAnonKey);
