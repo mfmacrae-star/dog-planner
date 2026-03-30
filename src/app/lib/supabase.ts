@@ -1,5 +1,11 @@
+Click the pencil icon (Edit) on that page, then:
+
+COPY ONLY THIS CODE (TypeScript version):
+
 import { createClient } from "@supabase/supabase-js";
-import { projectId, publicAnonKey } from "../../../utils/supabase/info.tsx";
+
+const projectId = "zkdqvxaihllzqtnuejqa";
+const publicAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InprZHF2eGFpaGxsenF0bnVlanFhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjYwNjkwNjMsImV4cCI6MjA4MTY0NTA2M30.T_SA17QrITykMi4uKSEnLFXdEZ572rM8ghDFEM-T1BA";
 
 const cookieStorage = {
   getItem: (key: string) => {
@@ -14,15 +20,20 @@ const cookieStorage = {
   },
 };
 
-export const supabase = createClient(
-  `https://${projectId}.supabase.co`,
-  publicAnonKey,
-  {
-    auth: {
-      persistSession: true,
-      autoRefreshToken: true,
-      detectSessionInUrl: true,
-      storage: cookieStorage,
-    },
+function getSupabaseClient() {
+  if (typeof window === 'undefined') {
+    return createClient(`https://${projectId}.supabase.co`, publicAnonKey, {
+      auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true, storage: cookieStorage }
+    });
   }
-);
+
+  if (!(window as any).__SUPABASE_CLIENT__) {
+    (window as any).__SUPABASE_CLIENT__ = createClient(`https://${projectId}.supabase.co`, publicAnonKey, {
+      auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true, storage: cookieStorage }
+    });
+  }
+
+  return (window as any).__SUPABASE_CLIENT__;
+}
+
+export const supabase = getSupabaseClient();
