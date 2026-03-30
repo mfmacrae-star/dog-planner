@@ -8,7 +8,7 @@ import { getQuoteForDate } from "../data/quotes";
 import { projectId, publicAnonKey } from "../../../utils/supabase/info";
 import { createClient } from "@supabase/supabase-js";
 
-const supabase = createClient(
+import { supabase } from '../../../utils/supabase/info';
   `https://${projectId}.supabase.co`,
   publicAnonKey
 );
