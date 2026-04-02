@@ -52,11 +52,10 @@ export function MonthlyCalendar({ userEmail }: MonthlyCalendarProps) {
           <div className="mb-6">
             <CalendarConnect userEmail={userEmail} onConnectionChange={setIsCalendarConnected} />
           </div>
-          <CalendarGrid month={currentMonth} year={currentYear} weeklyImages={currentBreed.weeklyImages} userEmail={isCalendarConnected ? userEmail : undefined} />
+          <CalendarGrid month={currentMonth} year={currentYear} weeklyImages={currentBreed.weeklyImages} userEmail={userEmail} />
         </div>
       </div>
       <AskAI currentBreed={currentBreed.name} currentMonth={monthNames[currentMonth - 1]} currentDate={new Date().toLocaleDateString()} userEmail={userEmail} />
     </div>
   );
 }
-
