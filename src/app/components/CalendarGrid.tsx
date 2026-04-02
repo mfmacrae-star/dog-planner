@@ -27,7 +27,7 @@ export function CalendarGrid({ month, year, weeklyImages, userEmail }: CalendarG
 
   const loadMonthEntries = async () => {
     try {
-      const response = await fetch(`https://${projectId}.supabase.co/functions/v1/make-server-7edd5186/calendar/month/${year}/${month}`, { headers: { Authorization: `Bearer ${publicAnonKey}` } });
+      const response = await fetch(`https://${projectId}.supabase.co/functions/v1/make-server-7edd5186/calendar/month/${year}/${month}?email=${encodeURIComponent(userEmail || '')}`, { headers: { Authorization: `Bearer ${publicAnonKey}` } });
       if (response.ok) { const data = await response.json(); setEvents(data.entries || {}); }
     } catch (error) { console.error("Error loading calendar entries:", error); }
   };
@@ -44,7 +44,7 @@ export function CalendarGrid({ month, year, weeklyImages, userEmail }: CalendarG
     try {
       await fetch(`https://${projectId}.supabase.co/functions/v1/make-server-7edd5186/calendar/entry`, {
         method: "POST", headers: { "Content-Type": "application/json", Authorization: `Bearer ${publicAnonKey}` },
-        body: JSON.stringify({ year, month, day, content: value }),
+        body: JSON.stringify({ year, month, day, content: value, email: userEmail }),
       });
     } catch (error) { console.error("Error saving calendar entry:", error); }
   };
