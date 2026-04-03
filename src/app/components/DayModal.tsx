@@ -13,6 +13,8 @@ interface DayModalProps {
 
 export function DayModal({ isOpen, onClose, day, month, year, photoUrl, plannerContent, onContentChange, externalEvents, userEmail, onSyncToGoogle }: DayModalProps) {
   const saveTimers = useRef<{[key: number]: ReturnType<typeof setTimeout>}>({});
+  const statusTimers = useRef<{[key: number]: ReturnType<typeof setTimeout>}>({});
+  const [saveStatus, setSaveStatus] = useState<{[hour: number]: { ok: boolean; message: string }}>({});
   const [syncingEntry, setSyncingEntry] = useState<string | null>(null);
   const [eventTime, setEventTime] = useState("");
   const [gratitude, setGratitude] = useState("");
@@ -81,11 +83,24 @@ export function DayModal({ isOpen, onClose, day, month, year, photoUrl, plannerC
     saveTimers.current[hour] = setTimeout(() => saveHourlyPlan(hour, value), 500);
   };
 
+  const showSaveStatus = (hour: number, ok: boolean, message: string) => {
+    setSaveStatus(prev => ({ ...prev, [hour]: { ok, message } }));
+    if (statusTimers.current[hour]) clearTimeout(statusTimers.current[hour]);
+    statusTimers.current[hour] = setTimeout(() => {
+      setSaveStatus(prev => { const next = { ...prev }; delete next[hour]; return next; });
+    }, 3000);
+  };
+
   const saveHourlyPlan = async (hour: number, value: string) => {
-    if (!userEmail) return;
+    if (!userEmail) {
+      showSaveStatus(hour, false, 'Error: no user email');
+      console.error('[saveHourlyPlan] Aborted — userEmail is empty:', userEmail);
+      return;
+    }
+    console.log('[saveHourlyPlan] Starting save:', { hour, value, userEmail, year, month, day });
     try {
       if (!value.trim()) {
-        await supabase
+        const deleteResult = await supabase
           .from('hourly_plans')
           .delete()
           .eq('email', userEmail)
@@ -93,9 +108,14 @@ export function DayModal({ isOpen, onClose, day, month, year, photoUrl, plannerC
           .eq('month', month)
           .eq('day', day)
           .eq('hour', hour);
+        console.log('[saveHourlyPlan] Delete (clear):', deleteResult);
+        if (deleteResult.error) {
+          showSaveStatus(hour, false, `Error: ${deleteResult.error.message}`);
+        } else {
+          showSaveStatus(hour, true, 'Cleared');
+        }
       } else {
-        // First delete existing row for this slot, then insert fresh
-        await supabase
+        const deleteResult = await supabase
           .from('hourly_plans')
           .delete()
           .eq('email', userEmail)
@@ -103,8 +123,9 @@ export function DayModal({ isOpen, onClose, day, month, year, photoUrl, plannerC
           .eq('month', month)
           .eq('day', day)
           .eq('hour', hour);
+        console.log('[saveHourlyPlan] Delete (pre-insert):', deleteResult);
 
-        const { error } = await supabase
+        const insertResult = await supabase
           .from('hourly_plans')
           .insert({
             email: userEmail,
@@ -115,13 +136,17 @@ export function DayModal({ isOpen, onClose, day, month, year, photoUrl, plannerC
             plan: value,
             updated_at: new Date().toISOString()
           });
+        console.log('[saveHourlyPlan] Insert:', insertResult);
 
-        if (error) {
-          console.error('Error saving plan:', error);
+        if (insertResult.error) {
+          showSaveStatus(hour, false, `Error: ${insertResult.error.message}`);
+        } else {
+          showSaveStatus(hour, true, 'Saved');
         }
       }
-    } catch (error) {
-      console.error('Error saving hourly plan:', error);
+    } catch (err: any) {
+      console.error('[saveHourlyPlan] Exception:', err);
+      showSaveStatus(hour, false, `Error: ${err?.message ?? 'unknown'}`);
     }
   };
 
@@ -240,6 +265,11 @@ export function DayModal({ isOpen, onClose, day, month, year, photoUrl, plannerC
                               >
                                 <CalendarIcon className="w-4 h-4" />
                               </button>
+                            )}
+                            {saveStatus[hour] && (
+                              <span className={`text-xs font-medium px-1.5 py-0.5 rounded ${saveStatus[hour].ok ? 'text-green-700 bg-green-100' : 'text-red-700 bg-red-100'}`}>
+                                {saveStatus[hour].message}
+                              </span>
                             )}
                           </div>
                         </div>
