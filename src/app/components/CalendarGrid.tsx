@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { RefreshCw } from "lucide-react";
-import { projectId, publicAnonKey } from "../../../utils/supabase/info";
+import { projectId, publicAnonKey, supabase } from "../../../utils/supabase/info";
 import { DayModal } from "./DayModal";
 import { getHolidaysForDay } from "../data/holidays";
 import { getDogPhotoForDate } from "../../data/dogBreedPhotos";
@@ -26,9 +26,29 @@ export function CalendarGrid({ month, year, weeklyImages, userEmail }: CalendarG
   }, [month, year, userEmail]);
 
   const loadMonthEntries = async () => {
+    if (!userEmail) return;
     try {
-      const response = await fetch(`https://${projectId}.supabase.co/functions/v1/make-server-7edd5186/calendar/month/${year}/${month}?email=${encodeURIComponent(userEmail || '')}`, { headers: { Authorization: `Bearer ${publicAnonKey}` } });
-      if (response.ok) { const data = await response.json(); setEvents(data.entries || {}); }
+      const { data, error } = await supabase
+        .from('hourly_plans')
+        .select('day, hour, plan')
+        .eq('email', userEmail)
+        .eq('year', year)
+        .eq('month', month)
+        .order('hour', { ascending: true });
+
+      if (error) { console.error("Error loading calendar entries:", error); return; }
+
+      const grouped: { [day: number]: { hour: number; plan: string }[] } = {};
+      data?.forEach((item: any) => {
+        if (!grouped[item.day]) grouped[item.day] = [];
+        grouped[item.day].push({ hour: item.hour, plan: item.plan });
+      });
+
+      const entries: { [day: number]: string } = {};
+      Object.entries(grouped).forEach(([day, plans]) => {
+        entries[Number(day)] = plans.map(p => p.plan).join("\n");
+      });
+      setEvents(entries);
     } catch (error) { console.error("Error loading calendar entries:", error); }
   };
 
