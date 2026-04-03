@@ -1,9 +1,4 @@
-
-
-
-
-
-import { X, Upload, Calendar as CalendarIcon } from "lucide-react";
+import { X, Calendar as CalendarIcon } from "lucide-react";
 import { useState, useEffect } from "react";
 
 import { getQuoteForDate } from "../data/quotes";
@@ -29,9 +24,7 @@ export function DayModal({ isOpen, onClose, day, month, year, photoUrl, plannerC
   useEffect(() => {
     if (isOpen) {
       loadGratitude();
-      if (userEmail) {
-        loadHourlyPlans();
-      }
+      loadHourlyPlans();
     }
   }, [isOpen, day, month, year, userEmail]);
 
@@ -47,7 +40,6 @@ export function DayModal({ isOpen, onClose, day, month, year, photoUrl, plannerC
 
   const loadHourlyPlans = async () => {
     if (!userEmail) return;
-    
     try {
       const { data, error } = await supabase
         .from('hourly_plans')
@@ -61,8 +53,6 @@ export function DayModal({ isOpen, onClose, day, month, year, photoUrl, plannerC
         console.error('Error loading hourly plans:', error);
         return;
       }
-
-      console.log('Loaded plans from DB:', data);
 
       const plansObj: {[key: number]: string} = {};
       data?.forEach((item: any) => {
@@ -92,7 +82,6 @@ export function DayModal({ isOpen, onClose, day, month, year, photoUrl, plannerC
 
   const saveHourlyPlan = async (hour: number, value: string) => {
     if (!userEmail) return;
-
     try {
       if (!value.trim()) {
         await supabase
@@ -104,9 +93,19 @@ export function DayModal({ isOpen, onClose, day, month, year, photoUrl, plannerC
           .eq('day', day)
           .eq('hour', hour);
       } else {
-        const { data, error } = await supabase
+        // First delete existing row for this slot, then insert fresh
+        await supabase
           .from('hourly_plans')
-          .upsert({
+          .delete()
+          .eq('email', userEmail)
+          .eq('year', year)
+          .eq('month', month)
+          .eq('day', day)
+          .eq('hour', hour);
+
+        const { error } = await supabase
+          .from('hourly_plans')
+          .insert({
             email: userEmail,
             year,
             month,
@@ -115,11 +114,9 @@ export function DayModal({ isOpen, onClose, day, month, year, photoUrl, plannerC
             plan: value,
             updated_at: new Date().toISOString()
           });
-        
+
         if (error) {
           console.error('Error saving plan:', error);
-        } else {
-          console.log('Plan saved successfully');
         }
       }
     } catch (error) {
@@ -130,48 +127,26 @@ export function DayModal({ isOpen, onClose, day, month, year, photoUrl, plannerC
   const generateICSFile = (title: string, hour: number) => {
     const startDate = new Date(year, month - 1, day, hour, 0);
     const endDate = new Date(year, month - 1, day, hour + 1, 0);
-    
     const formatICSDate = (date: Date) => {
       const pad = (n: number) => n.toString().padStart(2, '0');
       return `${date.getFullYear()}${pad(date.getMonth() + 1)}${pad(date.getDate())}T${pad(date.getHours())}${pad(date.getMinutes())}${pad(date.getSeconds())}Z`;
     };
-    
     const uid = `${Date.now()}@dog-planner.app`;
-    const dtstamp = formatICSDate(new Date());
-    const dtstart = formatICSDate(startDate);
-    const dtend = formatICSDate(endDate);
-    
     const icsContent = [
-      'BEGIN:VCALENDAR',
-      'VERSION:2.0',
-      'PRODID:-//Dog Day Planner//EN',
-      'CALSCALE:GREGORIAN',
-      'METHOD:PUBLISH',
-      'BEGIN:VEVENT',
-      `UID:${uid}`,
-      `DTSTAMP:${dtstamp}`,
-      `DTSTART:${dtstart}`,
-      `DTEND:${dtend}`,
-      `SUMMARY:${title}`,
-      'DESCRIPTION:Added from Dog Day Planner',
-      'STATUS:CONFIRMED',
-      'SEQUENCE:0',
-      'END:VEVENT',
-      'END:VCALENDAR'
+      'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Dog Day Planner//EN',
+      'CALSCALE:GREGORIAN', 'METHOD:PUBLISH', 'BEGIN:VEVENT',
+      `UID:${uid}`, `DTSTAMP:${formatICSDate(new Date())}`,
+      `DTSTART:${formatICSDate(startDate)}`, `DTEND:${formatICSDate(endDate)}`,
+      `SUMMARY:${title}`, 'DESCRIPTION:Added from Dog Day Planner',
+      'STATUS:CONFIRMED', 'SEQUENCE:0', 'END:VEVENT', 'END:VCALENDAR'
     ].join('\r\n');
-    
     return icsContent;
   };
 
   const handleAddToCalendar = (hour: number) => {
     const plan = hourlyPlans[hour];
-    if (!plan || !plan.trim()) {
-      alert('Please enter a plan first!');
-      return;
-    }
-    
+    if (!plan || !plan.trim()) { alert('Please enter a plan first!'); return; }
     const icsContent = generateICSFile(plan, hour);
-    
     const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
     const url = window.URL.createObjectURL(blob);
     const link = document.createElement('a');
@@ -206,15 +181,15 @@ export function DayModal({ isOpen, onClose, day, month, year, photoUrl, plannerC
                 <div className="mb-2 p-2 bg-white rounded-lg border border-amber-100">
                   <p className="text-xs italic text-gray-500">"{dailyQuote}"</p>
                 </div>
-                <textarea 
-                  value={gratitude} 
-                  onChange={(e) => handleGratitudeChange(e.target.value)} 
-                  placeholder="Add your gratitude entry here..." 
+                <textarea
+                  value={gratitude}
+                  onChange={(e) => handleGratitudeChange(e.target.value)}
+                  placeholder="Add your gratitude entry here..."
                   data-gramm="false"
                   data-gramm_editor="false"
                   data-enable-grammarly="false"
-                  className="w-full p-2 border border-amber-200 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-amber-400 bg-white text-sm" 
-                  rows={3} 
+                  className="w-full p-2 border border-amber-200 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-amber-400 bg-white text-sm"
+                  rows={3}
                 />
               </div>
               {externalEvents.length > 0 && (
@@ -240,7 +215,6 @@ export function DayModal({ isOpen, onClose, day, month, year, photoUrl, plannerC
                       const displayHour = hour > 12 ? hour - 12 : hour;
                       const ampm = hour >= 12 ? 'PM' : 'AM';
                       const formattedHour = hour === 12 ? '12' : displayHour.toString();
-                      
                       return (
                         <div key={hour} className="flex hover:bg-gray-50 transition-colors group">
                           <div className="w-20 flex-shrink-0 px-3 py-2 text-xs font-medium text-gray-500 border-r border-gray-100">
@@ -261,7 +235,7 @@ export function DayModal({ isOpen, onClose, day, month, year, photoUrl, plannerC
                               <button
                                 onClick={() => handleAddToCalendar(hour)}
                                 className="opacity-0 group-hover:opacity-100 transition-opacity p-1.5 hover:bg-blue-100 rounded text-blue-600"
-                                title="Download calendar event - Works with Google, Outlook, Apple, Yahoo, etc."
+                                title="Download calendar event"
                               >
                                 <CalendarIcon className="w-4 h-4" />
                               </button>
@@ -284,22 +258,3 @@ export function DayModal({ isOpen, onClose, day, month, year, photoUrl, plannerC
     </div>
   );
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
