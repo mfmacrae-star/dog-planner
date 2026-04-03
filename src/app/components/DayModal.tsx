@@ -1,9 +1,9 @@
 import { X, Calendar as CalendarIcon } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 import { getQuoteForDate } from "../data/quotes";
 import { projectId, publicAnonKey } from "../../../utils/supabase/info";
-import { supabase } from '../../../utils/supabase/info';
+import { supabase } from "../lib/supabase";
 
 interface ExternalEvent { id: string; title: string; time: string; }
 interface DayModalProps {
@@ -13,6 +13,7 @@ interface DayModalProps {
 }
 
 export function DayModal({ isOpen, onClose, day, month, year, photoUrl, plannerContent, onContentChange, externalEvents, userEmail, onSyncToGoogle }: DayModalProps) {
+  const saveTimers = useRef<{[key: number]: ReturnType<typeof setTimeout>}>({});
   const [syncingEntry, setSyncingEntry] = useState<string | null>(null);
   const [eventTime, setEventTime] = useState("");
   const [gratitude, setGratitude] = useState("");
@@ -77,7 +78,8 @@ export function DayModal({ isOpen, onClose, day, month, year, photoUrl, plannerC
 
   const handleHourlyPlanChange = (hour: number, value: string) => {
     setHourlyPlans(prev => ({ ...prev, [hour]: value }));
-    saveHourlyPlan(hour, value);
+    if (saveTimers.current[hour]) clearTimeout(saveTimers.current[hour]);
+    saveTimers.current[hour] = setTimeout(() => saveHourlyPlan(hour, value), 500);
   };
 
   const saveHourlyPlan = async (hour: number, value: string) => {
