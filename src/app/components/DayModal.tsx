@@ -2,8 +2,7 @@ import { X, Calendar as CalendarIcon } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 
 import { getQuoteForDate } from "../data/quotes";
-import { projectId, publicAnonKey } from "../../../utils/supabase/info";
-import { supabase } from "../lib/supabase";
+import { projectId, publicAnonKey, supabase } from "../../../utils/supabase/info";
 
 interface ExternalEvent { id: string; title: string; time: string; }
 interface DayModalProps {
