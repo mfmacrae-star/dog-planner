@@ -1,7 +1,3 @@
-Click the pencil icon (Edit) on that page, then:
-
-COPY ONLY THIS CODE (TypeScript version):
-
 import { createClient } from "@supabase/supabase-js";
 
 const projectId = "zkdqvxaihllzqtnuejqa";

@@ -5,6 +5,7 @@
 
 import { useState, useEffect } from "react";
 import { supabase } from "./lib/supabase";
+import type { AuthChangeEvent, Session } from "@supabase/supabase-js";
 import { AuthForm } from "./components/AuthForm";
 import { Calendar, BookOpen, LogOut } from "lucide-react";
 import { MonthlyCalendar } from "./components/MonthlyCalendar";
@@ -25,7 +26,7 @@ export default function App() {
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
+      async (event: AuthChangeEvent, session: Session | null) => {
         if (event === "PASSWORD_RECOVERY") {
           setIsPasswordReset(true);
           setLoading(false);
