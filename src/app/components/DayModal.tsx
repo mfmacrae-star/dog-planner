@@ -242,7 +242,7 @@ export function DayModal({ isOpen, onClose, day, month, year, photoUrl, plannerC
       <div className="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col">
         <div className="flex items-center justify-between p-6 border-b border-gray-200 bg-gradient-to-r from-amber-50 to-orange-50">
           <div>
-            <h2 className="text-2xl font-bold text-gray-800">{monthNames[month - 1]} {day}, {year}</h2>
+            <h2 className="text-2xl font-bold text-gray-800">{dateObj.toLocaleDateString('en-US', { weekday: 'long' })}, {monthNames[month - 1]} {day}, {year}</h2>
             <p className="text-sm text-gray-600 mt-1">Plan your day with hourly slots</p>
           </div>
           <button onClick={handleDone} className="p-2 hover:bg-white/80 rounded-full transition-colors"><X className="w-6 h-6 text-gray-600" /></button>
