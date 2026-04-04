@@ -340,15 +340,20 @@ app.post("/make-server-7edd5186/google/sync-entry", async (c) => {
         const minutes = parseInt(timeMatch[2]);
         const ampm = timeMatch[3]?.toUpperCase();
         if (ampm) { if (ampm === 'PM' && hours !== 12) hours += 12; if (ampm === 'AM' && hours === 12) hours = 0; }
-        const startDateTime = new Date(parseInt(year), parseInt(month) - 1, parseInt(day), hours, minutes);
-        const endDateTime = new Date(startDateTime.getTime() + 60 * 60 * 1000);
-        event = { summary: title, description: "Synced from Digital Dog Day Planner", start: { dateTime: startDateTime.toISOString(), timeZone: 'America/New_York' }, end: { dateTime: endDateTime.toISOString(), timeZone: 'America/New_York' } };
+        const pad = (n: number) => n.toString().padStart(2, '0');
+        const yStr = parseInt(year).toString();
+        const mStr = pad(parseInt(month));
+        const dStr = pad(parseInt(day));
+        const startLocal = `${yStr}-${mStr}-${dStr}T${pad(hours)}:${pad(minutes)}:00`;
+        const endHour = hours + 1 > 23 ? 23 : hours + 1;
+        const endLocal = `${yStr}-${mStr}-${dStr}T${pad(endHour)}:${pad(minutes)}:00`;
+        event = { summary: title, description: "Synced from Digital Dog Day Planner", start: { dateTime: startLocal, timeZone: 'America/New_York' }, end: { dateTime: endLocal, timeZone: 'America/New_York' } };
       } else {
-        const eventDateStr = new Date(parseInt(year), parseInt(month) - 1, parseInt(day)).toISOString().split('T')[0];
+        const eventDateStr = `${parseInt(year)}-${parseInt(month).toString().padStart(2,'0')}-${parseInt(day).toString().padStart(2,'0')}`;
         event = { summary: title, description: "Synced from Digital Dog Day Planner", start: { date: eventDateStr }, end: { date: eventDateStr } };
       }
     } else {
-      const eventDateStr = new Date(parseInt(year), parseInt(month) - 1, parseInt(day)).toISOString().split('T')[0];
+      const eventDateStr = `${parseInt(year)}-${parseInt(month).toString().padStart(2,'0')}-${parseInt(day).toString().padStart(2,'0')}`;
       event = { summary: title, description: "Synced from Digital Dog Day Planner", start: { date: eventDateStr }, end: { date: eventDateStr } };
     }
     const response = await fetch("https://www.googleapis.com/calendar/v3/calendars/primary/events", {
