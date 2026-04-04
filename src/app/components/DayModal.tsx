@@ -243,21 +243,21 @@ export function DayModal({ isOpen, onClose, day, month, year, photoUrl, plannerC
                   rows={3}
                 />
               </div>
+            </div>
+            <div className="space-y-4">
               {externalEvents.length > 0 && (
-                <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
-                  <h3 className="font-semibold text-blue-900 mb-3">Google Calendar Events</h3>
-                  <div className="space-y-2">
+                <div className="bg-blue-50 rounded-lg p-3 border border-blue-200">
+                  <h3 className="font-semibold text-blue-900 mb-2 text-sm">Google Calendar</h3>
+                  <div className="space-y-1.5">
                     {externalEvents.map(event => (
-                      <div key={event.id} className="bg-white rounded px-3 py-2 border border-blue-200">
-                        <div className="font-semibold text-blue-700 text-sm">{event.time}</div>
-                        <div className="text-blue-900 text-sm">{event.title}</div>
+                      <div key={event.id} className="bg-white rounded px-3 py-2 border border-blue-200 flex items-baseline gap-3">
+                        <span className="font-semibold text-blue-700 text-xs whitespace-nowrap">{event.time}</span>
+                        <span className="text-gray-800 text-sm">{event.title}</span>
                       </div>
                     ))}
                   </div>
                 </div>
               )}
-            </div>
-            <div className="space-y-4">
               <div>
                 <h3 className="font-semibold text-gray-800 mb-3">Plans for the Day</h3>
                 <div className="bg-white rounded-lg border-2 border-gray-200 overflow-hidden">
