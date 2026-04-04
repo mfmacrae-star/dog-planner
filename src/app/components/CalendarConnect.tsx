@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { Calendar, Link, Unlink, CheckCircle, AlertCircle, RefreshCw } from "lucide-react";
+import { Calendar, Link, Unlink, CheckCircle, AlertCircle } from "lucide-react";
+import { projectId, publicAnonKey } from "../../../utils/supabase/info";
 
 interface CalendarConnectProps {
   userEmail: string;
@@ -12,7 +13,6 @@ export function CalendarConnect({ userEmail, onConnectionChange }: CalendarConne
   const [isLoading, setIsLoading] = useState(true);
   const [showProviderSelect, setShowProviderSelect] = useState(false);
   const [isConnecting, setIsConnecting] = useState(false);
-  const [isSyncing, setIsSyncing] = useState(false);
 
   useEffect(() => { if (userEmail) checkConnectionStatus(); else setIsLoading(false); }, [userEmail]);
   useEffect(() => {
@@ -23,7 +23,9 @@ export function CalendarConnect({ userEmail, onConnectionChange }: CalendarConne
 
   const checkConnectionStatus = async () => {
     try {
-      const response = await fetch(`/api/google-status?email=${encodeURIComponent(userEmail)}`);
+      const response = await fetch(`https://${projectId}.supabase.co/functions/v1/make-server-7edd5186/google/status/${encodeURIComponent(userEmail)}`, {
+        headers: { Authorization: `Bearer ${publicAnonKey}` }
+      });
       if (response.ok) { const data = await response.json(); setIsConnected(data.connected); setProvider(data.provider || null); onConnectionChange?.(data.connected); }
     } catch (error) { console.error("Error checking calendar status:", error); }
     finally { setIsLoading(false); }
@@ -32,9 +34,9 @@ export function CalendarConnect({ userEmail, onConnectionChange }: CalendarConne
   const handleProviderConfirm = async () => {
     setIsConnecting(true);
     try {
-      const response = await fetch(`/api/google-auth-init`, {
-        method: "POST", 
-        headers: { "Content-Type": "application/json" },
+      const response = await fetch(`https://${projectId}.supabase.co/functions/v1/make-server-7edd5186/google/auth/init`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${publicAnonKey}` },
         body: JSON.stringify({ email: userEmail }),
       });
       if (response.ok) {
@@ -50,30 +52,12 @@ export function CalendarConnect({ userEmail, onConnectionChange }: CalendarConne
   const handleDisconnect = async () => {
     if (!confirm("Are you sure you want to disconnect your calendar?")) return;
     try {
-      const response = await fetch(`/api/google-disconnect?email=${encodeURIComponent(userEmail)}`, { method: "DELETE" });
+      const response = await fetch(`https://${projectId}.supabase.co/functions/v1/make-server-7edd5186/google/disconnect/${encodeURIComponent(userEmail)}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${publicAnonKey}` }
+      });
       if (response.ok) { setIsConnected(false); setProvider(null); onConnectionChange?.(false); }
     } catch (error) { alert("An error occurred while disconnecting."); }
-  };
-
-  const handleSync = async () => {
-    setIsSyncing(true);
-    try {
-      const response = await fetch(`/api/google-sync`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: userEmail }),
-      });
-      if (response.ok) {
-        const data = await response.json();
-        alert(`Sync complete! Added ${data.from_google} events from Google Calendar, ${data.to_google} events to Google Calendar.`);
-      } else {
-        alert("Sync failed. Please try again.");
-      }
-    } catch (error) {
-      alert("An error occurred during sync.");
-    } finally {
-      setIsSyncing(false);
-    }
   };
 
   if (isLoading) return <div className="bg-white rounded-lg p-4 shadow-sm"><div className="flex items-center gap-2 text-gray-500"><Calendar className="w-5 h-5 animate-pulse" /><span>Checking calendar connection...</span></div></div>;
@@ -103,10 +87,6 @@ export function CalendarConnect({ userEmail, onConnectionChange }: CalendarConne
             <div><p className="font-medium text-gray-900">Calendar Connected</p><p className="text-sm text-gray-500">{provider === "google" ? "Google Calendar" : "External Calendar"}</p></div>
           </div>
           <div className="flex gap-2">
-            <button onClick={handleSync} disabled={isSyncing} className="flex items-center gap-2 px-4 py-2 text-sm bg-blue-600 text-white hover:bg-blue-700 rounded-lg transition-colors disabled:opacity-50">
-              <RefreshCw className={`w-4 h-4 ${isSyncing ? 'animate-spin' : ''}`} />
-              {isSyncing ? 'Syncing...' : 'Sync Now'}
-            </button>
             <button onClick={handleDisconnect} className="flex items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg transition-colors"><Unlink className="w-4 h-4" />Disconnect</button>
           </div>
         </div>
