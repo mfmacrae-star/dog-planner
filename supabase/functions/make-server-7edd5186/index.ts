@@ -372,14 +372,28 @@ app.post("/make-server-7edd5186/ask-ai", async (c) => {
     const { messages, context } = await c.req.json();
     if (!messages || !Array.isArray(messages)) return c.json({ error: "Missing or invalid messages array" }, 400);
 
-    let systemPrompt = `You are a helpful AI assistant for a Dog Breed Calendar & Planner application. Current context: breed: ${context?.breed || "Unknown"}, month: ${context?.month || "Unknown"}, date: ${context?.date || "Unknown"}. Be friendly, concise, and helpful.`;
+    const breedSchedule = `January: Poodle, February: Siberian Husky, March: Old English Sheepdog, April: Belgian Malinois, May: Pekingese, June: Whippet, July: Labrador Retriever, August: Border Collie, September: Bloodhound, October: Scottish Terrier, November: Australian Cattle Dog, December: Saint Bernard`;
+
+    let systemPrompt = `You are a friendly AI assistant built into the Dog Day Planner app. Your role is strictly limited to the following topics:
+1. Dog breed questions — especially the current month's featured breed (${context?.breed || "Unknown"})
+2. General dog care and health tips
+3. Grooming advice for any dog breed
+4. Training tips and techniques
+5. Questions about the user's planner entries and calendar schedule
+
+The app features a different breed each month. Full breed schedule: ${breedSchedule}.
+Current context: featured breed this month: ${context?.breed || "Unknown"}, current month: ${context?.month || "Unknown"}, today's date: ${context?.date || "Unknown"}.
+
+If the user asks about anything outside these topics (e.g. cooking, politics, coding, general knowledge, other animals), do not answer. Instead, politely let them know you can only help with dog-related questions and planner content, and suggest a relevant dog topic they might want to ask about instead.
+
+Be warm, concise, and enthusiastic about dogs.`;
 
     if (context?.calendarEvents && Array.isArray(context.calendarEvents) && context.calendarEvents.length > 0) {
-      systemPrompt += `\n\nThe user's calendar contains the following appointments:\n`;
+      systemPrompt += `\n\nThe user's planner contains the following calendar entries:\n`;
       context.calendarEvents.forEach((event: any) => {
         systemPrompt += `- ${event.date}: ${event.title}${event.description ? ' (' + event.description + ')' : ''}\n`;
       });
-      systemPrompt += `\nWhen answering questions about appointments, use this information.`;
+      systemPrompt += `\nUse this information when the user asks about their schedule or appointments.`;
     }
 
     // Anthropic requires messages to alternate user/assistant starting with user — strip any leading assistant messages
