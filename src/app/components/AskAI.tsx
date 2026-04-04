@@ -65,11 +65,14 @@ export function AskAI({ currentBreed, currentMonth, currentDate, userEmail }: As
           } 
         }),
       });
-      if (!response.ok) throw new Error(`AI request failed: ${response.status}`);
+      if (!response.ok) {
+        const errData = await response.json().catch(() => ({}));
+        throw new Error(errData.error || `Request failed: ${response.status}`);
+      }
       const data = await response.json();
       setMessages([...newMessages, { role: "assistant", content: data.response }]);
-    } catch (error) {
-      setMessages([...newMessages, { role: "assistant", content: "I'm sorry, I encountered an error. Please check your OpenAI API key configuration." }]);
+    } catch (error: any) {
+      setMessages([...newMessages, { role: "assistant", content: `I'm sorry, I encountered an error: ${error?.message ?? "unknown error"}` }]);
     } finally { setIsLoading(false); }
   };
 
