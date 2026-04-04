@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { RefreshCw } from "lucide-react";
+
 import { projectId, publicAnonKey, supabase } from "../../../utils/supabase/info";
 import { DayModal } from "./DayModal";
 import { getHolidaysForDay } from "../data/holidays";
@@ -14,7 +14,7 @@ export function CalendarGrid({ month, year, weeklyImages, userEmail }: CalendarG
   const [events, setEvents] = useState<{ [key: number]: string }>({});
   const [externalEvents, setExternalEvents] = useState<{ [key: number]: ExternalEvent[] }>({});
   const [selectedDay, setSelectedDay] = useState<number | null>(null);
-  const [refreshing, setRefreshing] = useState(false);
+
 
   useEffect(() => {
     loadMonthEntries();
@@ -95,15 +95,7 @@ export function CalendarGrid({ month, year, weeklyImages, userEmail }: CalendarG
 
   return (
     <div className="w-full">
-      {userEmail && (
-        <div className="flex justify-end mb-3">
-          <button onClick={async () => { setRefreshing(true); await loadExternalEvents(); setTimeout(() => setRefreshing(false), 500); }} disabled={refreshing} className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50">
-            <RefreshCw className={`w-4 h-4 ${refreshing ? "animate-spin" : ""}`} />
-            {refreshing ? "Refreshing..." : "Refresh Calendar"}
-          </button>
-        </div>
-      )}
-      <div className="grid grid-cols-7 gap-2 mb-2">
+<div className="grid grid-cols-7 gap-2 mb-2">
         {days.map(day => <div key={day} className="text-center py-2 font-semibold text-gray-700">{day}</div>)}
       </div>
       <div className="grid grid-cols-7 gap-2">
