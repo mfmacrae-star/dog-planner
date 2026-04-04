@@ -173,30 +173,33 @@ app.post("/make-server-7edd5186/google/auth/init", async (c) => {
 });
 
 app.get("/make-server-7edd5186/google/auth/callback", async (c) => {
+  const htmlResponse = (body: string, status = 200) =>
+    new Response(body, { status, headers: { "Content-Type": "text/html; charset=UTF-8" } });
+
   try {
     const code = c.req.query("code");
     const state = c.req.query("state");
     const error = c.req.query("error");
     if (!GOOGLE_CLIENT_ID || !GOOGLE_CLIENT_SECRET) {
-      return c.html(`<!DOCTYPE html><html><body><h1>Configuration Error</h1><button onclick="window.close()">Close</button></body></html>`);
+      return htmlResponse(`<!DOCTYPE html><html><body style="font-family:system-ui;text-align:center;padding:40px"><h1>Configuration Error</h1><p>Google OAuth credentials are not configured.</p><button onclick="window.close()" style="padding:10px 20px;background:#6b7280;color:white;border:none;border-radius:8px;cursor:pointer">Close</button></body></html>`, 500);
     }
     if (error) {
-      return c.html(`<!DOCTYPE html><html><body><h1>Connection Failed: ${error}</h1><button onclick="window.close()">Close</button></body></html>`);
+      return htmlResponse(`<!DOCTYPE html><html><body style="font-family:system-ui;text-align:center;padding:40px"><h1 style="color:#dc2626">Connection Failed</h1><p>${error}</p><button onclick="window.close()" style="padding:10px 20px;background:#6b7280;color:white;border:none;border-radius:8px;cursor:pointer">Close</button></body></html>`);
     }
     if (!code || !state) {
-      return c.html(`<!DOCTYPE html><html><body><h1>Invalid Request</h1><button onclick="window.close()">Close</button></body></html>`);
+      return htmlResponse(`<!DOCTYPE html><html><body style="font-family:system-ui;text-align:center;padding:40px"><h1>Invalid Request</h1><p>Missing code or state parameter.</p><button onclick="window.close()" style="padding:10px 20px;background:#6b7280;color:white;border:none;border-radius:8px;cursor:pointer">Close</button></body></html>`, 400);
     }
     let email;
     try {
       const stateData = await kv.get(`google:oauth:state:${state}`);
       if (!stateData) {
-        return c.html(`<!DOCTYPE html><html><body><h1>Session Expired</h1><button onclick="window.close()">Close</button></body></html>`);
+        return htmlResponse(`<!DOCTYPE html><html><body style="font-family:system-ui;text-align:center;padding:40px"><h1>Session Expired</h1><p>Please try connecting again.</p><button onclick="window.close()" style="padding:10px 20px;background:#6b7280;color:white;border:none;border-radius:8px;cursor:pointer">Close</button></body></html>`, 400);
       }
       const parsed = JSON.parse(stateData as string);
       email = parsed.email;
     } catch (kvError) {
       console.log(`Error accessing KV store: ${kvError}`);
-      return c.html(`<!DOCTYPE html><html><body><h1>Database Error</h1><button onclick="window.close()">Close</button></body></html>`);
+      return htmlResponse(`<!DOCTYPE html><html><body style="font-family:system-ui;text-align:center;padding:40px"><h1>Database Error</h1><p>Could not retrieve session data.</p><button onclick="window.close()" style="padding:10px 20px;background:#6b7280;color:white;border:none;border-radius:8px;cursor:pointer">Close</button></body></html>`, 500);
     }
     const redirectUri = "https://zkdqvxaihllzqtnuejqa.supabase.co/functions/v1/make-server-7edd5186/google/auth/callback?apikey=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InprZHF2eGFpaGxsenF0bnVlanFhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjYwNjkwNjMsImV4cCI6MjA4MTY0NTA2M30.T_SA17QrITykMi4uKSEnLFXdEZ572rM8ghDFEM-T1BA";
     const tokenResponse = await fetch("https://oauth2.googleapis.com/token", {
@@ -206,7 +209,7 @@ app.get("/make-server-7edd5186/google/auth/callback", async (c) => {
     });
     if (!tokenResponse.ok) {
       const errorText = await tokenResponse.text();
-      return c.html(`<!DOCTYPE html><html><body><h1>Connection Failed</h1><p>${errorText}</p><button onclick="window.close()">Close</button></body></html>`);
+      return htmlResponse(`<!DOCTYPE html><html><body style="font-family:system-ui;text-align:center;padding:40px"><h1 style="color:#dc2626">Connection Failed</h1><p>${errorText}</p><button onclick="window.close()" style="padding:10px 20px;background:#6b7280;color:white;border:none;border-radius:8px;cursor:pointer">Close</button></body></html>`);
     }
     const tokenData = await tokenResponse.json();
     await kv.set(`google:tokens:${email}`, JSON.stringify({
@@ -216,10 +219,11 @@ app.get("/make-server-7edd5186/google/auth/callback", async (c) => {
       connectedAt: new Date().toISOString()
     }));
     await kv.del(`google:oauth:state:${state}`);
-    return c.html(`<!DOCTYPE html><html><head><title>Calendar Connected!</title></head><body style="font-family:system-ui;text-align:center;padding:40px"><h1 style="color:#059669">✅ Google Calendar Connected!</h1><p>This window will close in <span id="c">3</span> seconds...</p><button onclick="closeWindow()" style="padding:10px 20px;background:#3b82f6;color:white;border:none;border-radius:8px;cursor:pointer">Close Now</button><script>let s=3;const el=document.getElementById('c');function closeWindow(){try{if(window.opener&&!window.opener.closed)window.opener.postMessage({type:'calendar-connected',email:'${email.replace(/'/g, "\\'")}'},'*')}catch(e){}window.close()}const t=setInterval(()=>{s--;if(el)el.textContent=s;if(s<=0){clearInterval(t);closeWindow()}},1000)</script></body></html>`);
+    const safeEmail = email.replace(/\\/g, "\\\\").replace(/'/g, "\\'");
+    return htmlResponse(`<!DOCTYPE html><html><head><title>Calendar Connected!</title></head><body style="font-family:system-ui;text-align:center;padding:40px"><h1 style="color:#059669">&#x2705; Google Calendar Connected!</h1><p>This window will close in <span id="c">3</span> seconds...</p><button onclick="closeWindow()" style="padding:10px 20px;background:#3b82f6;color:white;border:none;border-radius:8px;cursor:pointer">Close Now</button><script>var s=3;var el=document.getElementById('c');function closeWindow(){try{if(window.opener&&!window.opener.closed){window.opener.postMessage({type:'calendar-connected',email:'${safeEmail}'},'*')}}catch(e){}window.close()}var t=setInterval(function(){s--;if(el)el.textContent=s;if(s<=0){clearInterval(t);closeWindow()}},1000);</script></body></html>`);
   } catch (error) {
     console.log(`Error in OAuth callback: ${error}`);
-    return c.json({ error: `OAuth callback failed: ${error}` }, 500);
+    return htmlResponse(`<!DOCTYPE html><html><body style="font-family:system-ui;text-align:center;padding:40px"><h1 style="color:#dc2626">Error</h1><p>${error}</p><button onclick="window.close()" style="padding:10px 20px;background:#6b7280;color:white;border:none;border-radius:8px;cursor:pointer">Close</button></body></html>`, 500);
   }
 });
 
