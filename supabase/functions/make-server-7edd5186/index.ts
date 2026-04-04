@@ -374,6 +374,25 @@ app.post("/make-server-7edd5186/google/sync-entry", async (c) => {
   }
 });
 
+// ===== FEEDBACK =====
+
+app.post("/make-server-7edd5186/feedback", async (c) => {
+  try {
+    const { email, message } = await c.req.json();
+    if (!message?.trim()) return c.json({ error: "Message is required" }, 400);
+    const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
+    const { error } = await supabase.from('feedback').insert({
+      email: email || null,
+      message: message.trim(),
+    });
+    if (error) return c.json({ error: error.message }, 500);
+    return c.json({ success: true });
+  } catch (error) {
+    console.log(`Error saving feedback: ${error}`);
+    return c.json({ error: `Failed to save feedback: ${error}` }, 500);
+  }
+});
+
 // ===== AI CHAT =====
 
 app.post("/make-server-7edd5186/ask-ai", async (c) => {
