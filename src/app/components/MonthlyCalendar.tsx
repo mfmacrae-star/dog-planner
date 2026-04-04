@@ -11,6 +11,7 @@ import { CalendarConnect } from "./CalendarConnect";
 import { AskAI } from "./AskAI";
 import { BreedImage } from "./BreedImage";
 import { FeedbackButton } from "./FeedbackButton";
+import { WelcomeModal } from "./WelcomeModal";
 
 interface MonthlyCalendarProps {
   userEmail: string;
@@ -65,6 +66,7 @@ export function MonthlyCalendar({ userEmail }: MonthlyCalendarProps) {
       </div>
       <AskAI currentBreed={currentBreed.name} currentMonth={monthNames[currentMonth - 1]} currentDate={new Date().toLocaleDateString()} userEmail={userEmail} />
       <FeedbackButton userEmail={userEmail} />
+      <WelcomeModal userEmail={userEmail} />
     </div>
   );
 }
