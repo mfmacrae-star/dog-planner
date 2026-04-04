@@ -14,6 +14,7 @@ interface DayModalProps {
 export function DayModal({ isOpen, onClose, day, month, year, photoUrl, plannerContent, onContentChange, externalEvents, userEmail, onSyncToGoogle }: DayModalProps) {
   const saveTimers = useRef<{[key: number]: ReturnType<typeof setTimeout>}>({});
   const statusTimers = useRef<{[key: number]: ReturnType<typeof setTimeout>}>({});
+  const dirtyHours = useRef<Set<number>>(new Set());
   const [saveStatus, setSaveStatus] = useState<{[hour: number]: { ok: boolean; message: string }}>({});
   const [openDropdown, setOpenDropdown] = useState<number | null>(null);
   const [syncingEntry, setSyncingEntry] = useState<string | null>(null);
@@ -26,6 +27,7 @@ export function DayModal({ isOpen, onClose, day, month, year, photoUrl, plannerC
 
   useEffect(() => {
     if (isOpen) {
+      dirtyHours.current = new Set();
       loadGratitude();
       loadHourlyPlans();
     }
@@ -87,6 +89,7 @@ export function DayModal({ isOpen, onClose, day, month, year, photoUrl, plannerC
 
   const handleHourlyPlanChange = (hour: number, value: string) => {
     setHourlyPlans(prev => ({ ...prev, [hour]: value }));
+    dirtyHours.current.add(hour);
     if (saveTimers.current[hour]) clearTimeout(saveTimers.current[hour]);
     saveTimers.current[hour] = setTimeout(() => saveHourlyPlan(hour, value), 500);
   };
@@ -165,7 +168,6 @@ export function DayModal({ isOpen, onClose, day, month, year, photoUrl, plannerC
           showSaveStatus(hour, false, `Error: ${insertResult.error.message}`);
         } else {
           showSaveStatus(hour, true, 'Saved');
-          syncHourToGoogle(hour, value);
         }
       }
     } catch (err: any) {
@@ -225,6 +227,12 @@ export function DayModal({ isOpen, onClose, day, month, year, photoUrl, plannerC
     window.open(url, '_blank', 'noopener,noreferrer');
   };
 
+  const handleDone = () => {
+    const dirty = Array.from(dirtyHours.current).filter(h => hourlyPlans[h]?.trim());
+    dirty.forEach(h => syncHourToGoogle(h, hourlyPlans[h]));
+    onClose();
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -235,7 +243,7 @@ export function DayModal({ isOpen, onClose, day, month, year, photoUrl, plannerC
             <h2 className="text-2xl font-bold text-gray-800">{monthNames[month - 1]} {day}, {year}</h2>
             <p className="text-sm text-gray-600 mt-1">Plan your day with hourly slots</p>
           </div>
-          <button onClick={onClose} className="p-2 hover:bg-white/80 rounded-full transition-colors"><X className="w-6 h-6 text-gray-600" /></button>
+          <button onClick={handleDone} className="p-2 hover:bg-white/80 rounded-full transition-colors"><X className="w-6 h-6 text-gray-600" /></button>
         </div>
         <div className="flex-1 overflow-y-auto p-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -380,7 +388,7 @@ export function DayModal({ isOpen, onClose, day, month, year, photoUrl, plannerC
           </div>
         </div>
         <div className="p-4 border-t border-gray-200 bg-gray-50 flex justify-end">
-          <button onClick={onClose} className="px-6 py-2 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-medium rounded-lg hover:from-amber-600 hover:to-orange-600 transition-all shadow-md">Done</button>
+          <button onClick={handleDone} className="px-6 py-2 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-medium rounded-lg hover:from-amber-600 hover:to-orange-600 transition-all shadow-md">Done</button>
         </div>
       </div>
     </div>
