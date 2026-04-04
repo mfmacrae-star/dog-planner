@@ -249,8 +249,8 @@ export function DayModal({ isOpen, onClose, day, month, year, photoUrl, plannerC
         </div>
         <div className="flex-1 overflow-y-auto p-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <div className="space-y-4">
-              <div className="relative rounded-xl overflow-hidden shadow-lg aspect-square">
+            <div className="h-full">
+              <div className="relative rounded-xl overflow-hidden shadow-lg h-full min-h-[300px]">
                 <img src={photoUrl} alt={`Dog of the day ${day}`} className="w-full h-full object-cover" />
               </div>
             </div>
