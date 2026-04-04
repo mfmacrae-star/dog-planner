@@ -116,11 +116,11 @@ app.get("/make-server-7edd5186/calendar/month/:year/:month", async (c) => {
 
 app.post("/make-server-7edd5186/gratitude/entry", async (c) => {
   try {
-    const { year, month, day, content } = await c.req.json();
-    if (!year || !month || !day) {
-      return c.json({ error: "Missing required fields: year, month, day" }, 400);
+    const { email, year, month, day, content } = await c.req.json();
+    if (!email || !year || !month || !day) {
+      return c.json({ error: "Missing required fields: email, year, month, day" }, 400);
     }
-    const key = `gratitude:${year}-${month}-${day}`;
+    const key = `gratitude:${email}:${year}-${month}-${day}`;
     await kv.set(key, content || "");
     return c.json({ success: true, key });
   } catch (error) {
@@ -129,15 +129,16 @@ app.post("/make-server-7edd5186/gratitude/entry", async (c) => {
   }
 });
 
-app.get("/make-server-7edd5186/gratitude/:year/:month/:day", async (c) => {
+app.get("/make-server-7edd5186/gratitude/:email/:year/:month/:day", async (c) => {
   try {
+    const email = c.req.param("email");
     const year = c.req.param("year");
     const month = c.req.param("month");
     const day = c.req.param("day");
-    if (!year || !month || !day) {
-      return c.json({ error: "Missing date parameters" }, 400);
+    if (!email || !year || !month || !day) {
+      return c.json({ error: "Missing required parameters" }, 400);
     }
-    const key = `gratitude:${year}-${month}-${day}`;
+    const key = `gratitude:${email}:${year}-${month}-${day}`;
     const content = await kv.get(key);
     return c.json({ content: content || "" });
   } catch (error) {

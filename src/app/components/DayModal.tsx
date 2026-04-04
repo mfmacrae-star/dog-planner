@@ -41,9 +41,10 @@ export function DayModal({ isOpen, onClose, day, month, year, photoUrl, plannerC
   }, [openDropdown]);
 
   const loadGratitude = async () => {
+    if (!userEmail) return;
     try {
       const res = await fetch(
-        `https://${projectId}.supabase.co/functions/v1/make-server-7edd5186/gratitude/${year}/${month}/${day}`,
+        `https://${projectId}.supabase.co/functions/v1/make-server-7edd5186/gratitude/${encodeURIComponent(userEmail)}/${year}/${month}/${day}`,
         { headers: { Authorization: `Bearer ${publicAnonKey}` } }
       );
       if (res.ok) { const data = await res.json(); setGratitude(data.content || ""); }
@@ -78,11 +79,12 @@ export function DayModal({ isOpen, onClose, day, month, year, photoUrl, plannerC
 
   const handleGratitudeChange = async (value: string) => {
     setGratitude(value);
+    if (!userEmail) return;
     try {
       await fetch(`https://${projectId}.supabase.co/functions/v1/make-server-7edd5186/gratitude/entry`, {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${publicAnonKey}` },
-        body: JSON.stringify({ year, month, day, content: value }),
+        body: JSON.stringify({ email: userEmail, year, month, day, content: value }),
       });
     } catch (e) { console.error(e); }
   };
