@@ -23,14 +23,14 @@ export function MonthlyCalendar({ userEmail }: MonthlyCalendarProps) {
 
   const currentBreed = breeds.find((b) => b.month === currentMonth)!;
 
-  const pawSvg = `url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'><ellipse cx='40' cy='56' rx='13' ry='10' fill='%2393c5fd'/><ellipse cx='20' cy='39' rx='6' ry='8' fill='%2393c5fd' transform='rotate(-20 20 39)'/><ellipse cx='32' cy='31' rx='6' ry='8' fill='%2393c5fd' transform='rotate(-7 32 31)'/><ellipse cx='48' cy='31' rx='6' ry='8' fill='%2393c5fd' transform='rotate(7 48 31)'/><ellipse cx='60' cy='39' rx='6' ry='8' fill='%2393c5fd' transform='rotate(20 60 39)'/></svg>")`;
+  const pawSvg = `url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'><ellipse cx='40' cy='56' rx='13' ry='10' fill='%231d4ed8'/><ellipse cx='20' cy='39' rx='6' ry='8' fill='%231d4ed8' transform='rotate(-20 20 39)'/><ellipse cx='32' cy='31' rx='6' ry='8' fill='%231d4ed8' transform='rotate(-7 32 31)'/><ellipse cx='48' cy='31' rx='6' ry='8' fill='%231d4ed8' transform='rotate(7 48 31)'/><ellipse cx='60' cy='39' rx='6' ry='8' fill='%231d4ed8' transform='rotate(20 60 39)'/></svg>")`;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-rose-50 p-6 relative">
       <div
         aria-hidden="true"
         className="absolute inset-0 pointer-events-none"
-        style={{ backgroundImage: pawSvg, backgroundRepeat: 'repeat', backgroundSize: '80px 80px', opacity: 0.12 }}
+        style={{ backgroundImage: pawSvg, backgroundRepeat: 'repeat', backgroundSize: '80px 80px', opacity: 0.25 }}
       />
       <div className="relative max-w-7xl mx-auto">
         <div className="flex items-center justify-between mb-6">
