@@ -99,6 +99,21 @@ export function DayModal({ isOpen, onClose, day, month, year, photoUrl, plannerC
     }, 3000);
   };
 
+  const syncHourToGoogle = async (hour: number, value: string) => {
+    if (!userEmail || !value.trim()) return;
+    const h = hour > 12 ? hour - 12 : hour === 0 ? 12 : hour;
+    const ampm = hour >= 12 ? 'PM' : 'AM';
+    try {
+      await fetch(`https://${projectId}.supabase.co/functions/v1/make-server-7edd5186/google/sync-entry`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${publicAnonKey}` },
+        body: JSON.stringify({ email: userEmail, year, month, day, title: value, time: `${h}:00 ${ampm}` }),
+      });
+    } catch (e) {
+      console.log('[syncHourToGoogle] Error:', e);
+    }
+  };
+
   const saveHourlyPlan = async (hour: number, value: string) => {
     if (!userEmail) {
       showSaveStatus(hour, false, 'Error: no user email');
@@ -150,6 +165,7 @@ export function DayModal({ isOpen, onClose, day, month, year, photoUrl, plannerC
           showSaveStatus(hour, false, `Error: ${insertResult.error.message}`);
         } else {
           showSaveStatus(hour, true, 'Saved');
+          syncHourToGoogle(hour, value);
         }
       }
     } catch (err: any) {
