@@ -15,6 +15,7 @@ export function DayModal({ isOpen, onClose, day, month, year, photoUrl, plannerC
   const saveTimers = useRef<{[key: number]: ReturnType<typeof setTimeout>}>({});
   const statusTimers = useRef<{[key: number]: ReturnType<typeof setTimeout>}>({});
   const [saveStatus, setSaveStatus] = useState<{[hour: number]: { ok: boolean; message: string }}>({});
+  const [openDropdown, setOpenDropdown] = useState<number | null>(null);
   const [syncingEntry, setSyncingEntry] = useState<string | null>(null);
   const [eventTime, setEventTime] = useState("");
   const [gratitude, setGratitude] = useState("");
@@ -29,6 +30,13 @@ export function DayModal({ isOpen, onClose, day, month, year, photoUrl, plannerC
       loadHourlyPlans();
     }
   }, [isOpen, day, month, year, userEmail]);
+
+  useEffect(() => {
+    if (openDropdown === null) return;
+    const handler = (e: MouseEvent) => setOpenDropdown(null);
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, [openDropdown]);
 
   const loadGratitude = async () => {
     try {
@@ -150,38 +158,46 @@ export function DayModal({ isOpen, onClose, day, month, year, photoUrl, plannerC
     }
   };
 
-  const generateICSFile = (title: string, hour: number) => {
-    const startDate = new Date(year, month - 1, day, hour, 0);
-    const endDate = new Date(year, month - 1, day, hour + 1, 0);
-    const formatICSDate = (date: Date) => {
-      const pad = (n: number) => n.toString().padStart(2, '0');
-      return `${date.getFullYear()}${pad(date.getMonth() + 1)}${pad(date.getDate())}T${pad(date.getHours())}${pad(date.getMinutes())}${pad(date.getSeconds())}Z`;
-    };
+  const pad = (n: number) => n.toString().padStart(2, '0');
+
+  const buildICSContent = (title: string, hour: number) => {
+    const formatLocal = (y: number, mo: number, d: number, h: number) =>
+      `${y}${pad(mo)}${pad(d)}T${pad(h)}0000`;
     const uid = `${Date.now()}@dog-planner.app`;
-    const icsContent = [
+    const now = new Date();
+    const stamp = `${now.getFullYear()}${pad(now.getMonth()+1)}${pad(now.getDate())}T${pad(now.getHours())}${pad(now.getMinutes())}${pad(now.getSeconds())}Z`;
+    return [
       'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Dog Day Planner//EN',
       'CALSCALE:GREGORIAN', 'METHOD:PUBLISH', 'BEGIN:VEVENT',
-      `UID:${uid}`, `DTSTAMP:${formatICSDate(new Date())}`,
-      `DTSTART:${formatICSDate(startDate)}`, `DTEND:${formatICSDate(endDate)}`,
+      `UID:${uid}`, `DTSTAMP:${stamp}`,
+      `DTSTART;TZID=America/New_York:${formatLocal(year, month, day, hour)}`,
+      `DTEND;TZID=America/New_York:${formatLocal(year, month, day, hour + 1)}`,
       `SUMMARY:${title}`, 'DESCRIPTION:Added from Dog Day Planner',
       'STATUS:CONFIRMED', 'SEQUENCE:0', 'END:VEVENT', 'END:VCALENDAR'
     ].join('\r\n');
-    return icsContent;
   };
 
-  const handleAddToCalendar = (hour: number) => {
+  const downloadICS = (hour: number, suffix: string) => {
     const plan = hourlyPlans[hour];
-    if (!plan || !plan.trim()) { alert('Please enter a plan first!'); return; }
-    const icsContent = generateICSFile(plan, hour);
-    const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+    if (!plan?.trim()) return;
+    const blob = new Blob([buildICSContent(plan, hour)], { type: 'text/calendar;charset=utf-8' });
     const url = window.URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = `${plan.replace(/[^a-z0-9]/gi, '_')}.ics`;
+    link.download = `${plan.replace(/[^a-z0-9]/gi, '_')}_${suffix}.ics`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
     window.URL.revokeObjectURL(url);
+  };
+
+  const handleGoogleCalendar = (hour: number) => {
+    const plan = hourlyPlans[hour];
+    if (!plan?.trim()) return;
+    const startDt = `${year}${pad(month)}${pad(day)}T${pad(hour)}0000`;
+    const endDt = `${year}${pad(month)}${pad(day)}T${pad(hour + 1)}0000`;
+    const url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(plan)}&dates=${startDt}/${endDt}&details=${encodeURIComponent('Added from Dog Day Planner')}`;
+    window.open(url, '_blank', 'noopener,noreferrer');
   };
 
   if (!isOpen) return null;
@@ -258,13 +274,40 @@ export function DayModal({ isOpen, onClose, day, month, year, photoUrl, plannerC
                               className="flex-1 text-sm text-gray-700 placeholder:text-gray-400 bg-transparent border-none outline-none focus:ring-0"
                             />
                             {hourlyPlans[hour]?.trim() && (
-                              <button
-                                onClick={() => handleAddToCalendar(hour)}
-                                className="opacity-0 group-hover:opacity-100 transition-opacity p-1.5 hover:bg-blue-100 rounded text-blue-600"
-                                title="Download calendar event"
-                              >
-                                <CalendarIcon className="w-4 h-4" />
-                              </button>
+                              <div className="relative">
+                                <button
+                                  onClick={(e) => { e.stopPropagation(); setOpenDropdown(openDropdown === hour ? null : hour); }}
+                                  className="opacity-0 group-hover:opacity-100 transition-opacity p-1.5 hover:bg-blue-100 rounded text-blue-600"
+                                  title="Add to calendar"
+                                >
+                                  <CalendarIcon className="w-4 h-4" />
+                                </button>
+                                {openDropdown === hour && (
+                                  <div
+                                    className="absolute right-0 top-full mt-1 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50 min-w-[190px]"
+                                    onMouseDown={(e) => e.stopPropagation()}
+                                  >
+                                    <button
+                                      onClick={() => { handleGoogleCalendar(hour); setOpenDropdown(null); }}
+                                      className="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-amber-50 hover:text-amber-800"
+                                    >
+                                      Google Calendar
+                                    </button>
+                                    <button
+                                      onClick={() => { downloadICS(hour, 'apple'); setOpenDropdown(null); }}
+                                      className="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-amber-50 hover:text-amber-800"
+                                    >
+                                      Apple Calendar (.ics)
+                                    </button>
+                                    <button
+                                      onClick={() => { downloadICS(hour, 'outlook'); setOpenDropdown(null); }}
+                                      className="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-amber-50 hover:text-amber-800"
+                                    >
+                                      Outlook (.ics)
+                                    </button>
+                                  </div>
+                                )}
+                              </div>
                             )}
                             {saveStatus[hour] && (
                               <span className={`text-xs font-medium px-1.5 py-0.5 rounded ${saveStatus[hour].ok ? 'text-green-700 bg-green-100' : 'text-red-700 bg-red-100'}`}>
@@ -277,7 +320,7 @@ export function DayModal({ isOpen, onClose, day, month, year, photoUrl, plannerC
                     })}
                   </div>
                 </div>
-                <div className="text-xs text-gray-500 italic mt-2">Tip: Type a plan, hover to download calendar file (.ics). Works with any calendar app!</div>
+                <div className="text-xs text-gray-500 italic mt-2">Tip: Type a plan, then hover and click the calendar icon to add it to Google, Apple, or Outlook Calendar.</div>
               </div>
             </div>
           </div>
