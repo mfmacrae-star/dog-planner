@@ -258,7 +258,7 @@ export function DayModal({ isOpen, onClose, day, month, year, photoUrl, plannerC
               {externalEvents.length > 0 && (
                 <div className="bg-blue-50 rounded-lg p-3 border border-blue-200">
                   <h3 className="font-semibold text-blue-900 mb-2 text-sm">Google Calendar</h3>
-                  <div className="space-y-1.5">
+.                  <div className="space-y-1.5">
                     {externalEvents.map(event => (
                       <div key={event.id} className="bg-white rounded px-3 py-2 border border-blue-200 flex items-baseline gap-3">
                         <span className="font-semibold text-blue-700 text-xs whitespace-nowrap">{event.time}</span>
