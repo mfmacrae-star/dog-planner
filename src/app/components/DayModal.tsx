@@ -213,7 +213,7 @@ export function DayModal({ isOpen, onClose, day, month, year, photoUrl, plannerC
 
             {/* LEFT COLUMN: Photo + Gratitude */}
             <div className="flex flex-col gap-4">
-              <div className="relative rounded-xl overflow-hidden shadow-lg h-56">
+              <div className="relative rounded-xl overflow-hidden shadow-lg h-96">
                 <img src={photoUrl} alt={`Dog of the day ${day}`} className="absolute inset-0 w-full h-full object-cover" />
               </div>
               <div className="bg-amber-50 rounded-lg p-4 border border-amber-200">
