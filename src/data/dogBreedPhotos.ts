@@ -104,7 +104,7 @@ export const dogBreedPhotos: Record<number, MonthBreedPhotos> = {
       "https://images.unsplash.com/photo-1501751405784-6c8590d6b897?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8c2NvdHRpc2glMjB0ZXJyaWVyfGVufDB8fDB8fHww",
       "https://images.pexels.com/photos/7755249/pexels-photo-7755249.jpeg",
       "https://images.pexels.com/photos/27897286/pexels-photo-27897286.jpeg",
-      "https://images.dog.ceo/breeds/terrier-scottish/n02097298_9085.jpg",
+      "https://images.pexels.com/photos/27897286/pexels-photo-27897286.jpeg",
     ],
   },
   11: {
