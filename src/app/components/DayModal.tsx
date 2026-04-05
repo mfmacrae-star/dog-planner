@@ -211,12 +211,12 @@ export function DayModal({ isOpen, onClose, day, month, year, photoUrl, plannerC
         <div className="flex-1 overflow-y-auto p-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
-            {/* LEFT COLUMN: Photo + Gratitude */}
+            {/* LEFT COLUMN: Photo (2/3) + Gratitude (1/3) */}
             <div className="flex flex-col gap-4">
-              <div className="rounded-xl overflow-hidden shadow-lg">
-                <img src={photoUrl} alt={`Dog of the day ${day}`} className="w-full h-64 object-cover" />
+              <div className="flex-[2] min-h-0 rounded-xl overflow-hidden shadow-lg">
+                <img src={photoUrl} alt={`Dog of the day ${day}`} className="w-full h-full object-cover" />
               </div>
-              <div className="bg-amber-50 rounded-lg p-4 border border-amber-200">
+              <div className="flex-1 min-h-0 overflow-y-auto bg-amber-50 rounded-lg p-4 border border-amber-200">
                 <label className="block text-sm font-semibold text-gray-700 mb-2">🙏 Today I am grateful for:</label>
                 <div className="mb-2 p-2 bg-white rounded-lg border border-amber-100">
                   <p className="text-xs italic text-gray-500">"{dailyQuote}"</p>
