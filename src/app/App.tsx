@@ -192,8 +192,7 @@ export default function App() {
         style={{
           position: 'fixed',
           bottom: '20px',
-          left:   '20px'
-          LargestContentfulPainteft '20px',
+          left: '20px',
           backgroundColor: '#b45309',
           color: 'white',
           padding: '10px 16px',
