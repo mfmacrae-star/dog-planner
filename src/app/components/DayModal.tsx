@@ -237,6 +237,16 @@ export function DayModal({ isOpen, onClose, day, month, year, photoUrl, plannerC
 
   if (!isOpen) return null;
 
+  // Hours from 6 AM to midnight (0 = 12:00 AM)
+  const timeSlots = [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 0];
+
+  const getTimeLabel = (hour: number) => {
+    if (hour === 0) return "12:00 AM";
+    const displayHour = hour > 12 ? hour - 12 : hour;
+    const ampm = hour >= 12 ? 'PM' : 'AM';
+    return `${displayHour}:00 ${ampm}`;
+  };
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
       <div className="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col">
@@ -258,7 +268,7 @@ export function DayModal({ isOpen, onClose, day, month, year, photoUrl, plannerC
               {externalEvents.length > 0 && (
                 <div className="bg-blue-50 rounded-lg p-3 border border-blue-200">
                   <h3 className="font-semibold text-blue-900 mb-2 text-sm">Google Calendar</h3>
-.                  <div className="space-y-1.5">
+                  <div className="space-y-1.5">
                     {externalEvents.map(event => (
                       <div key={event.id} className="bg-white rounded px-3 py-2 border border-blue-200 flex items-baseline gap-3">
                         <span className="font-semibold text-blue-700 text-xs whitespace-nowrap">{event.time}</span>
@@ -288,14 +298,11 @@ export function DayModal({ isOpen, onClose, day, month, year, photoUrl, plannerC
                 <h3 className="font-semibold text-gray-800 mb-3">Plans for the Day</h3>
                 <div className="bg-white rounded-lg border-2 border-gray-200 overflow-hidden">
                   <div className="divide-y divide-gray-100">
-                    {[6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22].map((hour) => {
-                      const displayHour = hour > 12 ? hour - 12 : hour;
-                      const ampm = hour >= 12 ? 'PM' : 'AM';
-                      const formattedHour = hour === 12 ? '12' : displayHour.toString();
+                    {timeSlots.map((hour) => {
                       return (
                         <div key={hour} className="flex hover:bg-gray-50 transition-colors group">
                           <div className="w-20 flex-shrink-0 px-3 py-2 text-xs font-medium text-gray-500 border-r border-gray-100">
-                            {formattedHour}:00 {ampm}
+                            {getTimeLabel(hour)}
                           </div>
                           <div className="flex-1 px-3 py-2 flex items-center gap-2">
                             <input
@@ -322,7 +329,6 @@ export function DayModal({ isOpen, onClose, day, month, year, photoUrl, plannerC
                                     className="absolute right-0 top-full mt-1 bg-white rounded-xl shadow-xl border border-gray-200 py-1.5 z-50 min-w-[210px]"
                                     onMouseDown={(e) => e.stopPropagation()}
                                   >
-                                    {/* Google Calendar */}
                                     <button
                                       onClick={() => { handleGoogleCalendar(hour); setOpenDropdown(null); }}
                                       className="w-full text-left px-3 py-2 flex items-center gap-3 hover:bg-gray-50 transition-colors"
@@ -335,7 +341,6 @@ export function DayModal({ isOpen, onClose, day, month, year, photoUrl, plannerC
                                       </svg>
                                       <span className="text-sm text-gray-800 font-medium">Google Calendar</span>
                                     </button>
-                                    {/* Outlook Calendar */}
                                     <button
                                       onClick={() => { handleOutlookCalendar(hour); setOpenDropdown(null); }}
                                       className="w-full text-left px-3 py-2 flex items-center gap-3 hover:bg-gray-50 transition-colors"
@@ -349,7 +354,6 @@ export function DayModal({ isOpen, onClose, day, month, year, photoUrl, plannerC
                                       </svg>
                                       <span className="text-sm text-gray-800 font-medium">Outlook Calendar</span>
                                     </button>
-                                    {/* Apple Calendar */}
                                     <button
                                       onClick={() => { downloadICS(hour, 'apple'); setOpenDropdown(null); }}
                                       className="w-full text-left px-3 py-2 flex items-center gap-3 hover:bg-gray-50 transition-colors"
