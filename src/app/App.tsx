@@ -184,28 +184,6 @@ export default function App() {
       {showTerms && <TermsOfService onClose={() => setShowTerms(false)} />}
       {showPrivacy && <PrivacyPolicy onClose={() => setShowPrivacy(false)} />}
 
-      {/* Feedback Button */}
-      <a className="no-print"
-        href="https://forms.gle/pvtrv7Ct2mbGpTNw5"
-        target="_blank"
-        rel="noopener noreferrer"
-        style={{
-          position: 'fixed',
-          bottom: '20px',
-          left: '20px',
-          backgroundColor: '#b45309',
-          color: 'white',
-          padding: '10px 16px',
-          borderRadius: '20px',
-          textDecoration: 'none',
-          fontSize: '13px',
-          fontWeight: '600',
-          boxShadow: '0 2px 8px rgba(0,0,0,0.3)',
-          zIndex: 9999,
-        }}
-      >
-        💬 Feedback
-      </a>
     </div>
   );
 }

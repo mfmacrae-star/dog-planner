@@ -8,6 +8,7 @@ const app = new Hono();
 const GOOGLE_CLIENT_ID = Deno.env.get("GOOGLE_CLIENT_ID") || "";
 const GOOGLE_CLIENT_SECRET = Deno.env.get("GOOGLE_CLIENT_SECRET") || "";
 const ANTHROPIC_API_KEY = Deno.env.get("ANTHROPIC_API_KEY") || "";
+const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY") || "";
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL") || "";
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") || "";
 
@@ -412,6 +413,21 @@ app.post("/make-server-7edd5186/feedback", async (c) => {
       message: message.trim(),
     });
     if (error) return c.json({ error: error.message }, 500);
+    // Send email notification via Resend
+    if (RESEND_API_KEY) {
+      try {
+        await fetch("https://api.resend.com/emails", {
+          method: "POST",
+          headers: { "Authorization": `Bearer ${RESEND_API_KEY}`, "Content-Type": "application/json" },
+          body: JSON.stringify({
+            from: "Dog Day Planner <onboarding@resend.dev>",
+            to: ["mfmacrae@gmail.com"],
+            subject: "New Feedback — Dog Day Planner",
+            html: `<p><strong>From:</strong> ${email || "Anonymous"}</p><p><strong>Message:</strong></p><p>${message.trim().replace(/\n/g, "<br>")}</p>`,
+          }),
+        });
+      } catch (emailErr) { console.log(`Email send failed: ${emailErr}`); }
+    }
     return c.json({ success: true });
   } catch (error) {
     console.log(`Error saving feedback: ${error}`);
