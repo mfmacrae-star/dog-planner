@@ -111,7 +111,7 @@ export default function App() {
 
   return (
     <div className="size-full flex flex-col">
-      <div className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-sm shadow-md">
+      <div className="no-print fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-sm shadow-md">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <h1 className="text-2xl font-serif text-gray-800">
@@ -155,7 +155,7 @@ export default function App() {
         </div>
       </div>
 
-      <div className="pt-20 flex-1">
+      <div className="pt-20 print:pt-0 flex-1">
         {view === "calendar" ? (
           <MonthlyCalendar userEmail={userEmail} />
         ) : (
@@ -163,7 +163,7 @@ export default function App() {
         )}
       </div>
 
-      <footer className="bg-gray-50 border-t border-gray-200 py-4">
+      <footer className="no-print bg-gray-50 border-t border-gray-200 py-4">
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <div className="text-sm text-gray-600">
@@ -185,7 +185,7 @@ export default function App() {
       {showPrivacy && <PrivacyPolicy onClose={() => setShowPrivacy(false)} />}
 
       {/* Feedback Button */}
-      <a
+      <a className="no-print"
         href="https://forms.gle/pvtrv7Ct2mbGpTNw5"
         target="_blank"
         rel="noopener noreferrer"

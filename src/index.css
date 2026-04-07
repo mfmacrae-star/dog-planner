@@ -14,3 +14,16 @@ body {
 #root {
   min-height: 100vh;
 }
+
+@media print {
+  body { background: white !important; }
+  .no-print { display: none !important; }
+  .print-full { width: 100% !important; max-width: 100% !important; }
+  .grid-cols-7 { display: grid !important; grid-template-columns: repeat(7, 1fr) !important; }
+  .shadow-xl, .shadow-md, .shadow-lg { box-shadow: none !important; }
+  .rounded-2xl, .rounded-xl { border-radius: 4px !important; }
+  [style*="background-image"] { background-image: none !important; }
+  .backdrop-blur-\[2px\] { backdrop-filter: none !important; }
+  .bg-white\/75 { background: white !important; }
+  @page { size: landscape; margin: 1cm; }
+}
