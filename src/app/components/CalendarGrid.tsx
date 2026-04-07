@@ -140,7 +140,7 @@ export function CalendarGrid({ month, year, weeklyImages, userEmail }: CalendarG
         ))}
       </div>
       {selectedDay && (
-        <DayModal isOpen={!!selectedDay} onClose={() => setSelectedDay(null)} day={selectedDay} month={month} year={year} photoUrl={getImageForDay(selectedDay)} plannerContent={events[selectedDay] || ""} onContentChange={(value) => handleEventChange(selectedDay, value)} externalEvents={externalEvents[selectedDay] || []} userEmail={userEmail} onSyncToGoogle={(entry) => handleSyncToGoogle(selectedDay, entry)} />
+        <DayModal isOpen={!!selectedDay} onClose={() => setSelectedDay(null)} day={selectedDay} month={month} year={year} photoUrl={getImageForDay(selectedDay)} plannerContent={events[selectedDay] || ""} onContentChange={(value) => handleEventChange(selectedDay, value)} externalEvents={externalEvents[selectedDay] || []} userEmail={userEmail} onSyncToGoogle={(entry) => handleSyncToGoogle(selectedDay, entry)} onRefreshEvents={loadExternalEvents} />
       )}
     </div>
   );

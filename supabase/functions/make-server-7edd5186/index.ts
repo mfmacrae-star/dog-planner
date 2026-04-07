@@ -329,10 +329,12 @@ app.delete("/make-server-7edd5186/google/disconnect/:email", async (c) => {
 
 app.post("/make-server-7edd5186/google/sync-entry", async (c) => {
   try {
-    const { email, year, month, day, title, time } = await c.req.json();
+    const { email, year, month, day, hour, title, time } = await c.req.json();
     if (!email || !year || !month || !day || !title) return c.json({ error: "Missing required fields" }, 400);
     const accessToken = await getValidAccessToken(email);
     if (!accessToken) return c.json({ error: "Calendar not connected or token expired" }, 400);
+
+    const pad = (n: number) => n.toString().padStart(2, '0');
     let event;
     if (time && time.trim() !== "") {
       const timeMatch = time.match(/(\d{1,2}):(\d{2})\s*(AM|PM)?/i);
@@ -341,7 +343,6 @@ app.post("/make-server-7edd5186/google/sync-entry", async (c) => {
         const minutes = parseInt(timeMatch[2]);
         const ampm = timeMatch[3]?.toUpperCase();
         if (ampm) { if (ampm === 'PM' && hours !== 12) hours += 12; if (ampm === 'AM' && hours === 12) hours = 0; }
-        const pad = (n: number) => n.toString().padStart(2, '0');
         const yStr = parseInt(year).toString();
         const mStr = pad(parseInt(month));
         const dStr = pad(parseInt(day));
@@ -357,17 +358,42 @@ app.post("/make-server-7edd5186/google/sync-entry", async (c) => {
       const eventDateStr = `${parseInt(year)}-${parseInt(month).toString().padStart(2,'0')}-${parseInt(day).toString().padStart(2,'0')}`;
       event = { summary: title, description: "Synced from Digital Dog Day Planner", start: { date: eventDateStr }, end: { date: eventDateStr } };
     }
-    const response = await fetch("https://www.googleapis.com/calendar/v3/calendars/primary/events", {
-      method: "POST",
-      headers: { "Authorization": `Bearer ${accessToken}`, "Content-Type": "application/json" },
-      body: JSON.stringify(event),
-    });
+
+    // Look up existing event ID for this slot to update instead of create
+    const slotKey = hour !== undefined
+      ? `gcal-event-id:${email}:${year}-${month}-${day}:${hour}`
+      : `gcal-event-id:${email}:${year}-${month}-${day}:noHour`;
+    const existingEventId = await kv.get(slotKey);
+
+    let response;
+    if (existingEventId) {
+      response = await fetch(`https://www.googleapis.com/calendar/v3/calendars/primary/events/${existingEventId}`, {
+        method: "PATCH",
+        headers: { "Authorization": `Bearer ${accessToken}`, "Content-Type": "application/json" },
+        body: JSON.stringify(event),
+      });
+      if (!response.ok) {
+        response = await fetch("https://www.googleapis.com/calendar/v3/calendars/primary/events", {
+          method: "POST",
+          headers: { "Authorization": `Bearer ${accessToken}`, "Content-Type": "application/json" },
+          body: JSON.stringify(event),
+        });
+      }
+    } else {
+      response = await fetch("https://www.googleapis.com/calendar/v3/calendars/primary/events", {
+        method: "POST",
+        headers: { "Authorization": `Bearer ${accessToken}`, "Content-Type": "application/json" },
+        body: JSON.stringify(event),
+      });
+    }
+
     if (!response.ok) {
       const errorText = await response.text();
-      return c.json({ error: `Failed to create event: ${errorText}` }, response.status);
+      return c.json({ error: `Failed to sync event: ${errorText}` }, response.status);
     }
-    const createdEvent = await response.json();
-    return c.json({ success: true, eventId: createdEvent.id, message: "Event synced to Google Calendar" });
+    const resultEvent = await response.json();
+    await kv.set(slotKey, resultEvent.id);
+    return c.json({ success: true, eventId: resultEvent.id, message: "Event synced to Google Calendar" });
   } catch (error) {
     console.log(`Error syncing entry to Google Calendar: ${error}`);
     return c.json({ error: `Failed to sync entry: ${error}` }, 500);

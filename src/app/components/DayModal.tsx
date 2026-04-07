@@ -8,10 +8,10 @@ interface ExternalEvent { id: string; title: string; time: string; }
 interface DayModalProps {
   isOpen: boolean; onClose: () => void; day: number; month: number; year: number;
   photoUrl: string; plannerContent: string; onContentChange: (value: string) => void;
-  externalEvents: ExternalEvent[]; userEmail?: string; onSyncToGoogle: (entry: string) => void;
+  externalEvents: ExternalEvent[]; userEmail?: string; onSyncToGoogle: (entry: string) => void; onRefreshEvents?: () => void;
 }
 
-export function DayModal({ isOpen, onClose, day, month, year, photoUrl, plannerContent, onContentChange, externalEvents, userEmail, onSyncToGoogle }: DayModalProps) {
+export function DayModal({ isOpen, onClose, day, month, year, photoUrl, plannerContent, onContentChange, externalEvents, userEmail, onSyncToGoogle, onRefreshEvents }: DayModalProps) {
   const saveTimers = useRef<{[key: number]: ReturnType<typeof setTimeout>}>({});
   const statusTimers = useRef<{[key: number]: ReturnType<typeof setTimeout>}>({});
   const dirtyHours = useRef<Set<number>>(new Set());
@@ -103,7 +103,7 @@ export function DayModal({ isOpen, onClose, day, month, year, photoUrl, plannerC
       await fetch(`https://${projectId}.supabase.co/functions/v1/make-server-7edd5186/google/sync-entry`, {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${publicAnonKey}` },
-        body: JSON.stringify({ email: userEmail, year, month, day, title: value, time: `${h}:00 ${ampm}` }),
+        body: JSON.stringify({ email: userEmail, year, month, day, hour, title: value, time: `${h}:00 ${ampm}` }),
       });
     } catch (e) { console.log('[syncHourToGoogle] Error:', e); }
   };
@@ -179,7 +179,9 @@ export function DayModal({ isOpen, onClose, day, month, year, photoUrl, plannerC
 
   const handleDone = () => {
     const dirty = Array.from(dirtyHours.current).filter(h => hourlyPlans[h]?.trim());
-    dirty.forEach(h => syncHourToGoogle(h, hourlyPlans[h]));
+    if (dirty.length > 0) {
+      Promise.all(dirty.map(h => syncHourToGoogle(h, hourlyPlans[h]))).then(() => onRefreshEvents?.());
+    }
     onClose();
   };
 
@@ -192,6 +194,18 @@ export function DayModal({ isOpen, onClose, day, month, year, photoUrl, plannerC
     const displayHour = hour > 12 ? hour - 12 : hour;
     const ampm = hour >= 12 ? 'PM' : 'AM';
     return `${displayHour}:00 ${ampm}`;
+  };
+
+  const getExternalEventsForHour = (hour: number) => {
+    return externalEvents.filter(event => {
+      const match = event.time.match(/(\d{1,2}):(\d{2})\s*(AM|PM)/i);
+      if (!match) return false;
+      let h = parseInt(match[1]);
+      const ampm = match[3].toUpperCase();
+      if (ampm === 'PM' && h !== 12) h += 12;
+      if (ampm === 'AM' && h === 12) h = 0;
+      return h === hour;
+    });
   };
 
   return (
@@ -258,7 +272,11 @@ export function DayModal({ isOpen, onClose, day, month, year, photoUrl, plannerC
                         <div className="w-20 flex-shrink-0 px-3 py-2 text-xs font-medium text-gray-500 border-r border-gray-100">
                           {getTimeLabel(hour)}
                         </div>
-                        <div className="flex-1 px-3 py-2 flex items-center gap-2">
+                        <div className="flex-1 px-3 py-2 flex flex-col gap-1">
+                          {getExternalEventsForHour(hour).map(event => (
+                            <div key={event.id} className="text-xs bg-blue-50 border border-blue-200 rounded px-2 py-0.5 text-blue-700 truncate">{event.title}</div>
+                          ))}
+                          <div className="flex items-center gap-2">
                           <input
                             type="text"
                             value={hourlyPlans[hour] || ''}
@@ -325,6 +343,7 @@ export function DayModal({ isOpen, onClose, day, month, year, photoUrl, plannerC
                               {saveStatus[hour].message}
                             </span>
                           )}
+                          </div>
                         </div>
                       </div>
                     ))}
