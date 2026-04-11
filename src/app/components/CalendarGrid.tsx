@@ -14,6 +14,7 @@ export function CalendarGrid({ month, year, weeklyImages, userEmail }: CalendarG
   const [events, setEvents] = useState<{ [key: number]: string }>({});
   const [externalEvents, setExternalEvents] = useState<{ [key: number]: ExternalEvent[] }>({});
   const [selectedDay, setSelectedDay] = useState<number | null>(null);
+  const [calendarAuthError, setCalendarAuthError] = useState(false);
 
 
   useEffect(() => {
@@ -55,8 +56,14 @@ export function CalendarGrid({ month, year, weeklyImages, userEmail }: CalendarG
   const loadExternalEvents = async () => {
     try {
       const response = await fetch(`https://${projectId}.supabase.co/functions/v1/make-server-7edd5186/google/events/${encodeURIComponent(userEmail!)}/${year}/${month}`, { headers: { Authorization: `Bearer ${publicAnonKey}` } });
-      if (response.ok) { const data = await response.json(); setExternalEvents(data.events || {}); }
-    } catch (error) { console.log("Error loading external calendar events:", error); }
+      if (response.ok) {
+        const data = await response.json();
+        setExternalEvents(data.events || {});
+        setCalendarAuthError(false);
+      } else if (response.status === 400 || response.status === 401) {
+        setCalendarAuthError(true);
+      }
+    } catch (error) { console.error("Error loading external calendar events:", error); }
   };
 
   const handleEventChange = async (day: number, value: string) => {
@@ -95,6 +102,11 @@ export function CalendarGrid({ month, year, weeklyImages, userEmail }: CalendarG
 
   return (
     <div className="w-full">
+      {calendarAuthError && (
+        <div className="mb-4 flex items-center gap-3 bg-amber-50 border border-amber-300 rounded-lg px-4 py-3 text-sm text-amber-800">
+          <span>⚠️ Google Calendar session expired. Please disconnect and reconnect your calendar to see events.</span>
+        </div>
+      )}
 <div className="grid grid-cols-7 gap-2 mb-2">
         {days.map(day => <div key={day} className="text-center py-2 font-semibold text-gray-700">{day}</div>)}
       </div>
