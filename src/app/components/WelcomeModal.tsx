@@ -41,11 +41,6 @@ export function WelcomeModal({ userEmail }: WelcomeModalProps) {
       desc: "Record something you're grateful for each day — private to you.",
     },
     {
-      icon: "📆",
-      title: "Google Calendar Sync",
-      desc: "Connect Google Calendar to see your events alongside your planner.",
-    },
-    {
       icon: "✨",
       title: "Ask AI",
       desc: "Get breed-specific advice, grooming tips, and training help instantly.",
@@ -63,7 +58,7 @@ export function WelcomeModal({ userEmail }: WelcomeModalProps) {
             <X className="w-5 h-5" />
           </button>
           <div className="text-4xl mb-2">🐾</div>
-          <h2 className="text-2xl font-serif font-bold">Welcome to Dog Day Planner</h2>
+          <h2 className="text-2xl font-serif font-bold">Welcome to Digital Dog Day Planner & Calendar</h2>
           <p className="text-amber-100 text-sm mt-1">Your daily companion for paw-some planning</p>
         </div>
         <div className="p-6">

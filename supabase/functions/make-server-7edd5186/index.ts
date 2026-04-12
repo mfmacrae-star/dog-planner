@@ -460,7 +460,6 @@ APP FEATURES — you can explain any of these if asked:
 - CALENDAR: The main view shows a monthly calendar. Each day has a background photo of the month's featured dog breed that changes weekly. Click any day to open the day planner and add hourly notes.
 - DAY PLANNER: Click a calendar day to open a detailed hourly planner (6am–10pm). Type notes into any time slot. Entries are saved automatically.
 - BREED BOOK: Click "Breed Book" in the top navigation to read about all 12 featured dog breeds — their history, personality, and characteristics.
-- GOOGLE CALENDAR SYNC: Click "Connect Google Calendar" to link your Google Calendar. Your Google events will appear as blue badges on the calendar. You can also sync planner entries to Google Calendar using the sync button in the day planner.
 - PRINTING: Click the "Print" button next to the month name to print a clean version of the calendar. The app removes navigation, buttons, and backgrounds automatically so only the calendar grid prints.
 - MOBILE APP (Add to Home Screen): On iPhone, open the site in Safari, tap the Share button (box with arrow), then tap "Add to Home Screen." On Android, open in Chrome, tap the three-dot menu, and tap "Add to Home Screen." The app will appear as an icon on your phone just like a native app.
 - ASK AI: The sparkle button (bottom right) opens this AI assistant. Ask about dog breeds, care tips, your schedule, or how to use any app feature.

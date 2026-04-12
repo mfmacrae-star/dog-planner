@@ -1,13 +1,12 @@
 /*
  * Digital Dog Day Planner & Calendar
- * Copyright (c) 2025. All Rights Reserved.
+ * Copyright (c) 2026. All Rights Reserved.
  */
 
 import { useState } from "react";
 import { ChevronLeft, ChevronRight, Printer } from "lucide-react";
 import { breeds, monthNames } from "../data/breeds";
 import { CalendarGrid } from "./CalendarGrid";
-import { CalendarConnect } from "./CalendarConnect";
 import { AskAI } from "./AskAI";
 import { BreedImage } from "./BreedImage";
 import { FeedbackButton } from "./FeedbackButton";
@@ -21,8 +20,6 @@ export function MonthlyCalendar({ userEmail }: MonthlyCalendarProps) {
   const currentDate = new Date();
   const [currentMonth, setCurrentMonth] = useState(currentDate.getMonth() + 1);
   const [currentYear] = useState(currentDate.getFullYear());
-  const [isCalendarConnected, setIsCalendarConnected] = useState(false);
-
   const currentBreed = breeds.find((b) => b.month === currentMonth)!;
 
   const pawSvg = `url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'><ellipse cx='40' cy='56' rx='13' ry='10' fill='%231d4ed8'/><ellipse cx='20' cy='39' rx='6' ry='8' fill='%231d4ed8' transform='rotate(-20 20 39)'/><ellipse cx='32' cy='31' rx='6' ry='8' fill='%231d4ed8' transform='rotate(-7 32 31)'/><ellipse cx='48' cy='31' rx='6' ry='8' fill='%231d4ed8' transform='rotate(7 48 31)'/><ellipse cx='60' cy='39' rx='6' ry='8' fill='%231d4ed8' transform='rotate(20 60 39)'/></svg>")`;
@@ -64,9 +61,6 @@ export function MonthlyCalendar({ userEmail }: MonthlyCalendarProps) {
           </div>
         </div>
         <div className="bg-white rounded-2xl shadow-xl p-8">
-          <div className="mb-6">
-            <CalendarConnect userEmail={userEmail} onConnectionChange={setIsCalendarConnected} />
-          </div>
           <CalendarGrid month={currentMonth} year={currentYear} weeklyImages={currentBreed.weeklyImages} userEmail={userEmail} />
         </div>
       </div>
