@@ -48,6 +48,29 @@ app.post("/make-server-7edd5186/auth/signup", async (c) => {
       console.log(`Error creating user: ${error.message}`);
       return c.json({ error: error.message }, 400);
     }
+
+    // Check total user count and alert at 100
+    try {
+      const { data: { users }, error: listError } = await supabase.auth.admin.listUsers();
+      if (!listError) {
+        const count = users.length;
+        if (count === 100 && RESEND_API_KEY) {
+          await fetch("https://api.resend.com/emails", {
+            method: "POST",
+            headers: { "Authorization": `Bearer ${RESEND_API_KEY}`, "Content-Type": "application/json" },
+            body: JSON.stringify({
+              from: "Digital Dog Day Planner <onboarding@resend.dev>",
+              to: ["dogplannersupport@gmail.com"],
+              subject: "🎉 100 Users! Time to set up Admin RBAC",
+              html: `<h2>You've hit 100 users!</h2><p>The Digital Dog Day Planner & Calendar now has <strong>100 registered users</strong>.</p><p>This is your reminder to set up Admin RBAC:</p><ul><li>Add <code>role</code> and <code>is_blocked</code> columns to the profiles table</li><li>Set your iCloud account as admin</li><li>Build the admin dashboard</li></ul><p>Good luck! 🐾</p>`,
+            }),
+          });
+        }
+      }
+    } catch (countErr) {
+      console.log(`User count check failed: ${countErr}`);
+    }
+
     return c.json({ success: true, user: { id: data.user.id, email: data.user.email } });
   } catch (error) {
     console.log(`Error in signup endpoint: ${error}`);
