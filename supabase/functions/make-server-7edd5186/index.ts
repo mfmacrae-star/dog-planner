@@ -420,9 +420,9 @@ app.post("/make-server-7edd5186/feedback", async (c) => {
           method: "POST",
           headers: { "Authorization": `Bearer ${RESEND_API_KEY}`, "Content-Type": "application/json" },
           body: JSON.stringify({
-            from: "Dog Day Planner <onboarding@resend.dev>",
-            to: ["mfmacrae@gmail.com"],
-            subject: "New Feedback — Dog Day Planner",
+            from: "Digital Dog Day Planner <onboarding@resend.dev>",
+            to: ["dogplannersupport@gmail.com"],
+            subject: "New Feedback — Digital Dog Day Planner & Calendar",
             html: `<p><strong>From:</strong> ${email || "Anonymous"}</p><p><strong>Message:</strong></p><p>${message.trim().replace(/\n/g, "<br>")}</p>`,
           }),
         });
