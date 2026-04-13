@@ -1,17 +1,18 @@
 /*
  * Digital Dog Day Planner & Calendar
- * Copyright (c) 2025. All Rights Reserved.
+ * Copyright (c) 2026. All Rights Reserved.
  */
 
 import { useState, useEffect } from "react";
 import { supabase } from "./lib/supabase";
 import type { AuthChangeEvent, Session } from "@supabase/supabase-js";
 import { AuthForm } from "./components/AuthForm";
-import { Calendar, BookOpen, LogOut } from "lucide-react";
+import { Calendar, BookOpen, LogOut, HelpCircle } from "lucide-react";
 import { MonthlyCalendar } from "./components/MonthlyCalendar";
 import { BreedBook } from "./components/BreedBook";
 import { TermsOfService } from "./components/TermsOfService";
 import { PrivacyPolicy } from "./components/PrivacyPolicy";
+import { QuickStartGuide } from "./components/QuickStartGuide";
 
 export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -20,6 +21,7 @@ export default function App() {
   const [view, setView] = useState<"calendar" | "book">("calendar");
   const [showTerms, setShowTerms] = useState(false);
   const [showPrivacy, setShowPrivacy] = useState(false);
+  const [showGuide, setShowGuide] = useState(false);
   const [isPasswordReset, setIsPasswordReset] = useState(false);
   const [newPassword, setNewPassword] = useState("");
   const [resetMsg, setResetMsg] = useState("");
@@ -115,7 +117,7 @@ export default function App() {
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <h1 className="text-2xl font-serif text-gray-800">
-              Dog Day Planner & Calendar
+              Digital Dog Day Planner & Calendar
             </h1>
             <div className="flex items-center gap-4">
               <div className="flex gap-2">
@@ -142,6 +144,14 @@ export default function App() {
                   Breed Book
                 </button>
               </div>
+              <button
+                onClick={() => setShowGuide(true)}
+                className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-amber-600 transition-colors"
+                title="Quick Start Guide"
+              >
+                <HelpCircle className="w-5 h-5" />
+                <span className="text-sm">Help</span>
+              </button>
               <span className="text-sm text-gray-600">{userEmail}</span>
               <button
                 onClick={handleSignOut}
@@ -167,7 +177,7 @@ export default function App() {
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <div className="text-sm text-gray-600">
-              © 2025 Digital Dog Day Planner & Calendar. All Rights Reserved.
+              © 2026 Digital Dog Day Planner & Calendar. All Rights Reserved.
             </div>
             <div className="flex gap-4 text-sm">
               <button onClick={() => setShowTerms(true)} className="text-gray-600 hover:text-amber-600 transition-colors underline">
@@ -183,6 +193,7 @@ export default function App() {
 
       {showTerms && <TermsOfService onClose={() => setShowTerms(false)} />}
       {showPrivacy && <PrivacyPolicy onClose={() => setShowPrivacy(false)} />}
+      {showGuide && <QuickStartGuide onClose={() => setShowGuide(false)} />}
 
     </div>
   );

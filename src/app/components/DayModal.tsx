@@ -105,7 +105,7 @@ export function DayModal({ isOpen, onClose, day, month, year, photoUrl, plannerC
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${publicAnonKey}` },
         body: JSON.stringify({ email: userEmail, year, month, day, hour, title: value, time: `${h}:00 ${ampm}` }),
       });
-    } catch (e) { console.log('[syncHourToGoogle] Error:', e); }
+    } catch (e) { console.error('[syncHourToGoogle] Error:', e); }
   };
 
   const saveHourlyPlan = async (hour: number, value: string) => {
@@ -137,12 +137,12 @@ export function DayModal({ isOpen, onClose, day, month, year, photoUrl, plannerC
     const now = new Date();
     const stamp = `${now.getFullYear()}${pad(now.getMonth()+1)}${pad(now.getDate())}T${pad(now.getHours())}${pad(now.getMinutes())}${pad(now.getSeconds())}Z`;
     return [
-      'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Dog Day Planner//EN',
+      'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Digital Dog Day Planner & Calendar//EN',
       'CALSCALE:GREGORIAN', 'METHOD:PUBLISH', 'BEGIN:VEVENT',
       `UID:${uid}`, `DTSTAMP:${stamp}`,
       `DTSTART;TZID=America/New_York:${formatLocal(year, month, day, hour)}`,
       `DTEND;TZID=America/New_York:${formatLocal(year, month, day, hour + 1)}`,
-      `SUMMARY:${title}`, 'DESCRIPTION:Added from Dog Day Planner',
+      `SUMMARY:${title}`, 'DESCRIPTION:Added from Digital Dog Day Planner & Calendar',
       'STATUS:CONFIRMED', 'SEQUENCE:0', 'END:VEVENT', 'END:VCALENDAR'
     ].join('\r\n');
   };
@@ -164,7 +164,7 @@ export function DayModal({ isOpen, onClose, day, month, year, photoUrl, plannerC
     if (!plan?.trim()) return;
     const startDt = `${year}${pad(month)}${pad(day)}T${pad(hour)}0000`;
     const endDt = `${year}${pad(month)}${pad(day)}T${pad(hour + 1)}0000`;
-    const url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(plan)}&dates=${startDt}/${endDt}&details=${encodeURIComponent('Added from Dog Day Planner')}`;
+    const url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(plan)}&dates=${startDt}/${endDt}&details=${encodeURIComponent('Added from Digital Dog Day Planner & Calendar')}`;
     window.open(url, '_blank', 'noopener,noreferrer');
   };
 
@@ -173,7 +173,7 @@ export function DayModal({ isOpen, onClose, day, month, year, photoUrl, plannerC
     if (!plan?.trim()) return;
     const startDt = `${year}-${pad(month)}-${pad(day)}T${pad(hour)}:00:00`;
     const endDt = `${year}-${pad(month)}-${pad(day)}T${pad(hour + 1)}:00:00`;
-    const url = `https://outlook.live.com/calendar/0/action/compose?subject=${encodeURIComponent(plan)}&startdt=${encodeURIComponent(startDt)}&enddt=${encodeURIComponent(endDt)}&body=${encodeURIComponent('Added from Dog Day Planner')}`;
+    const url = `https://outlook.live.com/calendar/0/action/compose?subject=${encodeURIComponent(plan)}&startdt=${encodeURIComponent(startDt)}&enddt=${encodeURIComponent(endDt)}&body=${encodeURIComponent('Added from Digital Dog Day Planner & Calendar')}`;
     window.open(url, '_blank', 'noopener,noreferrer');
   };
 

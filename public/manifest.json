@@ -1,0 +1,18 @@
+{
+  "name": "Digital Dog Day Planner & Calendar",
+  "short_name": "Digital Dog Planner",
+  "description": "Your digital dog day planner and breed calendar",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fffbeb",
+  "theme_color": "#d97706",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

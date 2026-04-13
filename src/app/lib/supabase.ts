@@ -2,6 +2,7 @@ import { createClient } from "@supabase/supabase-js";
 
 const projectId = "zkdqvxaihllzqtnuejqa";
 const publicAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InprZHF2eGFpaGxsenF0bnVlanFhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjYwNjkwNjMsImV4cCI6MjA4MTY0NTA2M30.T_SA17QrITykMi4uKSEnLFXdEZ572rM8ghDFEM-T1BA";
+const supabaseUrl = `https://${projectId}.supabase.co`;
 
 const cookieStorage = {
   getItem: (key: string) => {
@@ -18,13 +19,13 @@ const cookieStorage = {
 
 function getSupabaseClient() {
   if (typeof window === 'undefined') {
-    return createClient(`https://${projectId}.supabase.co`, publicAnonKey, {
+    return createClient(supabaseUrl, publicAnonKey, {
       auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true, storage: cookieStorage }
     });
   }
 
   if (!(window as any).__SUPABASE_CLIENT__) {
-    (window as any).__SUPABASE_CLIENT__ = createClient(`https://${projectId}.supabase.co`, publicAnonKey, {
+    (window as any).__SUPABASE_CLIENT__ = createClient(supabaseUrl, publicAnonKey, {
       auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true, storage: cookieStorage }
     });
   }

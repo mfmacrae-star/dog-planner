@@ -1,10 +1,29 @@
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { supabase } from "../lib/supabase";
+import { projectId, publicAnonKey } from "../../../utils/supabase/info";
 
 interface AuthFormProps {
   onAuthSuccess: (userId: string, email: string) => void;
 }
+
+const friendlyError = (msg: string): string => {
+  const m = msg.toLowerCase();
+  if (m.includes("already registered") || m.includes("already exists") || m.includes("user already"))
+    return "An account with this email already exists. Try signing in instead.";
+  if (m.includes("invalid login credentials") || m.includes("invalid credentials"))
+    return "Incorrect email or password. Please try again.";
+  if (m.includes("password should be") || m.includes("password must be") || m.includes("weak password"))
+    return "Password must be at least 6 characters.";
+  if (m.includes("valid email") || m.includes("invalid format") || m.includes("unable to validate email") || m.includes("email address is invalid") || m.includes("is invalid"))
+    return "Please enter a valid email address.";
+  if (m.includes("email not confirmed"))
+    return "Please check your email to confirm your account first.";
+  if (m.includes("rate limit") || m.includes("too many"))
+    return "Too many attempts. Please wait a moment and try again.";
+  if (msg) return msg;
+  return "Something went wrong. Please try again.";
+};
 
 export function AuthForm({ onAuthSuccess }: AuthFormProps) {
   const [mode, setMode] = useState<"signin" | "signup" | "reset">("signin");
@@ -14,39 +33,59 @@ export function AuthForm({ onAuthSuccess }: AuthFormProps) {
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+
   const handleSubmit = async () => {
     setLoading(true);
     setError("");
     setMessage("");
 
+    const normalizedEmail = email.toLowerCase().trim();
+
     if (mode === "reset") {
-      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      const { error } = await supabase.auth.resetPasswordForEmail(normalizedEmail, {
         redirectTo: window.location.origin,
       });
-      if (error) setError(error.message);
+      if (error) setError(friendlyError(error.message));
       else setMessage("Check your email for a password reset link.");
       setLoading(false);
       return;
     }
 
     if (mode === "signup") {
-      const { data, error } = await supabase.auth.signUp({ email, password });
-      if (error) setError(error.message);
-      else if (data.user) {
-        if (data.user.identities?.length === 0) {
-          setError("An account with this email already exists.");
-        } else {
-          setMessage("Account created! Check your email to confirm, then sign in.");
-          setMode("signin");
+      // Use edge function so email is auto-confirmed — no confirmation email needed
+      const res = await fetch(
+        `https://${projectId}.supabase.co/functions/v1/make-server-7edd5186/auth/signup`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json", apikey: publicAnonKey },
+          body: JSON.stringify({ email: normalizedEmail, password }),
         }
+      );
+      const json = await res.json();
+      if (!res.ok) {
+        setError(friendlyError(json.error || ""));
+        setLoading(false);
+        return;
+      }
+      // Auto sign-in immediately after account creation
+      const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
+        email: normalizedEmail,
+        password,
+      });
+      if (signInError) {
+        setError(friendlyError(signInError.message));
+      } else if (signInData.user) {
+        onAuthSuccess(signInData.user.id, signInData.user.email || "");
       }
     } else {
-      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-      if (error) setError(error.message);
-      else if (data.user) {
-        onAuthSuccess(data.user.id, data.user.email || "");
-      }
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: normalizedEmail,
+        password,
+      });
+      if (error) setError(friendlyError(error.message));
+      else if (data.user) onAuthSuccess(data.user.id, data.user.email || "");
     }
+
     setLoading(false);
   };
 
@@ -56,7 +95,7 @@ export function AuthForm({ onAuthSuccess }: AuthFormProps) {
         {/* Header */}
         <div className="text-center mb-8">
           <div className="text-5xl mb-3">🐾</div>
-          <h1 className="text-3xl font-serif text-gray-800 mb-1">Dog Day Planner</h1>
+          <h1 className="text-3xl font-serif text-gray-800 mb-1">Digital Dog Day Planner & Calendar</h1>
           <p className="text-gray-500 text-sm">Your daily companion for paw-some planning</p>
         </div>
 
@@ -97,36 +136,26 @@ export function AuthForm({ onAuthSuccess }: AuthFormProps) {
           </div>
 
           {mode !== "reset" && (
-          
- <div>
-  <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
-  <div className="relative">
-    <input
-      type={showPassword ? "text" : "password"}
-      value={password}
-      onChange={(e) => setPassword(e.target.value)}
-      onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
-      placeholder="••••••••"
-      className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-amber-400 pr-10"
-    />
-    <button
-      type="button"
-      onClick={() => setShowPassword(!showPassword)}
-      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
-    >
-      {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-    </button>
-  </div>
-</div>
-
-
-
-
-
-
-
-
-
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
+              <div className="relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={e => setPassword(e.target.value)}
+                  onKeyDown={e => e.key === "Enter" && handleSubmit()}
+                  placeholder="••••••••"
+                  className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-amber-400 pr-10"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                >
+                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
+              </div>
+            </div>
           )}
 
           {error && (
