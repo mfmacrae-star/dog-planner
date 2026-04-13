@@ -37,8 +37,8 @@ const features = [
   },
   {
     icon: <MessageSquare className="w-5 h-5 text-gray-500" />,
-    title: "Feedback",
-    desc: "Use the Feedback button to send suggestions or comments directly to our team.",
+    title: "Help & Feedback",
+    desc: "Use the Help & Feedback button to send suggestions or comments directly to our team.",
   },
 ];
 

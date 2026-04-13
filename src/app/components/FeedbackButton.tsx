@@ -49,13 +49,13 @@ export function FeedbackButton({ userEmail }: FeedbackButtonProps) {
           className="fixed bottom-8 left-8 z-40 bg-white border border-gray-200 text-gray-600 px-3 py-2 rounded-full shadow-md hover:shadow-lg hover:text-gray-800 transition-all text-sm font-medium flex items-center gap-1.5"
         >
           <MessageSquare className="w-4 h-4" />
-          Feedback
+          Help & Feedback
         </button>
       )}
       {isOpen && (
         <div className="fixed bottom-8 left-8 z-50 w-80 bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden">
           <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100 bg-gray-50">
-            <span className="font-semibold text-gray-800 text-sm">Send Feedback</span>
+            <span className="font-semibold text-gray-800 text-sm">Help & Feedback</span>
             <button onClick={handleClose} className="text-gray-400 hover:text-gray-600 p-1 rounded">
               <X className="w-4 h-4" />
             </button>
