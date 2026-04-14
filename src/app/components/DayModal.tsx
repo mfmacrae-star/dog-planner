@@ -225,12 +225,14 @@ export function DayModal({ isOpen, onClose, day, month, year, photoUrl, plannerC
         <div className="flex-1 overflow-y-auto p-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
-            {/* LEFT COLUMN: Photo (2/3) + Gratitude (1/3) */}
+            {/* LEFT COLUMN: Full-height photo */}
+            <div className="rounded-xl overflow-hidden shadow-lg" style={{ minHeight: '420px' }}>
+              <img src={photoUrl} alt={`Dog of the day ${day}`} className="w-full h-full object-cover" style={{ minHeight: '420px' }} />
+            </div>
+
+            {/* RIGHT COLUMN: Gratitude + Plans for the Day */}
             <div className="flex flex-col gap-4">
-              <div className="flex-[2] min-h-0 rounded-xl overflow-hidden shadow-lg">
-                <img src={photoUrl} alt={`Dog of the day ${day}`} className="w-full h-full object-cover" />
-              </div>
-              <div className="flex-1 min-h-0 overflow-y-auto bg-amber-50 rounded-lg p-4 border border-amber-200">
+              <div className="bg-amber-50 rounded-lg p-4 border border-amber-200">
                 <label className="block text-sm font-semibold text-gray-700 mb-2">🙏 Today I am grateful for:</label>
                 <div className="mb-2 p-2 bg-white rounded-lg border border-amber-100">
                   <p className="text-xs italic text-gray-500">"{dailyQuote}"</p>
@@ -243,13 +245,9 @@ export function DayModal({ isOpen, onClose, day, month, year, photoUrl, plannerC
                   data-gramm_editor="false"
                   data-enable-grammarly="false"
                   className="w-full p-2 border border-amber-200 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-amber-400 bg-white text-sm"
-                  rows={4}
+                  rows={3}
                 />
               </div>
-            </div>
-
-            {/* RIGHT COLUMN: Google Calendar Events + Plans for the Day */}
-            <div className="flex flex-col gap-4">
               {externalEvents.length > 0 && (
                 <div className="bg-blue-50 rounded-lg p-3 border border-blue-200">
                   <h3 className="font-semibold text-blue-900 mb-2 text-sm">Google Calendar</h3>
