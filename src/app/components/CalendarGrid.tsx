@@ -102,11 +102,6 @@ export function CalendarGrid({ month, year, weeklyImages, userEmail }: CalendarG
 
   return (
     <div className="w-full">
-      {calendarAuthError && (
-        <div className="mb-4 flex items-center gap-3 bg-amber-50 border border-amber-300 rounded-lg px-4 py-3 text-sm text-amber-800">
-          <span>⚠️ Google Calendar session expired. Please disconnect and reconnect your calendar to see events.</span>
-        </div>
-      )}
 <div className="grid grid-cols-7 gap-2 mb-2">
         {days.map(day => <div key={day} className="text-center py-2 font-semibold text-gray-700">{day}</div>)}
       </div>
