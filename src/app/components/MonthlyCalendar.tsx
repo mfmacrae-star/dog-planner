@@ -4,10 +4,11 @@
  */
 
 import { useState } from "react";
-import { ChevronLeft, ChevronRight, Printer } from "lucide-react";
+import { ChevronLeft, ChevronRight, Printer, Sparkles } from "lucide-react";
 import { breeds, monthNames } from "../data/breeds";
 import { CalendarGrid } from "./CalendarGrid";
 import { AskAI } from "./AskAI";
+import { AskAICalendarPanel } from "./AskAICalendarPanel";
 import { BreedImage } from "./BreedImage";
 import { FeedbackButton } from "./FeedbackButton";
 import { WelcomeModal } from "./WelcomeModal";
@@ -20,7 +21,8 @@ export function MonthlyCalendar({ userEmail }: MonthlyCalendarProps) {
   const currentDate = new Date();
   const [currentMonth, setCurrentMonth] = useState(currentDate.getMonth() + 1);
   const [currentYear] = useState(currentDate.getFullYear());
-  const currentBreed = breeds.find((b) => b.month === currentMonth)!;
+  const [showAskAIPanel, setShowAskAIPanel] = useState(false);
+  const currentBreed = breeds.find((b) => b.month === currentMonth)!
 
   const pawSvg = `url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'><ellipse cx='40' cy='56' rx='13' ry='10' fill='%231d4ed8'/><ellipse cx='20' cy='39' rx='6' ry='8' fill='%231d4ed8' transform='rotate(-20 20 39)'/><ellipse cx='32' cy='31' rx='6' ry='8' fill='%231d4ed8' transform='rotate(-7 32 31)'/><ellipse cx='48' cy='31' rx='6' ry='8' fill='%231d4ed8' transform='rotate(7 48 31)'/><ellipse cx='60' cy='39' rx='6' ry='8' fill='%231d4ed8' transform='rotate(20 60 39)'/></svg>")`;
 
@@ -41,6 +43,14 @@ export function MonthlyCalendar({ userEmail }: MonthlyCalendarProps) {
             <button onClick={() => window.print()} className="no-print flex items-center gap-2 px-3 py-2 text-sm text-gray-600 hover:text-amber-700 hover:bg-white/70 rounded-lg transition-colors" title="Print calendar">
               <Printer className="w-4 h-4" />
               Print
+            </button>
+            <button
+              onClick={() => setShowAskAIPanel(true)}
+              className="no-print flex items-center gap-2 px-4 py-2 text-sm bg-amber-600 text-white hover:bg-amber-700 rounded-lg transition-colors shadow-sm"
+              title="Ask AI about your schedule"
+            >
+              <Sparkles className="w-4 h-4" />
+              Ask AI
             </button>
           </div>
           <button onClick={() => setCurrentMonth(prev => prev === 12 ? 1 : prev + 1)} className="no-print p-2 rounded-full hover:bg-white/50 transition-colors">
@@ -65,6 +75,15 @@ export function MonthlyCalendar({ userEmail }: MonthlyCalendarProps) {
         </div>
       </div>
       <div className="no-print"><AskAI currentBreed={currentBreed.name} currentMonth={monthNames[currentMonth - 1]} currentDate={new Date().toLocaleDateString()} userEmail={userEmail} /></div>
+      <AskAICalendarPanel
+        isOpen={showAskAIPanel}
+        onClose={() => setShowAskAIPanel(false)}
+        userEmail={userEmail}
+        currentBreed={currentBreed.name}
+        currentMonth={monthNames[currentMonth - 1]}
+        currentMonthNum={currentMonth}
+        currentYear={currentYear}
+      />
       <div className="no-print"><FeedbackButton userEmail={userEmail} /></div>
       <WelcomeModal userEmail={userEmail} />
     </div>
