@@ -11,6 +11,7 @@ import { AskAI } from "./AskAI";
 import { BreedImage } from "./BreedImage";
 import { FeedbackButton } from "./FeedbackButton";
 import { WelcomeModal } from "./WelcomeModal";
+import { CalendarConnect } from "./CalendarConnect";
 
 interface MonthlyCalendarProps {
   userEmail: string;
@@ -29,43 +30,95 @@ export function MonthlyCalendar({ userEmail }: MonthlyCalendarProps) {
       <div
         aria-hidden="true"
         className="absolute inset-0 pointer-events-none"
-        style={{ backgroundImage: pawSvg, backgroundRepeat: 'repeat', backgroundSize: '80px 80px', opacity: 0.25 }}
+        style={{
+          backgroundImage: pawSvg,
+          backgroundRepeat: "repeat",
+          backgroundSize: "80px 80px",
+          opacity: 0.25,
+        }}
       />
       <div className="relative max-w-7xl mx-auto">
         <div className="flex items-center justify-between mb-6">
-          <button onClick={() => setCurrentMonth(prev => prev === 1 ? 12 : prev - 1)} className="no-print p-2 rounded-full hover:bg-white/50 transition-colors">
+          <button
+            onClick={() => setCurrentMonth((prev) => (prev === 1 ? 12 : prev - 1))}
+            className="no-print p-2 rounded-full hover:bg-white/50 transition-colors"
+          >
             <ChevronLeft className="w-6 h-6 text-gray-700" />
           </button>
+
           <div className="flex items-center gap-4">
-            <h1 className="text-4xl font-serif text-gray-800">{monthNames[currentMonth - 1]} {currentYear}</h1>
-            <button onClick={() => window.print()} className="no-print flex items-center gap-2 px-3 py-2 text-sm text-gray-600 hover:text-amber-700 hover:bg-white/70 rounded-lg transition-colors" title="Print calendar">
+            <h1 className="text-4xl font-serif text-gray-800">
+              {monthNames[currentMonth - 1]} {currentYear}
+            </h1>
+            <button
+              onClick={() => window.print()}
+              className="no-print flex items-center gap-2 px-3 py-2 text-sm text-gray-600 hover:text-amber-700 hover:bg-white/70 rounded-lg transition-colors"
+              title="Print calendar"
+            >
               <Printer className="w-4 h-4" />
               Print
             </button>
           </div>
-          <button onClick={() => setCurrentMonth(prev => prev === 12 ? 1 : prev + 1)} className="no-print p-2 rounded-full hover:bg-white/50 transition-colors">
+
+          <button
+            onClick={() => setCurrentMonth((prev) => (prev === 12 ? 1 : prev + 1))}
+            className="no-print p-2 rounded-full hover:bg-white/50 transition-colors"
+          >
             <ChevronRight className="w-6 h-6 text-gray-700" />
           </button>
         </div>
+
+        {userEmail === "mfmacrae@gmail.com" && (
+          <div className="no-print mb-6">
+            <CalendarConnect userEmail={userEmail} />
+          </div>
+        )}
+
         <div className="no-print bg-white rounded-2xl shadow-xl p-8 mb-8">
           <div className="grid md:grid-cols-2 gap-8">
             <div className="relative h-[400px] rounded-xl overflow-hidden">
-              <BreedImage src={currentBreed.imageUrl} alt={currentBreed.name} breedName={currentBreed.name} />
+              <BreedImage
+                src={currentBreed.imageUrl}
+                alt={currentBreed.name}
+                breedName={currentBreed.name}
+              />
             </div>
             <div className="flex flex-col justify-between">
               <div>
-                <h2 className="text-3xl font-serif text-gray-800 mb-3">{currentBreed.name}</h2>
-                <p className="text-gray-600 leading-relaxed mb-6">{currentBreed.history}</p>
+                <h2 className="text-3xl font-serif text-gray-800 mb-3">
+                  {currentBreed.name}
+                </h2>
+                <p className="text-gray-600 leading-relaxed mb-6">
+                  {currentBreed.history}
+                </p>
               </div>
             </div>
           </div>
         </div>
+
         <div className="bg-white rounded-2xl shadow-xl p-8">
-          <CalendarGrid month={currentMonth} year={currentYear} weeklyImages={currentBreed.weeklyImages} userEmail={userEmail} />
+          <CalendarGrid
+            month={currentMonth}
+            year={currentYear}
+            weeklyImages={currentBreed.weeklyImages}
+            userEmail={userEmail}
+          />
         </div>
       </div>
-      <div className="no-print"><AskAI currentBreed={currentBreed.name} currentMonth={monthNames[currentMonth - 1]} currentDate={new Date().toLocaleDateString()} userEmail={userEmail} /></div>
-      <div className="no-print"><FeedbackButton userEmail={userEmail} /></div>
+
+      <div className="no-print">
+        <AskAI
+          currentBreed={currentBreed.name}
+          currentMonth={monthNames[currentMonth - 1]}
+          currentDate={new Date().toLocaleDateString()}
+          userEmail={userEmail}
+        />
+      </div>
+
+      <div className="no-print">
+        <FeedbackButton userEmail={userEmail} />
+      </div>
+
       <WelcomeModal userEmail={userEmail} />
     </div>
   );
