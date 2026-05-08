@@ -419,13 +419,10 @@ export function DayModal({
 
         <div className="flex-1 overflow-y-auto p-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <div className="rounded-xl overflow-hidden shadow-lg" style={{ minHeight: "420px" }}>
-              <img
-                src={photoUrl}
-                alt={`Dog of the day ${day}`}
-                className="w-full h-full object-cover"
-                style={{ minHeight: "420px" }}
-              />
+
+            {/* LEFT COLUMN: Full-height photo */}
+            <div className="rounded-xl overflow-hidden shadow-lg" style={{ minHeight: 'clamp(220px, 40vw, 420px)' }}>
+              <img src={photoUrl} alt={`Dog of the day ${day}`} className="w-full h-full object-cover" style={{ minHeight: 'clamp(220px, 40vw, 420px)' }} />
             </div>
 
             <div className="flex flex-col gap-4">

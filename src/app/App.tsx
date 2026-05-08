@@ -7,12 +7,13 @@ import { useState, useEffect } from "react";
 import { supabase } from "./lib/supabase";
 import type { AuthChangeEvent, Session } from "@supabase/supabase-js";
 import { AuthForm } from "./components/AuthForm";
-import { Calendar, BookOpen, LogOut, HelpCircle } from "lucide-react";
+import { Calendar, BookOpen, LogOut, HelpCircle, Menu, X } from "lucide-react";
 import { MonthlyCalendar } from "./components/MonthlyCalendar";
 import { BreedBook } from "./components/BreedBook";
 import { TermsOfService } from "./components/TermsOfService";
 import { PrivacyPolicy } from "./components/PrivacyPolicy";
 import { QuickStartGuide } from "./components/QuickStartGuide";
+import { AddToHomeScreen } from "./components/AddToHomeScreen";
 
 export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -23,6 +24,7 @@ export default function App() {
   const [showPrivacy, setShowPrivacy] = useState(false);
   const [showGuide, setShowGuide] = useState(false);
   const [isPasswordReset, setIsPasswordReset] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [newPassword, setNewPassword] = useState("");
   const [resetMsg, setResetMsg] = useState("");
 
@@ -114,12 +116,13 @@ export default function App() {
   return (
     <div className="size-full flex flex-col">
       <div className="no-print fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-sm shadow-md">
-        <div className="max-w-7xl mx-auto px-6 py-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4">
           <div className="flex items-center justify-between">
-            <h1 className="text-2xl font-serif text-gray-800">
-              Digital Dog Day Planner & Calendar
+            <h1 className="text-lg sm:text-2xl font-serif text-gray-800 truncate pr-2">
+              Digital Dog Day Planner
             </h1>
-            <div className="flex items-center gap-4">
+            {/* Desktop nav */}
+            <div className="hidden sm:flex items-center gap-4">
               <div className="flex gap-2">
                 <button
                   onClick={() => setView("calendar")}
@@ -152,7 +155,7 @@ export default function App() {
                 <HelpCircle className="w-5 h-5" />
                 <span className="text-sm">Help</span>
               </button>
-              <span className="text-sm text-gray-600">{userEmail}</span>
+              <span className="text-sm text-gray-500 hidden md:inline truncate max-w-[160px]">{userEmail}</span>
               <button
                 onClick={handleSignOut}
                 className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-red-600 transition-colors"
@@ -161,7 +164,48 @@ export default function App() {
                 Sign Out
               </button>
             </div>
+            {/* Mobile hamburger */}
+            <button
+              className="sm:hidden p-2 rounded-lg text-gray-600 hover:bg-gray-100"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            >
+              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
           </div>
+          {/* Mobile dropdown menu */}
+          {mobileMenuOpen && (
+            <div className="sm:hidden mt-2 pb-3 border-t border-gray-100 pt-3 flex flex-col gap-2">
+              <button
+                onClick={() => { setView("calendar"); setMobileMenuOpen(false); }}
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors w-full ${
+                  view === "calendar" ? "bg-amber-600 text-white" : "bg-gray-100 text-gray-700"
+                }`}
+              >
+                <Calendar className="w-5 h-5" /> Calendar
+              </button>
+              <button
+                onClick={() => { setView("book"); setMobileMenuOpen(false); }}
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors w-full ${
+                  view === "book" ? "bg-amber-600 text-white" : "bg-gray-100 text-gray-700"
+                }`}
+              >
+                <BookOpen className="w-5 h-5" /> Breed Book
+              </button>
+              <button
+                onClick={() => { setShowGuide(true); setMobileMenuOpen(false); }}
+                className="flex items-center gap-2 px-4 py-2 rounded-lg text-gray-600 hover:bg-gray-100 w-full"
+              >
+                <HelpCircle className="w-5 h-5" /> Help
+              </button>
+              <p className="text-xs text-gray-400 px-4 truncate">{userEmail}</p>
+              <button
+                onClick={handleSignOut}
+                className="flex items-center gap-2 px-4 py-2 rounded-lg text-red-600 hover:bg-red-50 w-full"
+              >
+                <LogOut className="w-4 h-4" /> Sign Out
+              </button>
+            </div>
+          )}
         </div>
       </div>
 
@@ -194,6 +238,7 @@ export default function App() {
       {showTerms && <TermsOfService onClose={() => setShowTerms(false)} />}
       {showPrivacy && <PrivacyPolicy onClose={() => setShowPrivacy(false)} />}
       {showGuide && <QuickStartGuide onClose={() => setShowGuide(false)} />}
+      <AddToHomeScreen />
 
     </div>
   );

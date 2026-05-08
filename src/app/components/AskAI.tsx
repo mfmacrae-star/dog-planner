@@ -85,7 +85,7 @@ export function AskAI({ currentBreed, currentMonth, currentDate, userEmail }: As
         </button>
       )}
       {isOpen && (
-        <div className="fixed bottom-8 right-8 z-50 w-96 h-[600px] bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden border-2 border-purple-200">
+        <div className="fixed bottom-8 right-8 z-50 w-[calc(100vw-32px)] sm:w-96 h-[450px] sm:h-[600px] bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden border-2 border-purple-200">
           <div className="bg-gradient-to-r from-purple-600 to-blue-600 text-white p-4 flex items-center justify-between">
             <div className="flex items-center gap-2"><Sparkles className="w-5 h-5" /><h3 className="font-semibold">Ask AI</h3></div>
             <div className="flex items-center gap-2">

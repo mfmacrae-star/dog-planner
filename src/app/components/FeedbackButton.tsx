@@ -53,7 +53,7 @@ export function FeedbackButton({ userEmail }: FeedbackButtonProps) {
         </button>
       )}
       {isOpen && (
-        <div className="fixed bottom-8 left-8 z-50 w-80 bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden">
+        <div className="fixed bottom-8 left-8 z-50 w-[calc(100vw-40px)] sm:w-80 bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden">
           <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100 bg-gray-50">
             <span className="font-semibold text-gray-800 text-sm">Help & Feedback</span>
             <button onClick={handleClose} className="text-gray-400 hover:text-gray-600 p-1 rounded">
