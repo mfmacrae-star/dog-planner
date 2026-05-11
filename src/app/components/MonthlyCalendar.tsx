@@ -11,7 +11,6 @@ import { AskAI } from "./AskAI";
 import { BreedImage } from "./BreedImage";
 import { FeedbackButton } from "./FeedbackButton";
 import { WelcomeModal } from "./WelcomeModal";
-import { CalendarConnect } from "./CalendarConnect";
 
 interface MonthlyCalendarProps {
   userEmail: string;
@@ -68,11 +67,6 @@ export function MonthlyCalendar({ userEmail }: MonthlyCalendarProps) {
           </button>
         </div>
 
-        {userEmail === "mfmacrae@gmail.com" && (
-          <div className="no-print mb-6">
-            <CalendarConnect userEmail={userEmail} />
-          </div>
-        )}
 
         <div className="no-print bg-white rounded-2xl shadow-xl p-8 mb-8">
           <div className="grid md:grid-cols-2 gap-8">
