@@ -1,4 +1,4 @@
-import { X, Calendar, BookOpen, Printer, Smartphone, Sparkles, MessageSquare } from "lucide-react";
+import { X, Calendar, BookOpen, Printer, Smartphone, Sparkles, MessageSquare, CalendarDays } from "lucide-react";
 
 interface QuickStartGuideProps {
   onClose: () => void;
@@ -19,6 +19,11 @@ const features = [
     icon: <BookOpen className="w-5 h-5 text-amber-600" />,
     title: "Breed Book",
     desc: 'Tap "Breed Book" in the top menu to explore all 12 featured dog breeds — their history, personality, and what makes each one unique.',
+  },
+  {
+    icon: <CalendarDays className="w-5 h-5 text-blue-500" />,
+    title: "Google Calendar Sync",
+    desc: "Click 'Connect Google Calendar' to link your Google Calendar. Your Google events will appear on the calendar, and you can sync planner entries directly to Google Calendar.",
   },
   {
     icon: <Printer className="w-5 h-5 text-gray-600" />,

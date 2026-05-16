@@ -41,6 +41,11 @@ export function WelcomeModal({ userEmail }: WelcomeModalProps) {
       desc: "Record something you're grateful for each day — private to you.",
     },
     {
+      icon: "📆",
+      title: "Google Calendar Sync",
+      desc: "Connect Google Calendar to see your events alongside your planner.",
+    },
+    {
       icon: "✨",
       title: "Ask AI",
       desc: "Get breed-specific advice, grooming tips, and training help instantly.",
