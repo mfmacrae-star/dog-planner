@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Calendar Connected!</title>
+</head>
+<body style="font-family:system-ui;text-align:center;padding:40px">
+<div id="success">
+  <h1 style="color:#059669">&#x2705; Google Calendar Connected!</h1>
+  <p>This window will close in <span id="c">3</span> seconds...</p>
+</div>
+<div id="failure" style="display:none">
+  <h1 style="color:#dc2626">Connection Failed</h1>
+  <p id="errmsg"></p>
+</div>
+<button onclick="closeWindow()" style="padding:10px 20px;background:#3b82f6;color:white;border:none;border-radius:8px;cursor:pointer">Close Now</button>
+<script>
+var params = new URLSearchParams(location.search);
+var error = params.get('error');
+var isSuccess = !error;
+if (error) {
+  document.getElementById('success').style.display = 'none';
+  document.getElementById('failure').style.display = 'block';
+  document.getElementById('errmsg').textContent = error;
+}
+function closeWindow() {
+  try {
+    if (isSuccess && window.opener && !window.opener.closed) {
+      window.opener.postMessage({ type: 'calendar-connected' }, '*');
+    }
+  } catch (e) {}
+  window.close();
+}
+if (isSuccess) {
+  var s = 3, el = document.getElementById('c');
+  var t = setInterval(function () {
+    s--; if (el) el.textContent = s;
+    if (s <= 0) { clearInterval(t); closeWindow(); }
+  }, 1000);
+}
+</script>
+</body>
+</html>
