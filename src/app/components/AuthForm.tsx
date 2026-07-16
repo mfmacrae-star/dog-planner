@@ -90,12 +90,11 @@ export function AuthForm({ onAuthSuccess }: AuthFormProps) {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-amber-50 px-4">
+    <div className="flex items-center justify-center bg-amber-50 px-4 py-8">
       <div className="bg-white p-8 rounded-2xl shadow-lg w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="text-5xl mb-3">🐾</div>
-          <h1 className="text-3xl font-serif text-gray-800 mb-1">Digital Dog Day Planner & Calendar</h1>
+          <h2 className="text-3xl font-serif text-gray-800 mb-1">Sign In or Create Account</h2>
           <p className="text-gray-500 text-sm">Your daily companion for paw-some planning</p>
         </div>
 

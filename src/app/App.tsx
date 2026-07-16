@@ -110,7 +110,39 @@ export default function App() {
   }
 
   if (!isAuthenticated) {
-    return <AuthForm onAuthSuccess={handleAuthSuccess} />;
+    return (
+      <div className="min-h-screen bg-amber-50 flex flex-col">
+        <section className="max-w-3xl mx-auto px-6 pt-12 pb-4 text-center">
+          <div className="text-5xl mb-4">🐾</div>
+          <h1 className="text-4xl font-serif text-gray-800 mb-4">Digital Dog Planner</h1>
+          <p className="text-gray-600 mb-6">
+            Digital Dog Planner is a day planner and calendar built for dog owners.
+            Organize your dog's daily schedule — walks, meals, grooming, vet visits,
+            and medications — in one place, and sync it with your Google Calendar so
+            reminders follow you everywhere.
+          </p>
+          <ul className="text-gray-700 text-left inline-block list-disc list-inside mb-4">
+            <li>Monthly calendar for walks, meals, grooming, and vet appointments</li>
+            <li>Google Calendar sync for automatic reminders</li>
+            <li>Breed Book with care information for popular dog breeds</li>
+            <li>Printable daily and monthly schedules</li>
+            <li>Works on desktop and mobile — add it to your home screen</li>
+          </ul>
+        </section>
+
+        <AuthForm onAuthSuccess={handleAuthSuccess} />
+
+        <footer className="bg-gray-50 border-t border-gray-200 py-4 mt-auto">
+          <div className="max-w-3xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-2 text-sm text-gray-600">
+            <span>© 2026 Digital Dog Day Planner & Calendar. All Rights Reserved.</span>
+            <span className="flex gap-4">
+              <a href="/privacy-policy.html" className="underline hover:text-amber-600">Privacy Policy</a>
+              <a href="/terms-of-service.html" className="underline hover:text-amber-600">Terms of Service</a>
+            </span>
+          </div>
+        </footer>
+      </div>
+    );
   }
 
   return (
