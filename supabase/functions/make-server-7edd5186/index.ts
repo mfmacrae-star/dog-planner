@@ -59,10 +59,10 @@ app.post("/make-server-7edd5186/auth/signup", async (c) => {
             method: "POST",
             headers: { "Authorization": `Bearer ${RESEND_API_KEY}`, "Content-Type": "application/json" },
             body: JSON.stringify({
-              from: "Digital Dog Day Planner <onboarding@resend.dev>",
+              from: "Digital Dog Planner <onboarding@resend.dev>",
               to: ["dogplannersupport@gmail.com"],
               subject: "🎉 100 Users! Time to set up Admin RBAC",
-              html: `<h2>You've hit 100 users!</h2><p>The Digital Dog Day Planner & Calendar now has <strong>100 registered users</strong>.</p><p>This is your reminder to set up Admin RBAC:</p><ul><li>Add <code>role</code> and <code>is_blocked</code> columns to the profiles table</li><li>Set your iCloud account as admin</li><li>Build the admin dashboard</li></ul><p>Good luck! 🐾</p>`,
+              html: `<h2>You've hit 100 users!</h2><p>The Digital Dog Planner now has <strong>100 registered users</strong>.</p><p>This is your reminder to set up Admin RBAC:</p><ul><li>Add <code>role</code> and <code>is_blocked</code> columns to the profiles table</li><li>Set your iCloud account as admin</li><li>Build the admin dashboard</li></ul><p>Good luck! 🐾</p>`,
             }),
           });
         }
@@ -376,14 +376,14 @@ app.post("/make-server-7edd5186/google/sync-entry", async (c) => {
         const startLocal = `${yStr}-${mStr}-${dStr}T${pad(hours)}:${pad(minutes)}:00`;
         const endHour = hours + 1 > 23 ? 23 : hours + 1;
         const endLocal = `${yStr}-${mStr}-${dStr}T${pad(endHour)}:${pad(minutes)}:00`;
-        event = { summary: title, description: "Synced from Digital Dog Day Planner", start: { dateTime: startLocal, timeZone: 'America/New_York' }, end: { dateTime: endLocal, timeZone: 'America/New_York' } };
+        event = { summary: title, description: "Synced from Digital Dog Planner", start: { dateTime: startLocal, timeZone: 'America/New_York' }, end: { dateTime: endLocal, timeZone: 'America/New_York' } };
       } else {
         const eventDateStr = `${parseInt(year)}-${parseInt(month).toString().padStart(2,'0')}-${parseInt(day).toString().padStart(2,'0')}`;
-        event = { summary: title, description: "Synced from Digital Dog Day Planner", start: { date: eventDateStr }, end: { date: eventDateStr } };
+        event = { summary: title, description: "Synced from Digital Dog Planner", start: { date: eventDateStr }, end: { date: eventDateStr } };
       }
     } else {
       const eventDateStr = `${parseInt(year)}-${parseInt(month).toString().padStart(2,'0')}-${parseInt(day).toString().padStart(2,'0')}`;
-      event = { summary: title, description: "Synced from Digital Dog Day Planner", start: { date: eventDateStr }, end: { date: eventDateStr } };
+      event = { summary: title, description: "Synced from Digital Dog Planner", start: { date: eventDateStr }, end: { date: eventDateStr } };
     }
 
     // Look up existing event ID for this slot to update instead of create
@@ -446,9 +446,9 @@ app.post("/make-server-7edd5186/feedback", async (c) => {
           method: "POST",
           headers: { "Authorization": `Bearer ${RESEND_API_KEY}`, "Content-Type": "application/json" },
           body: JSON.stringify({
-            from: "Digital Dog Day Planner <onboarding@resend.dev>",
+            from: "Digital Dog Planner <onboarding@resend.dev>",
             to: ["dogplannersupport@gmail.com"],
-            subject: "New Feedback — Digital Dog Day Planner & Calendar",
+            subject: "New Feedback — Digital Dog Planner",
             html: `<p><strong>From:</strong> ${email || "Anonymous"}</p><p><strong>Message:</strong></p><p>${message.trim().replace(/\n/g, "<br>")}</p>`,
           }),
         });
@@ -471,7 +471,7 @@ app.post("/make-server-7edd5186/ask-ai", async (c) => {
 
     const breedSchedule = `January: Poodle, February: Siberian Husky, March: Old English Sheepdog, April: Belgian Malinois, May: Pekingese, June: Whippet, July: Labrador Retriever, August: Border Collie, September: Bloodhound, October: Scottish Terrier, November: Australian Cattle Dog, December: Saint Bernard`;
 
-    let systemPrompt = `You are a friendly AI assistant built into the Dog Day Planner & Calendar app. Your role covers the following topics:
+    let systemPrompt = `You are a friendly AI assistant built into the Digital Dog Planner app. Your role covers the following topics:
 1. Dog breed questions — especially the current month's featured breed (${context?.breed || "Unknown"})
 2. General dog care and health tips
 3. Grooming advice for any dog breed

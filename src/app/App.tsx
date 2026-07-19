@@ -1,5 +1,5 @@
 /*
- * Digital Dog Day Planner & Calendar
+ * Digital Dog Planner
  * Copyright (c) 2026. All Rights Reserved.
  */
 
@@ -134,7 +134,7 @@ export default function App() {
 
         <footer className="bg-gray-50 border-t border-gray-200 py-4 mt-auto">
           <div className="max-w-3xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-2 text-sm text-gray-600">
-            <span>© 2026 Digital Dog Day Planner & Calendar. All Rights Reserved.</span>
+            <span>© 2026 Digital Dog Planner. All Rights Reserved.</span>
             <span className="flex gap-4">
               <a href="/privacy-policy.html" className="underline hover:text-amber-600">Privacy Policy</a>
               <a href="/terms-of-service.html" className="underline hover:text-amber-600">Terms of Service</a>
@@ -151,7 +151,7 @@ export default function App() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4">
           <div className="flex items-center justify-between">
             <h1 className="text-lg sm:text-2xl font-serif text-gray-800 truncate pr-2">
-              Digital Dog Day Planner
+              Digital Dog Planner
             </h1>
             {/* Desktop nav */}
             <div className="hidden sm:flex items-center gap-4">
@@ -253,7 +253,7 @@ export default function App() {
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <div className="text-sm text-gray-600">
-              © 2026 Digital Dog Day Planner & Calendar. All Rights Reserved.
+              © 2026 Digital Dog Planner. All Rights Reserved.
             </div>
             <div className="flex gap-4 text-sm">
               <button onClick={() => setShowTerms(true)} className="text-gray-600 hover:text-amber-600 transition-colors underline">

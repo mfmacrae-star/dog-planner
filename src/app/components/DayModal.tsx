@@ -290,7 +290,7 @@ export function DayModal({
     return [
       "BEGIN:VCALENDAR",
       "VERSION:2.0",
-      "PRODID:-//Digital Dog Day Planner & Calendar//EN",
+      "PRODID:-//Digital Dog Planner//EN",
       "CALSCALE:GREGORIAN",
       "METHOD:PUBLISH",
       "BEGIN:VEVENT",
@@ -299,7 +299,7 @@ export function DayModal({
       `DTSTART;TZID=America/New_York:${formatLocal(year, month, day, hour)}`,
       `DTEND;TZID=America/New_York:${formatLocal(year, month, day, hour + 1)}`,
       `SUMMARY:${title}`,
-      "DESCRIPTION:Added from Digital Dog Day Planner & Calendar",
+      "DESCRIPTION:Added from Digital Dog Planner",
       "STATUS:CONFIRMED",
       "SEQUENCE:0",
       "END:VEVENT",
@@ -336,7 +336,7 @@ export function DayModal({
     const url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(
       plan
     )}&dates=${startDt}/${endDt}&details=${encodeURIComponent(
-      "Added from Digital Dog Day Planner & Calendar"
+      "Added from Digital Dog Planner"
     )}`;
 
     window.open(url, "_blank", "noopener,noreferrer");
@@ -353,7 +353,7 @@ export function DayModal({
       plan
     )}&startdt=${encodeURIComponent(startDt)}&enddt=${encodeURIComponent(
       endDt
-    )}&body=${encodeURIComponent("Added from Digital Dog Day Planner & Calendar")}`;
+    )}&body=${encodeURIComponent("Added from Digital Dog Planner")}`;
 
     window.open(url, "_blank", "noopener,noreferrer");
   };

@@ -1,5 +1,5 @@
 /*
- * Digital Dog Day Planner & Calendar
+ * Digital Dog Planner
  * Copyright (c) 2026. All Rights Reserved.
  */
 

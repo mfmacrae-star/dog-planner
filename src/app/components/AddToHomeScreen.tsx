@@ -70,7 +70,7 @@ export function AddToHomeScreen() {
         {isIOS ? (
           <div>
             <p className="text-xs text-gray-600 mb-3">
-              Install Dog Day Planner for quick access — works just like an app!
+              Install Digital Dog Planner for quick access — works just like an app!
             </p>
             <div className="flex items-center gap-2 text-xs text-gray-700 bg-amber-50 rounded-lg p-3">
               <span>Tap</span>
@@ -90,7 +90,7 @@ export function AddToHomeScreen() {
         ) : (
           <div>
             <p className="text-xs text-gray-600 mb-3">
-              Install Dog Day Planner for quick access — works just like an app!
+              Install Digital Dog Planner for quick access — works just like an app!
             </p>
             <div className="flex gap-2">
               <button

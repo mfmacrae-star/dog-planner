@@ -13,7 +13,7 @@ export function PrivacyPolicy({ onClose }: PrivacyPolicyProps) {
 
           <section>
             <h3 className="font-semibold text-gray-800 mb-1">1. Introduction</h3>
-            <p>Digital Dog Day Planner &amp; Calendar ("we," "us," or "our") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, and safeguard your information when you use our App.</p>
+            <p>Digital Dog Planner ("we," "us," or "our") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, and safeguard your information when you use our App.</p>
           </section>
 
           <section>
@@ -85,7 +85,7 @@ export function PrivacyPolicy({ onClose }: PrivacyPolicyProps) {
             <p>If you have questions or concerns about this Privacy Policy, please contact us through the App's feedback feature.</p>
           </section>
 
-          <p className="text-xs text-gray-400 pt-2">© 2026 Digital Dog Day Planner &amp; Calendar. All Rights Reserved.</p>
+          <p className="text-xs text-gray-400 pt-2">© 2026 Digital Dog Planner. All Rights Reserved.</p>
         </div>
 
         <button onClick={onClose} className="mt-6 px-6 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors">Close</button>

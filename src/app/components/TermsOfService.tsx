@@ -13,12 +13,12 @@ export function TermsOfService({ onClose }: TermsOfServiceProps) {
 
           <section>
             <h3 className="font-semibold text-gray-800 mb-1">1. Acceptance of Terms</h3>
-            <p>By accessing or using the Digital Dog Day Planner &amp; Calendar ("the App"), you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use the App.</p>
+            <p>By accessing or using the Digital Dog Planner ("the App"), you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use the App.</p>
           </section>
 
           <section>
             <h3 className="font-semibold text-gray-800 mb-1">2. Description of Service</h3>
-            <p>The Digital Dog Day Planner &amp; Calendar is a free web-based application that allows registered users to plan and track activities for their dogs, access breed information, use an AI-powered planning assistant, and sync events with external calendar services.</p>
+            <p>The Digital Dog Planner is a free web-based application that allows registered users to plan and track activities for their dogs, access breed information, use an AI-powered planning assistant, and sync events with external calendar services.</p>
           </section>
 
           <section>
@@ -49,7 +49,7 @@ export function TermsOfService({ onClose }: TermsOfServiceProps) {
 
           <section>
             <h3 className="font-semibold text-gray-800 mb-1">7. Intellectual Property</h3>
-            <p>All content, design, graphics, and software included in the App are the property of Digital Dog Day Planner &amp; Calendar and are protected by applicable copyright and intellectual property laws. You may not reproduce, distribute, or create derivative works without prior written permission.</p>
+            <p>All content, design, graphics, and software included in the App are the property of Digital Dog Planner and are protected by applicable copyright and intellectual property laws. You may not reproduce, distribute, or create derivative works without prior written permission.</p>
           </section>
 
           <section>
@@ -59,7 +59,7 @@ export function TermsOfService({ onClose }: TermsOfServiceProps) {
 
           <section>
             <h3 className="font-semibold text-gray-800 mb-1">9. Limitation of Liability</h3>
-            <p>To the fullest extent permitted by law, Digital Dog Day Planner &amp; Calendar shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising from your use of or inability to use the App.</p>
+            <p>To the fullest extent permitted by law, Digital Dog Planner shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising from your use of or inability to use the App.</p>
           </section>
 
           <section>
@@ -72,7 +72,7 @@ export function TermsOfService({ onClose }: TermsOfServiceProps) {
             <p>For questions about these Terms, please contact us through the App's feedback feature.</p>
           </section>
 
-          <p className="text-xs text-gray-400 pt-2">© 2026 Digital Dog Day Planner &amp; Calendar. All Rights Reserved.</p>
+          <p className="text-xs text-gray-400 pt-2">© 2026 Digital Dog Planner. All Rights Reserved.</p>
         </div>
 
         <button onClick={onClose} className="mt-6 px-6 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors">Close</button>

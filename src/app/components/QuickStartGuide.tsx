@@ -54,7 +54,7 @@ export function QuickStartGuide({ onClose }: QuickStartGuideProps) {
         <div className="bg-amber-600 text-white p-5 flex items-center justify-between">
           <div>
             <h2 className="text-xl font-serif font-semibold">Quick Start Guide</h2>
-            <p className="text-sm text-white/80 mt-0.5">Digital Dog Day Planner & Calendar</p>
+            <p className="text-sm text-white/80 mt-0.5">Digital Dog Planner</p>
           </div>
           <button onClick={onClose} className="hover:bg-white/20 p-2 rounded-full transition-colors">
             <X className="w-5 h-5" />

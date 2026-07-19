@@ -1,7 +1,7 @@
 {
-  "name": "Digital Dog Day Planner & Calendar",
+  "name": "Digital Dog Planner",
   "short_name": "Digital Dog Planner",
-  "description": "Your digital dog day planner and breed calendar",
+  "description": "Digital Dog Planner is a day planner and calendar for dog owners to organize walks, meals, grooming, vet visits, and medications, and sync them with Google Calendar.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#fffbeb",

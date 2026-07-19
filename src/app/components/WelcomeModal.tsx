@@ -63,7 +63,7 @@ export function WelcomeModal({ userEmail }: WelcomeModalProps) {
             <X className="w-5 h-5" />
           </button>
           <div className="text-4xl mb-2">🐾</div>
-          <h2 className="text-2xl font-serif font-bold">Welcome to Digital Dog Day Planner & Calendar</h2>
+          <h2 className="text-2xl font-serif font-bold">Welcome to Digital Dog Planner</h2>
           <p className="text-amber-100 text-sm mt-1">Your daily companion for paw-some planning</p>
         </div>
         <div className="p-6">
