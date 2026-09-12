@@ -66,9 +66,10 @@ export const dogBreedPhotos: Record<number, MonthBreedPhotos> = {
       "https://images.pexels.com/photos/20144217/pexels-photo-20144217.jpeg",
       "https://images.pexels.com/photos/12630565/pexels-photo-12630565.jpeg",
       "https://images.pexels.com/photos/283014/pexels-photo-283014.jpeg",
-      "https://images.pexels.com/photos/6075441/pexels-photo-6075441.jpeg",
+      "https://images.pexels.com/photos/12650783/pexels-photo-12650783.jpeg",
     ],
-    // w3: crown of head at crop edge
+    // w3: crown of head at crop edge; w5 was a duplicate of w1 - replaced 9/12
+    // with close-up Pekingese (12650783), centers fine by default
     positions: [undefined, undefined, "center 35%", undefined, undefined],
   },
   6: {
@@ -127,8 +128,11 @@ export const dogBreedPhotos: Record<number, MonthBreedPhotos> = {
       "https://images.unsplash.com/photo-1501751405784-6c8590d6b897?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8c2NvdHRpc2glMjB0ZXJyaWVyfGVufDB8fDB8fHww",
       "https://images.pexels.com/photos/7755249/pexels-photo-7755249.jpeg",
       "https://images.pexels.com/photos/27897286/pexels-photo-27897286.jpeg",
-      "https://images.pexels.com/photos/27897286/pexels-photo-27897286.jpeg",
+      "https://images.pexels.com/photos/16872864/pexels-photo-16872864.jpeg",
     ],
+    // w5 was a duplicate of w4 - replaced 9/12 with beach Scottie (16872864)
+    // w4: face low in frame  w5: face upper-middle
+    positions: [undefined, undefined, undefined, "center 60%", "center 40%"],
   },
   11: {
     breed: "Australian Cattle Dog",
