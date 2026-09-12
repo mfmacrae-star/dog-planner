@@ -434,9 +434,12 @@ export function DayModal({
         <div className="flex-1 overflow-y-auto p-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
-            {/* LEFT COLUMN: Full-height photo */}
-            <div ref={photoRef} className="rounded-xl overflow-hidden shadow-lg" style={{ minHeight: 'clamp(220px, 40vw, 420px)' }}>
-              <img src={photoUrl} alt={`Dog of the day ${day}`} className="w-full h-full object-cover" style={{ minHeight: 'clamp(220px, 40vw, 420px)', objectPosition: photoPosition ?? 'center' }} />
+            {/* LEFT COLUMN: photo pinned to a 4:3 frame; self-start stops it
+                stretching to the right column's full height (which zoomed the
+                image into a headless sliver), sticky keeps it in view while
+                the planner scrolls on desktop */}
+            <div ref={photoRef} className="rounded-xl overflow-hidden shadow-lg self-start lg:sticky lg:top-0 w-full aspect-[4/3] bg-gray-100">
+              <img src={photoUrl} alt={`Dog of the day ${day}`} className="w-full h-full object-cover" style={{ objectPosition: photoPosition ?? 'center' }} />
             </div>
 
             <div className="flex flex-col gap-4">
