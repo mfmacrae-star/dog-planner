@@ -17,6 +17,7 @@ interface DayModalProps {
   month: number;
   year: number;
   photoUrl: string;
+  photoPosition?: string;
   plannerContent: string;
   onContentChange: (value: string) => void;
   externalEvents: ExternalEvent[];
@@ -32,6 +33,7 @@ export function DayModal({
   month,
   year,
   photoUrl,
+  photoPosition,
   plannerContent,
   onContentChange,
   externalEvents,
@@ -39,7 +41,19 @@ export function DayModal({
   onSyncToGoogle,
   onRefreshEvents,
 }: DayModalProps) {
+  const photoRef = useRef<HTMLDivElement>(null);
   const saveTimers = useRef<{ [key: number]: ReturnType<typeof setTimeout> }>({});
+
+  // Auto-center the day's photo whenever the modal opens or the day changes -
+  // without this the scroll body can open mid-content on small screens.
+  useEffect(() => {
+    if (!isOpen) return;
+    const id = requestAnimationFrame(() => {
+      photoRef.current?.scrollIntoView({ block: "center", behavior: "auto" });
+    });
+    return () => cancelAnimationFrame(id);
+  }, [isOpen, day]);
+
   const statusTimers = useRef<{ [key: number]: ReturnType<typeof setTimeout> }>({});
   const dirtyHours = useRef<Set<number>>(new Set());
 
@@ -421,8 +435,8 @@ export function DayModal({
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
             {/* LEFT COLUMN: Full-height photo */}
-            <div className="rounded-xl overflow-hidden shadow-lg" style={{ minHeight: 'clamp(220px, 40vw, 420px)' }}>
-              <img src={photoUrl} alt={`Dog of the day ${day}`} className="w-full h-full object-cover" style={{ minHeight: 'clamp(220px, 40vw, 420px)' }} />
+            <div ref={photoRef} className="rounded-xl overflow-hidden shadow-lg" style={{ minHeight: 'clamp(220px, 40vw, 420px)' }}>
+              <img src={photoUrl} alt={`Dog of the day ${day}`} className="w-full h-full object-cover" style={{ minHeight: 'clamp(220px, 40vw, 420px)', objectPosition: photoPosition ?? 'center' }} />
             </div>
 
             <div className="flex flex-col gap-4">

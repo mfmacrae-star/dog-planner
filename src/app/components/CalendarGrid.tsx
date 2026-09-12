@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { projectId, publicAnonKey, supabase } from "../../../utils/supabase/info";
 import { DayModal } from "./DayModal";
 import { getHolidaysForDay } from "../data/holidays";
-import { getDogPhotoForDate } from "../../data/dogBreedPhotos";
+import { getDogPhotoForDate, getDogPhotoPositionForDate } from "../../data/dogBreedPhotos";
 
 interface CalendarGridProps {
   month: number; year: number; weeklyImages: string[]; userEmail?: string;
@@ -98,6 +98,7 @@ export function CalendarGrid({ month, year, weeklyImages, userEmail }: CalendarG
   for (let i = 0; i < firstDay; i++) dayNumbers.push(null);
   for (let i = 1; i <= daysInMonth; i++) dayNumbers.push(i);
   const getImageForDay = (d: number) => getDogPhotoForDate(month, d);
+  const getPositionForDay = (d: number) => getDogPhotoPositionForDate(month, d);
   const isToday = (day: number | null) => { if (!day) return false; const t = new Date(); return t.getDate() === day && t.getMonth() + 1 === month && t.getFullYear() === year; };
 
   return (
@@ -109,7 +110,7 @@ export function CalendarGrid({ month, year, weeklyImages, userEmail }: CalendarG
         {dayNumbers.map((day, index) => (
           <div key={index} onClick={() => day && setSelectedDay(day)}
             className={`min-h-[200px] rounded-lg overflow-hidden relative bg-white cursor-pointer hover:ring-2 hover:ring-amber-400 transition-all ${isToday(day) ? "border-4 border-orange-500" : "border border-gray-200"}`}
-            style={{ backgroundImage: day ? `url(${getImageForDay(day)})` : "none", backgroundSize: "cover", backgroundPosition: "center" }}>
+            style={{ backgroundImage: day ? `url(${getImageForDay(day)})` : "none", backgroundSize: "cover", backgroundPosition: day ? getPositionForDay(day) : "center" }}>
             {day && (
               <>
                 <div className="absolute inset-0 bg-white/75 backdrop-blur-[2px]" />
@@ -147,7 +148,7 @@ export function CalendarGrid({ month, year, weeklyImages, userEmail }: CalendarG
         ))}
       </div>
       {selectedDay && (
-        <DayModal isOpen={!!selectedDay} onClose={() => setSelectedDay(null)} day={selectedDay} month={month} year={year} photoUrl={getImageForDay(selectedDay)} plannerContent={events[selectedDay] || ""} onContentChange={(value) => handleEventChange(selectedDay, value)} externalEvents={externalEvents[selectedDay] || []} userEmail={userEmail} onSyncToGoogle={(entry) => handleSyncToGoogle(selectedDay, entry)} onRefreshEvents={loadExternalEvents} />
+        <DayModal isOpen={!!selectedDay} onClose={() => setSelectedDay(null)} day={selectedDay} month={month} year={year} photoUrl={getImageForDay(selectedDay)} photoPosition={getPositionForDay(selectedDay)} plannerContent={events[selectedDay] || ""} onContentChange={(value) => handleEventChange(selectedDay, value)} externalEvents={externalEvents[selectedDay] || []} userEmail={userEmail} onSyncToGoogle={(entry) => handleSyncToGoogle(selectedDay, entry)} onRefreshEvents={loadExternalEvents} />
       )}
     </div>
   );

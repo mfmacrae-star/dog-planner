@@ -4,6 +4,10 @@
 export interface MonthBreedPhotos {
   breed: string;
   photos: [string, string, string, string, string]; // 5 weekly photos
+  // Optional per-week CSS object-position overrides (e.g. "center 20%") for
+  // photos whose subject sits off-center — keeps faces in frame when the
+  // tile/modal crops with object-fit: cover. Undefined = "center".
+  positions?: [string?, string?, string?, string?, string?];
 }
 
 export const dogBreedPhotos: Record<number, MonthBreedPhotos> = {
@@ -96,6 +100,9 @@ export const dogBreedPhotos: Record<number, MonthBreedPhotos> = {
       "https://plus.unsplash.com/premium_photo-1661962979021-34716df17f01?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8Ymxvb2Rob3VuZHxlbnwwfHwwfHx8MA%3D%3D",
       "https://images.pexels.com/photos/7340691/pexels-photo-7340691.jpeg",
     ],
+    // w2: dog low in frame (empty wall above) - bias up to keep the head
+    // w3: tall portrait, face in top third  w4: square, face top-left
+    positions: [undefined, "center 38%", "center 20%", "center 22%", "center 30%"],
   },
   10: {
     breed: "Scottish Terrier",
@@ -138,4 +145,10 @@ export function getDogPhotoForDate(month: number, day: number): string {
 // Helper: get breed name for a month
 export function getBreedForMonth(month: number): string {
   return dogBreedPhotos[month]?.breed ?? "";
+}
+
+// Helper: CSS object-position / background-position for a day's photo
+export function getDogPhotoPositionForDate(month: number, day: number): string {
+  const weekIndex = Math.min(Math.floor((day - 1) / 7), 4);
+  return dogBreedPhotos[month]?.positions?.[weekIndex] ?? "center";
 }
