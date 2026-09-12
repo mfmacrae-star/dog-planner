@@ -20,6 +20,8 @@ export const dogBreedPhotos: Record<number, MonthBreedPhotos> = {
       "https://images.unsplash.com/photo-1648948302801-d992ea007b55?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjJ8fHBvb2RsZXN8ZW58MHx8MHx8fDA%3D",
       "https://images.unsplash.com/photo-1771858594034-4239c978c9cb?crop=entropy&cs=srgb&fm=jpg&q=85",
     ],
+    // w1: portrait, head near crop top
+    positions: ["center 40%", undefined, undefined, undefined, undefined],
   },
   2: {
     breed: "Siberian Husky",
@@ -30,6 +32,8 @@ export const dogBreedPhotos: Record<number, MonthBreedPhotos> = {
       "https://images.unsplash.com/photo-1558099089-ba08c0364321?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTV8fHNpYmVyaWFuJTIwaHVza3l8ZW58MHx8MHx8fDA%3D",
       "https://images.unsplash.com/photo-1489924034176-2e678c29d4c6?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c2liZXJpYW4lMjBodXNreXxlbnwwfHwwfHx8MA%3D%3D",
     ],
+    // w1: portrait, head cut by center crop
+    positions: ["center 30%", undefined, undefined, undefined, undefined],
   },
   3: {
     breed: "Old English Sheepdog",
@@ -40,6 +44,8 @@ export const dogBreedPhotos: Record<number, MonthBreedPhotos> = {
       "https://images.unsplash.com/photo-1676744005029-b53dcd3cd0aa",
       "https://images.unsplash.com/photo-1729014202973-840bbd077b9b",
     ],
+    // w4: portrait, face in top third
+    positions: [undefined, undefined, undefined, "center 25%", undefined],
   },
   4: {
     breed: "Belgian Malinois",
@@ -50,6 +56,8 @@ export const dogBreedPhotos: Record<number, MonthBreedPhotos> = {
       "https://images.unsplash.com/photo-1581614061245-05764a727edc?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8YmVsZ2lhbiUyMG1hbGlub2lzfGVufDB8fDB8fHww",
       "https://images.unsplash.com/photo-1647087602470-886d2be417c1?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YmVsZ2lhbiUyMG1hbGlub2lzfGVufDB8fDB8fHww",
     ],
+    // w4: dog looking up, head at top
+    positions: [undefined, undefined, undefined, "center 22%", undefined],
   },
   5: {
     breed: "Pekingese",
@@ -60,6 +68,8 @@ export const dogBreedPhotos: Record<number, MonthBreedPhotos> = {
       "https://images.pexels.com/photos/283014/pexels-photo-283014.jpeg",
       "https://images.pexels.com/photos/6075441/pexels-photo-6075441.jpeg",
     ],
+    // w3: crown of head at crop edge
+    positions: [undefined, undefined, "center 35%", undefined, undefined],
   },
   6: {
     breed: "Whippet",
@@ -70,6 +80,8 @@ export const dogBreedPhotos: Record<number, MonthBreedPhotos> = {
       "https://images.unsplash.com/photo-1637666462118-474947bb8e2c?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fHdoaXBwZXR8ZW58MHx8MHx8fDA%3D",
       "https://images.pexels.com/photos/14653227/pexels-photo-14653227.jpeg",
     ],
+    // w5: portrait, face in top quarter
+    positions: [undefined, undefined, undefined, undefined, "center 15%"],
   },
   7: {
     breed: "Labrador Retriever",
@@ -80,6 +92,8 @@ export const dogBreedPhotos: Record<number, MonthBreedPhotos> = {
       "https://images.unsplash.com/photo-1672838564788-e1e502b0cf54?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bGFicmFkb3IlMjByZXRyaWV2ZXIlMjBwdXBwaWVzfGVufDB8fDB8fHww",
       "https://images.pexels.com/photos/20020145/pexels-photo-20020145.jpeg",
     ],
+    // w1/w2: close-up portraits, eyes above center crop
+    positions: ["center 18%", "center 20%", undefined, undefined, undefined],
   },
   8: {
     breed: "Border Collie",
@@ -90,6 +104,8 @@ export const dogBreedPhotos: Record<number, MonthBreedPhotos> = {
       "https://images.pexels.com/photos/19296593/pexels-photo-19296593.jpeg",
       "https://images.pexels.com/photos/8734476/pexels-photo-8734476.jpeg",
     ],
+    // w1: portrait, head above crop
+    positions: ["center 30%", undefined, undefined, undefined, undefined],
   },
   9: {
     breed: "Bloodhound",
@@ -123,6 +139,8 @@ export const dogBreedPhotos: Record<number, MonthBreedPhotos> = {
       "https://images.pexels.com/photos/29102445/pexels-photo-29102445.jpeg",
       "https://images.unsplash.com/photo-1732520970519-bd096746960f?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8YXVzdHJhaWxpYW4lMjBjYXR0bGUlMjBkb2d8ZW58MHx8MHx8fDA%3D",
     ],
+    // w5: two dogs left of frame
+    positions: [undefined, undefined, undefined, undefined, "30% center"],
   },
   12: {
     breed: "Saint Bernard",
@@ -133,6 +151,8 @@ export const dogBreedPhotos: Record<number, MonthBreedPhotos> = {
       "https://images.pexels.com/photos/6721024/pexels-photo-6721024.jpeg",
       "https://images.pexels.com/photos/11654187/pexels-photo-11654187.jpeg",
     ],
+    // w1 crown at edge; w4 head in top third
+    positions: ["center 35%", undefined, undefined, "center 25%", undefined],
   },
 };
 
