@@ -59,6 +59,17 @@ export function BreedBook() {
               </a>
             </li>
             <li>
+              &ldquo;Bloodhund r54&rdquo; by Pleple2000, via Wikimedia Commons —{" "}
+              <a
+                href="https://creativecommons.org/licenses/by-sa/3.0"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline hover:text-amber-700"
+              >
+                CC BY-SA 3.0
+              </a>
+            </li>
+            <li>
               &ldquo;Bloodhound-Female&rdquo; by Ltshears and &ldquo;Bloodhound black and tan&rdquo;,
               via Wikimedia Commons — public domain
             </li>

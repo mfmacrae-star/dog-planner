@@ -115,7 +115,7 @@ export const dogBreedPhotos: Record<number, MonthBreedPhotos> = {
       "https://plus.unsplash.com/premium_photo-1664392217772-295bf3254121?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8Ymxvb2Rob3VuZHxlbnwwfHwwfHx8MA%3D%3D",
       "https://upload.wikimedia.org/wikipedia/commons/5/5e/Cooper_is_a_bloodhound.jpg",
       "https://upload.wikimedia.org/wikipedia/commons/b/b1/Bloodhound-Female.jpg",
-      "https://images.pexels.com/photos/7340691/pexels-photo-7340691.jpeg",
+      "https://upload.wikimedia.org/wikipedia/commons/b/bb/Bloodhund_r54.jpg",
     ],
     // w1: Wikimedia Commons "Bloodhound black and tan.jpg" (1458x1033, PUBLIC
     //     DOMAIN). Replaced pexels 127993, which was a lean long-legged hound
@@ -131,8 +131,11 @@ export const dogBreedPhotos: Record<number, MonthBreedPhotos> = {
     //     Replaced the original w4 (unsplash premium_photo-1661962979021), which
     //     was a VIZSLA, not a bloodhound, and was live in production until
     //     2026-09-21. All five verified that day by downloading and viewing.
-    // w5: dog standing in snow, head in the upper third
-    positions: ["center 30%", "center 38%", "center 25%", "center 20%", "center 30%"],
+    // w5: Wikimedia Commons "Bloodhund r54.jpg" (1434x1590) by Pleple2000,
+    //     **CC BY-SA 3.0 - ATTRIBUTION REQUIRED**, credited in BreedBook.
+    //     Head-and-shoulders against autumn leaves, which suits Sep 29-30.
+    //     Replaced a pexels full-body shot in snow. Head in the upper third.
+    positions: ["center 30%", "center 38%", "center 25%", "center 20%", "center 25%"],
   },
   10: {
     breed: "Scottish Terrier",
