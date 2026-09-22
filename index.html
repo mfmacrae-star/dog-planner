@@ -16,7 +16,20 @@
     <script>
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-          navigator.serviceWorker.register('/sw.js');
+          navigator.serviceWorker.register('/sw.js').then(reg => {
+            // Check for a newer worker on load and hourly, so an open tab picks
+            // up a deploy without the user knowing to hard-refresh.
+            reg.update();
+            setInterval(() => reg.update(), 60 * 60 * 1000);
+          });
+          // A new worker calls skipWaiting + clients.claim, which fires this.
+          // Reload once so the tab runs the new bundle instead of the old one.
+          let reloading = false;
+          navigator.serviceWorker.addEventListener('controllerchange', () => {
+            if (reloading) return;
+            reloading = true;
+            window.location.reload();
+          });
         });
       }
     </script>
