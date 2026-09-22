@@ -3,3 +3,9 @@ dist
 .env
 .env.local
 .vercel
+
+# Every .env variant is secret EXCEPT the committed template.
+# .env.dog holds GOOGLE_CLIENT_SECRET and was previously unignored - one
+# `git add .` would have published it. Added 2026-09-21.
+.env*
+!.env.example

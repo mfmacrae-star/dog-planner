@@ -111,15 +111,28 @@ export const dogBreedPhotos: Record<number, MonthBreedPhotos> = {
   9: {
     breed: "Bloodhound",
     photos: [
-      "https://images.pexels.com/photos/127993/pexels-photo-127993.jpeg",
+      "https://upload.wikimedia.org/wikipedia/commons/2/22/Bloodhound_black_and_tan.jpg",
       "https://plus.unsplash.com/premium_photo-1664392217772-295bf3254121?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8Ymxvb2Rob3VuZHxlbnwwfHwwfHx8MA%3D%3D",
-      "https://plus.unsplash.com/premium_photo-1664303034905-2e850c5430a0?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Ymxvb2Rob3VuZHxlbnwwfHwwfHx8MA%3D%3D",
-      "https://plus.unsplash.com/premium_photo-1661962979021-34716df17f01?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8Ymxvb2Rob3VuZHxlbnwwfHwwfHx8MA%3D%3D",
+      "https://upload.wikimedia.org/wikipedia/commons/5/5e/Cooper_is_a_bloodhound.jpg",
+      "https://upload.wikimedia.org/wikipedia/commons/b/b1/Bloodhound-Female.jpg",
       "https://images.pexels.com/photos/7340691/pexels-photo-7340691.jpeg",
     ],
+    // w1: Wikimedia Commons "Bloodhound black and tan.jpg" (1458x1033, PUBLIC
+    //     DOMAIN). Replaced pexels 127993, which was a lean long-legged hound
+    //     with no dewlap or wrinkles - a great dane or pointer type, not a
+    //     bloodhound. Head is on the right in the upper third -> "center 30%".
     // w2: dog low in frame (empty wall above) - bias up to keep the head
-    // w3: tall portrait, face in top third  w4: square, face top-left
-    positions: [undefined, "center 38%", "center 20%", "center 22%", "center 30%"],
+    // w3: Wikimedia Commons "Cooper is a bloodhound.jpg" (985x1340) by Nancy
+    //     Wong, **CC BY-SA 4.0 - ATTRIBUTION REQUIRED**, credited in BreedBook.
+    //     Replaced an unsplash frame-filling close-up cropped at the ears; this
+    //     one is pulled back and centred, head in the upper third -> "center 25%".
+    // w4: Wikimedia Commons "Bloodhound-Female.jpg" (804x838, PUBLIC DOMAIN,
+    //     author Ltshears). Head sits in the upper third, hence "center 20%".
+    //     Replaced the original w4 (unsplash premium_photo-1661962979021), which
+    //     was a VIZSLA, not a bloodhound, and was live in production until
+    //     2026-09-21. All five verified that day by downloading and viewing.
+    // w5: dog standing in snow, head in the upper third
+    positions: ["center 30%", "center 38%", "center 25%", "center 20%", "center 30%"],
   },
   10: {
     breed: "Scottish Terrier",

@@ -40,6 +40,31 @@ export function BreedBook() {
           <p className="text-xl text-gray-600 italic">May these noble companions inspire your days throughout the year</p>
           <div className="mt-6 text-gray-500">🐾</div>
         </div>
+
+        {/* Photo credits. Only the CC-licensed images legally require attribution,
+            but public-domain sources are listed too so the provenance of every
+            photo is traceable. Add a line here whenever a licensed photo is added. */}
+        <div className="mt-8 px-6 pb-10 text-center">
+          <h3 className="text-sm uppercase tracking-wide text-gray-500 mb-3">Photo Credits</h3>
+          <ul className="text-xs text-gray-500 leading-relaxed space-y-1">
+            <li>
+              &ldquo;Cooper is a bloodhound&rdquo; by Nancy Wong, via Wikimedia Commons —{" "}
+              <a
+                href="https://creativecommons.org/licenses/by-sa/4.0"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline hover:text-amber-700"
+              >
+                CC BY-SA 4.0
+              </a>
+            </li>
+            <li>
+              &ldquo;Bloodhound-Female&rdquo; by Ltshears and &ldquo;Bloodhound black and tan&rdquo;,
+              via Wikimedia Commons — public domain
+            </li>
+            <li>Remaining photography via Unsplash and Pexels, used under their respective licences.</li>
+          </ul>
+        </div>
       </div>
     </div>
   );
