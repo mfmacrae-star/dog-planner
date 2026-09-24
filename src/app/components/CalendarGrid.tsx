@@ -1,6 +1,10 @@
 import { useState, useEffect } from "react";
 
-import { projectId, publicAnonKey, supabase } from "../../../utils/supabase/info";
+import { projectId, publicAnonKey } from "../../../utils/supabase/info";
+// Use the SAME client that AuthForm/App sign in with (lib/supabase.ts), not the
+// second, session-less one exported by utils/supabase/info. Importing `supabase`
+// from info sent every hourly_plans request as an anonymous visitor.
+import { supabase } from "../lib/supabase";
 import { DayModal } from "./DayModal";
 import { getHolidaysForDay } from "../data/holidays";
 import { getDogPhotoForDate, getDogPhotoPositionForDate } from "../../data/dogBreedPhotos";

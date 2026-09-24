@@ -2,7 +2,11 @@ import { X, Calendar as CalendarIcon } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 
 import { getQuoteForDate } from "../data/quotes";
-import { projectId, publicAnonKey, supabase } from "../../../utils/supabase/info";
+import { projectId, publicAnonKey } from "../../../utils/supabase/info";
+// Use the SAME client that AuthForm/App sign in with (lib/supabase.ts), not the
+// second, session-less one exported by utils/supabase/info. Importing `supabase`
+// from info sent every hourly_plans request as an anonymous visitor.
+import { supabase } from "../lib/supabase";
 
 interface ExternalEvent {
   id: string;
