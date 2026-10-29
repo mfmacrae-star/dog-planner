@@ -5,6 +5,14 @@
       "maxDuration": 30
     }
   },
+  "redirects": [
+    {
+      "source": "/:path((?!api/|calendar-connected\\.html).*)",
+      "has": [{ "type": "host", "value": "dog-planner-one.vercel.app" }],
+      "destination": "https://digitaldogplanner.com/:path",
+      "permanent": false
+    }
+  ],
   "rewrites": [
     {
       "source": "/api/:path*",
